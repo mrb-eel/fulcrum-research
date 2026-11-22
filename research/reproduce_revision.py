@@ -81,8 +81,12 @@ def fork_costs(output):
     before_value = anchor["oracle_collateral_atomic"] / loan_unit
     before_equity = before_value - before_debt
     rows = []
+    reverted = []
     for attempt in raw["attempts"]:
         if not attempt["success"]:
+            reverted.append({"fraction": attempt["fraction"],
+                             "gas_used": int(attempt["receipt"]["gasUsed"], 16),
+                             "receipt_status": attempt["receipt"]["status"]})
             continue
         log = next(log for log in attempt["logs"] if log["address"].lower() == attempt["helper"].lower()
                    and len(log["data"]) == 386)
@@ -108,7 +112,8 @@ def fork_costs(output):
     assert len(rows) == 2 and aggregator > max(row["proceeds_usdc"] for row in rows)
     save(output / "fork-costs.json", {"anchor_block": anchor["anchor_block"], "opening_health": anchor["health"],
          "opening_equity_usdc": before_equity, "full_aggregator_quote_usdc": aggregator,
-         "full_aggregator_quote_discount": 1 - aggregator / before_value, "executions": rows})
+         "full_aggregator_quote_discount": 1 - aggregator / before_value,
+         "executions": rows, "reverted_attempts": reverted})
 
 
 def main():

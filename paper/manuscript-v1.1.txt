@@ -423,7 +423,7 @@ The first tested route used Uniswap v3 sUSDe/USDT and USDT/USDC pools. [16] Its 
 The second path exchanges sUSDe for crvUSD at Curve pool 0x57064F...982e85 and crvUSD for USDC at 0x4DEcE6...bAD69E. Common-block calls identify the coin ordering and disposal quotes. The helper executes those exact exchanges after collateral release and SY redemption. [17]
 
 TABLE financed_curve_route_attempts
-PT reduction | Temporary USDC | Returned USDC | Result
+PT reduction | Temporary USDC | Route proceeds | Result
 1% | 1,000.00 | 39,300.89 | Completed
 10% | 178,628.95 | 371,560.75 | Completed
 25% | 718,194.35 | 375,936.51 | Insufficient USDC
@@ -449,7 +449,7 @@ A successful receipt establishes completion under the declared local authorisati
 
 Quarter and half reductions on the Curve path returned too little USDC to settle their temporary repayment requirement. At full size, Pendle rejected the PT sale with MarketProportionTooHigh. The reverted call returned the proposed market proportion and its maximum, locating the failure in the AMM's own trading constraint. [18] [10]
 
-The Curve leg returned only about 376,000 USDC at both 25% and 50%, against temporary repayment requirements above 718,000 and 1.617 million USDC. The full attempt reached a different constraint when Pendle rejected the sale before conversion. These failures measure the throughput and contract constraints of the tested route.
+The reverted traces show about 376,000 USDC in intermediate proceeds at both 25% and 50%. Neither sale settled. The quarter, half and full attempts consumed 787,444, 788,109 and 398,723 gas units, respectively. Reversion left no sale proceeds or position change from those transactions.
 
 The recorded full-size aggregator estimate of 3.845 million USDC is roughly ten times the proceeds seen at the plateau of the Curve path. It covers a quoted swap, and the fork also imposes financing and collateral release. The captured data therefore leave both the aggregator route’s executable proceeds and any position-wide exit limit unresolved.
 
@@ -513,7 +513,7 @@ For degrees of freedom nu greater than two, the innovation used in return-model 
 MATH appendix_t_density
 f(r\mid h,\nu)=\frac{\Gamma((\nu+1)/2)}{\Gamma(\nu/2)\sqrt{(\nu-2)\pi h}}
 \times\left(1+\frac{r^2}{(\nu-2)h}\right)^{-(\nu+1)/2}
-DEFINITIONS Gamma denotes the gamma function, h the conditional variance and nu the tail parameter. The displayed density is for zero conditional mean.
+DEFINITIONS Γ denotes the gamma function, h the conditional variance and nu the tail parameter. The displayed density is for zero conditional mean.
 ENDMATH
 
 The factor containing h is the change-of-units term. Removing it would score standardised innovations in one model and raw returns in another, altering the comparison as market volatility changes. The implementation evaluates the full return density for every test observation.

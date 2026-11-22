@@ -31,5 +31,22 @@
       "equity_change_ratio": -0.0417737927232697,
       "gas_used": 680587
     }
+  ],
+  "reverted_attempts": [
+    {
+      "fraction": 0.25,
+      "gas_used": 787444,
+      "receipt_status": "0x0"
+    },
+    {
+      "fraction": 0.5,
+      "gas_used": 788109,
+      "receipt_status": "0x0"
+    },
+    {
+      "fraction": 1.0,
+      "gas_used": 398723,
+      "receipt_status": "0x0"
+    }
   ]
 }
