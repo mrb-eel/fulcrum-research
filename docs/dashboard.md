@@ -1,6 +1,6 @@
 # Fulcrum dashboard
 
-Fulcrum began as an entry for the Belem Capital DeFi Risk Dependency Challenge at the Blockchain Student Association hackathon. The dashboard traces dependencies across Morpho lending markets and evaluates price or oracle scenarios against saved evidence. The [research companion](../README.md) documents the working paper and its results.
+This dashboard traces dependencies across Morpho lending markets and evaluates price or oracle scenarios against saved evidence. The [research companion](../README.md) documents the working paper, its evidence and its replication commands.
 
 ## Run locally
 

@@ -1,6 +1,6 @@
-# Fulcrum
+# Fulcrum Research
 
-Research on collateral valuation, liquidation and recoverable value in decentralised lending.
+An empirical study of how collateral valuation and liquidation capacity affect what lenders recover in DeFi.
 
 [Working paper (PDF)](paper/liquidation-capacity-and-recoverable-value.pdf) · [Replication guide](research/README.md) · [Results](research/results) · [Citation](CITATION.cff)
 
@@ -28,4 +28,4 @@ python research/verify_evidence.py
 
 The [replication guide](research/README.md) maps each paper result to its inputs and output tables and gives the commands to re-estimate the models and regenerate the experiments.
 
-The original hackathon dashboard remains available as a [legacy demo](docs/dashboard.md).
+The [original analysis dashboard](docs/dashboard.md) and [early project notes](docs/archive/README.md) are available for reference.

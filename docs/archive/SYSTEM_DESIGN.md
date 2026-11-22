@@ -105,7 +105,7 @@ deployment path and accepts a topology conclusion only after it confirms the
 active path, every primary feed/vault leg, the selected PT, the backup's
 USDe/USD feed description, and the expected contract identities. If any one
 check differs, the route is marked for manual review instead of inferred from
-price proximity. See [ORACLE_INVESTIGATION.md](ORACLE_INVESTIGATION.md).
+price proximity. See [ORACLE_INVESTIGATION.md](../../ORACLE_INVESTIGATION.md).
 
 ## 3. Causal propagation: three distinct rays
 
