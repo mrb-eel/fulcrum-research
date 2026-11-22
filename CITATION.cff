@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "Please cite the working paper when referring to its findings and include the repository commit when referring to an analysis run."
+title: Fulcrum
+type: software
+authors:
+  - family-names: Bouchaibi
+    given-names: Mohamed Rayan
+repository-code: https://github.com/mrb-eel/fulcrum
+preferred-citation:
+  type: report
+  title: Liquidation capacity and recoverable value in DeFi lending
+  authors:
+    - family-names: Bouchaibi
+      given-names: Mohamed Rayan
+  year: 2026
+  month: 11
+  version: "1.0"
+  url: https://github.com/mrb-eel/fulcrum

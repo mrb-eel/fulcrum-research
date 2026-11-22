@@ -1,0 +1,24 @@
+{
+  "anchor_block": 26162436,
+  "anchor_hash": "0xfb54f6e077a537f523c0194211207e954e1ec6ef496e69fc43f52605ec593969",
+  "anchor_timestamp": 1791640151,
+  "position_supply_shares": 0,
+  "position_borrow_shares": 3398641061377110652,
+  "collateral_atomic": 3961491354129141559967243,
+  "market_words": [
+    7757170494619,
+    7725170606554942046,
+    6992654071526,
+    6960495912806339180,
+    1791469775,
+    0
+  ],
+  "oracle_price": 992368628234398783000000,
+  "borrow_rate_per_second_wad": 1165800601,
+  "elapsed_seconds": 170376,
+  "interest_atomic": 1389049966,
+  "expected_borrow_assets_atomic": 3415021348409,
+  "oracle_collateral_atomic": 3931259740859,
+  "health": 1.0533177675626622,
+  "method": "Common-block direct reads; expected interest via deployed IRM borrowRateView and Morpho integer third-order Taylor compounding."
+}

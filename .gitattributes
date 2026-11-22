@@ -1,0 +1,5 @@
+data/book/*.json text eol=lf
+research/raw/** -text whitespace=cr-at-eol
+research/replay/Unwind.sol -text whitespace=cr-at-eol
+research/results/*.svg whitespace=-blank-at-eol
+*.pdf binary

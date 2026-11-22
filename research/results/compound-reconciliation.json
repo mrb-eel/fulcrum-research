@@ -1,0 +1,8 @@
+{
+  "addresses": 124,
+  "distribution_sum": "6817797.961061625985455",
+  "maximum_address_difference_dai": "2E-10",
+  "event_repaid_dai": "85222474.513270326810927896",
+  "prose_difference_dai": "2068.083270326810927896",
+  "method": "Each event compensation uses floor(repayAtomic*8/100), then aggregates by borrower."
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "file": "research/raw/atomic-position-analysis.json",
+    "sha256": "3a3b52ba731828be186f9d91816b2f89f603c60831ab82032155d5ec6d85048a"
+  },
+  {
+    "file": "research/raw/common-block-state.json",
+    "sha256": "21b5c45ef94bb047209c24983a7850dce205925d08d6f10c033d1e49b467e9dd"
+  },
+  {
+    "file": "research/raw/compound-liquidation-logs.json",
+    "sha256": "dc10726edb4795e6d92706167c806b187a233d277a26ec99da0f83e8a2b70250"
+  },
+  {
+    "file": "research/raw/compound-proposal-balances.json",
+    "sha256": "ef4785b19929e25cb7e2e0a50f72658b7a3a92f19d7b39e87353c9e0b6cffebb"
+  },
+  {
+    "file": "research/raw/compound-proposal-script.js",
+    "sha256": "8838da7034310c86e88266effeea6d802e382005af80e1827940379c53604bf8"
+  },
+  {
+    "file": "research/raw/curve-route-probe.json",
+    "sha256": "0f4c6a7d47cfcf06aad8cc51b1e6460df8d64c71b29ecf84831f0f06d689e8ea"
+  },
+  {
+    "file": "research/raw/fork-replay-curve.json",
+    "sha256": "c879035f37dd47fadee6c74e46e2d42025a557fdd04e2d41c31b3f5c8525d994"
+  },
+  {
+    "file": "research/raw/fork-replay.json",
+    "sha256": "53d59370be7c2365f4470bc72a8fec322cdc1060c185ae3bf13025d9efc17bf7"
+  },
+  {
+    "file": "research/raw/fork-rpc-journal-curve.json",
+    "sha256": "6d42e787ae901b170f8c33608720e94e4368151cca8f3810139a493ad5184e39"
+  },
+  {
+    "file": "research/raw/oracle-public-probe.json",
+    "sha256": "882b5a460976b8783e602083c28f04009a989b1239bab3abb60689a44a95679a"
+  },
+  {
+    "file": "research/raw/oracle-verification-results.json",
+    "sha256": "a59e59f8824e024fa2a480ce90efb3c765aff456fc0f607dd1bfd0d35382c3e2"
+  },
+  {
+    "file": "research/replay/Unwind.sol",
+    "sha256": "9dcfca21bef6adae80c6f1ca5d0589cb52068ab219cf25ef6e53fda8490c54b5"
+  }
+]

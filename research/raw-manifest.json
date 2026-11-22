@@ -1,0 +1,93 @@
+[
+  {
+    "file": "data/book/enrichment.json",
+    "sha256": "bacf583a7b24ce85a548eb99a89323775ca60d953ce1c980a19fba66bdea0611",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/enrichment.json",
+    "snapshot_id": "enrichment-d36e99d49b513b86c782ae1f140b83f2e08b2f4f5586e876b25fba7188770585",
+    "captured_at": "2026-10-11T02:23:58.331Z"
+  },
+  {
+    "file": "data/book/gauntlet-dai-core.json",
+    "sha256": "6a03c08ed304eb6bda8b8051aaef2733a282a8db6eb84ad7c518a36ed5d73ca4",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/gauntlet-dai-core.json",
+    "snapshot_id": "vault-4f27191622aff73c193500e9a82f2689aaeca19485d4a2b7bda8b15bdf92ca9f",
+    "captured_at": "2026-10-11T02:23:55.270Z"
+  },
+  {
+    "file": "data/book/gauntlet-usdc-prime.json",
+    "sha256": "a046d5e8eb098e983219dd6cd7418ae253df4e208a48220dcd65691c8895ad3a",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/gauntlet-usdc-prime.json",
+    "snapshot_id": "vault-e0c9cc65c8b8ca542fcda3d2210f74e3b7c52eab7f07ee2a852c7150e9f71caa",
+    "captured_at": "2026-10-11T02:23:38.924Z"
+  },
+  {
+    "file": "data/book/gauntlet-usdc-rwa.json",
+    "sha256": "e80e1046e7d820218311dbaa347fe60e77b8156926b3699296d8992d6d73f8b3",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/gauntlet-usdc-rwa.json",
+    "snapshot_id": "vault-283203e8d7ccb4974627dcb811623564f70aea64b9f454f0cab7dc6bda9667e1",
+    "captured_at": "2026-10-11T02:23:52.913Z"
+  },
+  {
+    "file": "data/book/gauntlet-weth-prime.json",
+    "sha256": "28cd163197f80f46f350e91456fcd0df23d567da1bc7d128c287542f05b92884",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/gauntlet-weth-prime.json",
+    "snapshot_id": "vault-2d19ef3105354d073b831bd93a96fd1d987ec9eff1dd08254b5d9cc977e58924",
+    "captured_at": "2026-10-11T02:23:57.132Z"
+  },
+  {
+    "file": "data/book/lending.json",
+    "sha256": "51fed6962835d33c41dcb9ec03a0ad13692df068d3cd4b055b498d2eb2c686a6",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/lending.json",
+    "snapshot_id": "lending-51b71d47261a14a02878fb487da4f83321ff4a591b37f1fd76d3ffd0123e87d7",
+    "captured_at": "2026-10-11T03:24:07.686Z"
+  },
+  {
+    "file": "data/book/market-history.json",
+    "sha256": "a9d393b9c3faa2248aab583be3145ae8703e851c2260c2d22bf41f17942587f2",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/market-history.json",
+    "snapshot_id": "history-078ba6c53ceb58fc6012e887579e0b90c682dad8789f635e4d5e1c7d7168d7d5",
+    "captured_at": "2026-10-11T02:25:01.584Z"
+  },
+  {
+    "file": "data/book/smokehouse-usdc.json",
+    "sha256": "8c47ea37065054db217e65fd9a6131a419162ff60c9ef123d7fd92edf61684bc",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/smokehouse-usdc.json",
+    "snapshot_id": "vault-1b1d3ea4fe53a7445f836b12d2a1751440967c2c81e0a31c9b26c051674bf57d",
+    "captured_at": "2026-10-11T02:23:49.252Z"
+  },
+  {
+    "file": "data/book/smokehouse-usdt.json",
+    "sha256": "d24e2c64e0c48b6f2839b14edeef54c0b50702c041c3680a538d93a405c603b2",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/smokehouse-usdt.json",
+    "snapshot_id": "vault-67d5f5d303dffd9739598ef7a7a87623318613b84931da8cd7c7b6a6bfda1d6c",
+    "captured_at": "2026-10-11T02:23:43.539Z"
+  },
+  {
+    "file": "data/book/spark-blue-chip-usdc.json",
+    "sha256": "00ff12b05d0fb4433db273b08015fec5551ad33d4b3c04e8eb2278e9d58152ea",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/spark-blue-chip-usdc.json",
+    "snapshot_id": "vault-506a1d8deb9aeb03985cae4b19df3eacfe556662f08b68fa51efc996f37e6be7",
+    "captured_at": "2026-10-11T02:23:39.631Z"
+  },
+  {
+    "file": "data/book/steakhouse-eth.json",
+    "sha256": "f4d8b58cb3e9e42d5144ba8f716acc683064d7503ae062a2bd33360568b84f19",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/steakhouse-eth.json",
+    "snapshot_id": "vault-313e3a35cb29465c80f135cc7692f660e008d7dc5fbe6aabde5952343b400e80",
+    "captured_at": "2026-10-11T02:23:56.460Z"
+  },
+  {
+    "file": "data/book/steakhouse-usdc.json",
+    "sha256": "ca93fadfd278740a11044f30d567575e6aa82d405ebe0b1cbecdd7cf41362f4e",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/steakhouse-usdc.json",
+    "snapshot_id": "vault-d6f9cd4652b46c4a20de824949e86fd561ad4b486a792abe5f2a41e4b057ed24",
+    "captured_at": "2026-10-11T02:23:31.562Z"
+  },
+  {
+    "file": "data/book/steakhouse-usdt.json",
+    "sha256": "9e95f0ce6ea0fc28a20c026905fcb57ff1dbae3694017ff4ae627f3886d28345",
+    "source": "https://github.com/mrb-eel/fulcrum/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/data/book/steakhouse-usdt.json",
+    "snapshot_id": "vault-3598068fe754592fed624885dfaebb99a0a666290ca83b85a4bc6e072b68b69c",
+    "captured_at": "2026-10-11T02:23:35.024Z"
+  }
+]

@@ -1,61 +1,31 @@
-# FULCRUM
+# Fulcrum
 
-Fulcrum finds the dependencies under a DeFi position, prices what an incident would cost the holder, and returns a stay-or-exit verdict with the reasoning attached. Built solo for the Belem Capital DeFi Risk Dependency Challenge at the Blockchain Student Association hackathon.
+Research on collateral valuation, liquidation and recoverable value in decentralised lending.
 
-## Run it
+[Working paper (PDF)](paper/liquidation-capacity-and-recoverable-value.pdf) · [Replication guide](research/README.md) · [Results](research/results) · [Citation](CITATION.cff)
+
+## Working paper
+
+*Liquidation capacity and recoverable value in DeFi lending*
+
+Mohamed Rayan Bouchaibi · Working paper, version 1.0 · November 2026
+
+A lending market can have enough collateral in aggregate and still leave creditors short. In a captured Morpho WBTC/USDC market with 614 borrowers, a 35% collateral price decline and a 1% sale discount produced **1,394,925.51 USDC** of modeled shortfall when recovery was calculated loan by loan. Pooling the collateral produced zero for the same shock. Surplus collateral in one account cannot settle another account's debt under the specified recourse rules. [Borrower ledger](research/results/borrower-ledger.csv) · [Market analysis](research/results/vault-study.json)
+
+- Ten Morpho vault captures supply 3,547 borrower-market records across 51 markets with positive allocation. The study compares four return models for each of BTC and ETH on held-out data. The fitted BTC model supplies 5,000 common paths for the liquidation simulations. [Forecasts](research/results/model-results.json) · [Policy comparisons](research/results/liquidation-study.csv)
+- A ledger of 141 Compound cDAI liquidation events records 85.22 million DAI of repayments. It reconciles the proposal's address-level compensation file and identifies a discrepancy in the proposal's prose total. [Event ledger](research/results/compound-events.csv) · [Reconciliation](research/results/compound-reconciliation.json)
+- A historical fork at Ethereum block 26,162,436 records completed 1% and 10% reductions of a financed PT-sUSDe position. The tested route encountered funding and pool constraints at larger sizes. [Fork evidence](research/raw/fork-replay-curve.json)
+
+The vault sample was selected for the project. Liquidation capacity and disposal discounts are scenario assumptions. The conclusions apply to the observed positions and the specified experiments.
+
+## Replication
+
+From the repository root, run the evidence checks with Python 3.12 or later. They read the retained files and require only the standard library.
 
 ```bash
-node --test
-node src/server.js
+python research/verify_evidence.py
 ```
 
-Open `http://localhost:4173`. The app evaluates offline from saved, fingerprinted evidence. To capture fresh data (needs internet):
+The [replication guide](research/README.md) maps each paper result to its inputs and output tables and gives the commands to re-estimate the models and regenerate the experiments.
 
-```bash
-node scripts/capture-book.js
-```
-
-## Screens
-
-| Page | Path | Use |
-| --- | --- | --- |
-| Start | `/` | 3D cutaway of one real position, stepped layer by layer, ending in a live depeg verdict. A numbered tour bar on every page leads through the rest. |
-| Method | `/how.html` | The presentation. Arrow keys move between slides; every number is live. |
-| Book | `/book.html` | Ten real Morpho vaults as ten 10% pockets. One incident hits all of them; each pocket gets a verdict; shared dependencies are listed with their share of the book. |
-| X-ray viewer | `/xray.html` | One vault as a clickable grid with one-click scenarios. Paste any Morpho V1 vault address to capture and X-ray it live, or drop a saved vault JSON packet onto the page. |
-| Vault details | `/vault.html?id=…` | One vault layer by layer: market, collateral, issuer, oracle, chain. Oracle sight map, loss split, limit breach, every borrower. |
-| PT case | `/case.html` | The brief's own example: a leveraged PT-sUSDe loan on Morpho with its oracle traced on-chain and quoted exit costs. |
-| Workspace | `/portfolio.html` | Import positions, scan a wallet (Morpho Blue), stress and rehearse exits. |
-
-Keys on Book and X-ray: `T` switches to plain tables, `F` opens 3 a.m. mode (full-screen verdict), `Esc` closes it.
-
-## Pipeline
-
-1. Capture: `src/vault-discovery.js` reads each vault, its markets and every borrower from the Morpho indexer until borrower shares reconcile. `src/enrichment.js` reads every oracle contract and feed `description()` directly from Ethereum at one pinned block, plus daily BTC/USD and ETH/USD closes from Bitstamp. Each packet is SHA-256 fingerprinted.
-2. Dependencies: `src/vault-engine.js` builds the graph: market, collateral token, issuer or custodian (`src/registry.js`, curated with sources), oracle inputs, conversion vaults, chain, protocol and controllers. Each oracle is classified by what it can see: a market feed for the token's peg, only an issuer rate, nothing related, or unverified.
-3. Impact: For each borrower, shortfall = max(0, debt − collateral × (1 − shock) × (1 − sale discount)). On the gradual path liquidations fire at the boundary when the oracle follows and LIF × (1 − discount) ≥ 1, with LIF = 1 / (0.3·LLTV + 0.7). When the oracle cannot see a depeg, new borrowers can post the mispriced token and borrow the market's cash. Losses pass through the vault's supply share and then the holder's share, and are split into existing shortfall, incident loss and unrelated unknowns.
-4. Decision: Exit cost = net APY over the horizon on the withdrawable amount + gas. The probability is the historical share of windows with a move of that size (`src/base-rates.js`) or the user's own figure. Verdicts: STAY, EXIT, REVIEW, or STAY UNLESS with the break-even probability.
-5. Book: `src/book-engine.js` applies one incident to all ten pockets and matches shared dependencies by token and feed address.
-6. Other protocols: `src/lending-scan.js` reads every Aave v3 and Spark reserve's oracle source and its `description()` at one block and applies the same depeg-visibility classification (`node scripts/capture-lending.js`). Borrower-level loss stays Morpho-only.
-
-## Findings in the saved capture
-
-- Steakhouse USDC holds 43% in a cbBTC market whose oracle reads only `BTC / USD`. A cbBTC depeg would not trigger liquidations there. The WBTC market reads `WBTC / BTC` and would.
-- Several large markets price staked ETH, weETH, sUSDe, reUSD and tokenised funds with issuer exchange rates, so a market discount on those tokens is invisible to the lending oracle.
-- A 35% BTC fall costs a $1M Steakhouse USDC deposit about $5.1k if it gaps and nothing if it is gradual and liquidators can sell within the 4.2% break-even.
-
-## API
-
-| Endpoint | Returns |
-| --- | --- |
-| `GET /api/book`, `POST /api/book/evaluate` | Pockets, shared dependencies, per-pocket verdicts |
-| `GET /api/vault?id=`, `POST /api/vault/evaluate` | Model, scenario result, decision, reverse stress, shock curve |
-| `POST /api/vault/capture` `{address}`, `POST /api/vault/import` (packet) | Add any Morpho V1 vault, live or from a saved packet |
-| `GET /api/vault/evidence?id=`, `/api/vault/graph?id=` | Raw packet, full dependency graph |
-| `GET /api/lending` | Aave v3 and Spark oracle scan |
-| `GET /api/book/enrichment`, `/api/book/history` | On-chain oracle reads, price history |
-| `/api/demo-analysis`, `/api/evaluate`, `/api/discover` | PT case and workspace (unchanged) |
-
-## Limits
-
-Borrower-level loss for Morpho V1 vaults with direct markets; Aave v3 and Spark get the oracle scan only. Liquidation capacity from DEX depth and cash reallocated into a drained market are not modelled. Frequencies are history, not forecasts. Pocket weights are hypothetical and no holding is attributed to Belem.
+The original hackathon dashboard remains available as a [legacy demo](docs/dashboard.md).

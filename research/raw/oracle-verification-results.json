@@ -1,0 +1,182 @@
+{
+  "checked_on": "2026-11-15",
+  "historical_snapshot_observed_at": "2026-10-10T13:49:16.881Z",
+  "probe_request_started_utc": "2026-10-17T11:40:00.085511+00:00",
+  "endpoint": "https://eth-mainnet.public.blastapi.io",
+  "block_number": 26162436,
+  "block_hash": "0xfb54f6e077a537f523c0194211207e954e1ec6ef496e69fc43f52605ec593969",
+  "block_timestamp_utc": "2026-10-10T13:49:11+00:00",
+  "snapshot_file_sha256": "4934cc355b17275c38ffb1b8c1604a8f6029e820bee38a496e2c3dc2d460db9b",
+  "probe_file_sha256": "882b5a460976b8783e602083c28f04009a989b1239bab3abb60689a44a95679a",
+  "matched_fields": [
+    {
+      "field": "oracle.primaryOracle",
+      "saved": "0x8fca98c9abee4dcb33ba9f3d17db4ad57f72706d",
+      "pinned_read": "0x8fca98c9abee4dcb33ba9f3d17db4ad57f72706d",
+      "match": true
+    },
+    {
+      "field": "oracle.backupOracle",
+      "saved": "0xe2f4cfe07aecd7fd8fb0d293a22cde7d08175465",
+      "pinned_read": "0xe2f4cfe07aecd7fd8fb0d293a22cde7d08175465",
+      "match": true
+    },
+    {
+      "field": "oracle.currentOracle",
+      "saved": "0x8fca98c9abee4dcb33ba9f3d17db4ad57f72706d",
+      "pinned_read": "0x8fca98c9abee4dcb33ba9f3d17db4ad57f72706d",
+      "match": true
+    },
+    {
+      "field": "oracle.isPrimary",
+      "saved": true,
+      "pinned_read": true,
+      "match": true
+    },
+    {
+      "field": "oracle.isDeviant",
+      "saved": false,
+      "pinned_read": false,
+      "match": true
+    },
+    {
+      "field": "oracle.deviationThreshold",
+      "saved": "0.0075",
+      "pinned_read": "0.0075",
+      "match": true
+    },
+    {
+      "field": "oracle.challengeTimelockDuration",
+      "saved": 57600,
+      "pinned_read": 57600,
+      "match": true
+    },
+    {
+      "field": "oracle.healingTimelockDuration",
+      "saved": 86400,
+      "pinned_read": 86400,
+      "match": true
+    },
+    {
+      "field": "oracle.primaryPrice",
+      "saved": "0x00000000000000000000000000000000000000000000d224693ff0dabae44dc0",
+      "pinned_read": "0x00000000000000000000000000000000000000000000d224693ff0dabae44dc0",
+      "match": true
+    },
+    {
+      "field": "oracle.backupPrice",
+      "saved": "0x00000000000000000000000000000000000000000000d20eb8b3e3451e3cd6ee",
+      "pinned_read": "0x00000000000000000000000000000000000000000000d20eb8b3e3451e3cd6ee",
+      "match": true
+    },
+    {
+      "field": "oracle.price",
+      "saved": "0x00000000000000000000000000000000000000000000d224693ff0dabae44dc0",
+      "pinned_read": "0x00000000000000000000000000000000000000000000d224693ff0dabae44dc0",
+      "match": true
+    },
+    {
+      "field": "linearFeed.pt",
+      "saved": "0xb195b618ea52b77cb2a58846f452f59f8dfa9390",
+      "pinned_read": "0xb195b618ea52b77cb2a58846f452f59f8dfa9390",
+      "match": true
+    },
+    {
+      "field": "linearFeed.maturity",
+      "saved": 1795651200,
+      "pinned_read": 1795651200,
+      "match": true
+    },
+    {
+      "field": "linearFeed.baseDiscountPerYear",
+      "saved": "0.06",
+      "pinned_read": "0.06",
+      "match": true
+    },
+    {
+      "field": "primary.baseFeed1",
+      "saved": "0xa572dad7db3d975e9ce780db1cf3bf959401cd35",
+      "pinned_read": "0xa572dad7db3d975e9ce780db1cf3bf959401cd35",
+      "match": true
+    },
+    {
+      "field": "primary.baseFeed2",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "primary.baseVault",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "primary.quoteFeed1",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "primary.quoteFeed2",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "primary.quoteVault",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "backup.baseFeed1",
+      "saved": "0xa572dad7db3d975e9ce780db1cf3bf959401cd35",
+      "pinned_read": "0xa572dad7db3d975e9ce780db1cf3bf959401cd35",
+      "match": true
+    },
+    {
+      "field": "backup.baseFeed2",
+      "saved": "0xa569d910839ae8865da8f8e70fffb0cba869f961",
+      "pinned_read": "0xa569d910839ae8865da8f8e70fffb0cba869f961",
+      "match": true
+    },
+    {
+      "field": "backup.baseVault",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "backup.quoteFeed1",
+      "saved": "0xc3866d726c204c0836e0677a31973c649888973d",
+      "pinned_read": "0xc3866d726c204c0836e0677a31973c649888973d",
+      "match": true
+    },
+    {
+      "field": "backup.quoteFeed2",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    },
+    {
+      "field": "backup.quoteVault",
+      "saved": "0x0000000000000000000000000000000000000000",
+      "pinned_read": "0x0000000000000000000000000000000000000000",
+      "match": true
+    }
+  ],
+  "computed_from_snapshot_quantity_and_candidate_block_price": {
+    "collateral_PT": "3961491.354129141559967243",
+    "debt_USDC": "3415010.817768",
+    "oracle_collateral_USDC": "3931259.740859567096955365467343647279065269",
+    "health_factor": "1.053321015608822112180906752443970626072471293778728328513501350851396"
+  },
+  "limits": [
+    "The 17 October archive calls corroborate configuration at an identified 10 October block; the original snapshot used latest calls without preserving their block identifiers.",
+    "Position quantity and debt came from the 10 October saved API observation and were not independently re-read in this probe.",
+    "Only the first endpoint supplied the archive eth_call results; the second corroborated the block header but rejected archive calls.",
+    "The explorer response fetched the meta-oracle implementation source; other contract identity names remained cached in the project record.",
+    "No transaction simulation or inclusion, full-size liquidation, or completed unwind is verified."
+  ]
+}

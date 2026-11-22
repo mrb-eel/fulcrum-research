@@ -1,0 +1,686 @@
+{
+  "window": [
+    11332733,
+    11335286
+  ],
+  "contract": "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643",
+  "event_signature": "LiquidateBorrow(address,address,uint256,address,uint256)",
+  "topic": "0x298637f684da70674f26509b10f07ec2fbc77a335ab1e7d6215a4b2484d8bb52",
+  "events": 141,
+  "borrowers": 124,
+  "liquidators": 10,
+  "repaid_dai_atomic": 85222474513270326810927896,
+  "repaid_dai": 85222474.51327033,
+  "largest_borrower": "0x909b443761bbd7fbb876ecde71a37e1433f6af6f",
+  "largest_borrower_repaid_dai": 46142428.59504894,
+  "largest_borrower_fraction": 0.5414349777870381,
+  "top5_fraction": 0.9027670154239216,
+  "borrower_repayment_hhi": 0.34606240149372575,
+  "largest_liquidator_fraction": 0.6469373946782295,
+  "by_collateral_ctoken": {
+    "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5": {
+      "events": 68,
+      "repaid_dai_atomic": 21128711349671073048924280,
+      "seized_ctoken_atomic": 277118590853457
+    },
+    "0x35a18000230da775cac24873d00ff85bccded550": {
+      "events": 7,
+      "repaid_dai_atomic": 919050346870293437044872,
+      "seized_ctoken_atomic": 1798463468441122
+    },
+    "0x70e36f6bf80a52b3b46b3af8e106cc0ed743e8e4": {
+      "events": 2,
+      "repaid_dai_atomic": 2434481816753197154104,
+      "seized_ctoken_atomic": 139087820824
+    },
+    "0x39aa39c021dfbae8fac545936693ac917d5e7563": {
+      "events": 35,
+      "repaid_dai_atomic": 8138639172816322824962900,
+      "seized_ctoken_atomic": 47634065645935962
+    },
+    "0xc11b1268c1a384e55c48c2391d8d480264a3a7f4": {
+      "events": 21,
+      "repaid_dai_atomic": 2838126687276214967897252,
+      "seized_ctoken_atomic": 1065130257244
+    },
+    "0x5d3a536e4d6dbd6114cc1ead35777bab948e3643": {
+      "events": 5,
+      "repaid_dai_atomic": 52154094816224917685308923,
+      "seized_ctoken_atomic": 270909544015660403
+    },
+    "0xb3319f5d18bc0d84dd1b4825dcde5d5f7266d407": {
+      "events": 2,
+      "repaid_dai_atomic": 39768847106424248726246,
+      "seized_ctoken_atomic": 701137628261400
+    },
+    "0x6c8c6b02e7b2be14d4fa6022dfd6d75921d90e4e": {
+      "events": 1,
+      "repaid_dai_atomic": 1648811488327400909319,
+      "seized_ctoken_atomic": 50651299431757
+    }
+  },
+  "borrowers_ranked": [
+    {
+      "account": "0x909b443761bbd7fbb876ecde71a37e1433f6af6f",
+      "repaid_dai": 46142428.59504894,
+      "share": 0.5414349777870381
+    },
+    {
+      "account": "0xb1adceddb2941033a090dd166a462fe1c2029484",
+      "repaid_dai": 17520786.264574856,
+      "share": 0.20558879995730028
+    },
+    {
+      "account": "0x189c2c1834b1414a6aee9eba5dc4b4d547c9a44c",
+      "repaid_dai": 5941753.116851938,
+      "share": 0.06972049510163805
+    },
+    {
+      "account": "0xed3c4c5d7a9abfd74f33c1042793dfd6a6daef42",
+      "repaid_dai": 5921530.089277438,
+      "share": 0.06948319821850953
+    },
+    {
+      "account": "0x39c09fdc4e5c5ab72f6319ddbc2cae40e67b2a60",
+      "repaid_dai": 1409540.8976331041,
+      "share": 0.0165395443594356
+    },
+    {
+      "account": "0x889abdd2bc0f3a884e607279ba132501698fbcd5",
+      "repaid_dai": 1233698.9111116529,
+      "share": 0.014476215554144098
+    },
+    {
+      "account": "0x03324cfffabc10193de63186a374d7cfe932b162",
+      "repaid_dai": 889780.0221820705,
+      "share": 0.010440673393536812
+    },
+    {
+      "account": "0x161fac24d54698755dab0fcd65e2c883928ca724",
+      "repaid_dai": 860292.4574629284,
+      "share": 0.010094666487640755
+    },
+    {
+      "account": "0xc9493738f07ddc43f1a004d4bb461fa42de23225",
+      "repaid_dai": 843222.3073236268,
+      "share": 0.009894365449249251
+    },
+    {
+      "account": "0xf2df969f59b2c86e4b230da88918cdebcfc4ccbc",
+      "repaid_dai": 756026.5320066696,
+      "share": 0.008871210749565196
+    },
+    {
+      "account": "0x141f59a0283303a6b882b4d6973e418f8d75f9b3",
+      "repaid_dai": 513992.05116319616,
+      "share": 0.006031179616629888
+    },
+    {
+      "account": "0xe24286adfc053f76888aa51d9a94f6c1519b4cba",
+      "repaid_dai": 293904.78996625013,
+      "share": 0.0034486770261579892
+    },
+    {
+      "account": "0x339dab47bdd20b4c05950c4306821896cfb1ff1a",
+      "repaid_dai": 188200.90646433164,
+      "share": 0.002208348297080087
+    },
+    {
+      "account": "0x01adb5a14196d302004e3a1970a8bb3183dd2565",
+      "repaid_dai": 154973.22601120832,
+      "share": 0.0018184548958042378
+    },
+    {
+      "account": "0x1821a39c87e4d8a3dc5a8391a1ba7057e4eadd06",
+      "repaid_dai": 149800.66692666494,
+      "share": 0.0017577601188209912
+    },
+    {
+      "account": "0x543657598f7b237ab7289c2ced5d5418551cd057",
+      "repaid_dai": 140188.80055267343,
+      "share": 0.0016449745369790229
+    },
+    {
+      "account": "0x5c7c6d069ba232718f37c27a9549b547c359e31c",
+      "repaid_dai": 139202.61506515642,
+      "share": 0.0016334026424388868
+    },
+    {
+      "account": "0xb6c0276ad1d87c6cf6dfa323d0c3f6840121c0ba",
+      "repaid_dai": 135169.72698462993,
+      "share": 0.001586080758117181
+    },
+    {
+      "account": "0xe21623cdf2a6f464ad21c920521980ebde28ba91",
+      "repaid_dai": 133797.7672941436,
+      "share": 0.001569982191414888
+    },
+    {
+      "account": "0xdb16bb1e9208c46fa0cd1d64fd290d017958f476",
+      "repaid_dai": 131447.22698494841,
+      "share": 0.001542400965657014
+    },
+    {
+      "account": "0x2e4ae4d3bd0af45040b4f17e0bb7e6dc548626b1",
+      "repaid_dai": 107621.21530459783,
+      "share": 0.0012628266888429732
+    },
+    {
+      "account": "0x815afec2721dc50ca75c633906147a46c439e52e",
+      "repaid_dai": 92499.5611227648,
+      "share": 0.0010853892902201675
+    },
+    {
+      "account": "0x9fd991c006cd1d4b71b7630f305212bb0ef8903a",
+      "repaid_dai": 89500.95260034098,
+      "share": 0.0010502036359716876
+    },
+    {
+      "account": "0xdf9924a483d946e8e2cc50652a6b3907e64edd5d",
+      "repaid_dai": 85235.53288953075,
+      "share": 0.0010001532269079843
+    },
+    {
+      "account": "0xe2bb94210b41ce4c01b9b97f3ac62e728e472f9c",
+      "repaid_dai": 75094.69171462243,
+      "share": 0.0008811606579544829
+    },
+    {
+      "account": "0x3af015f6e3ac79d217198f00ef36af099d223e29",
+      "repaid_dai": 69781.83610717166,
+      "share": 0.0008188196424207991
+    },
+    {
+      "account": "0x641d24f1dd0c80f0b5ddd9ecf60d7a32f41020f4",
+      "repaid_dai": 69482.77059815878,
+      "share": 0.0008153104095485909
+    },
+    {
+      "account": "0x8313722178211283cf5b2e9a07987ff26574b37d",
+      "repaid_dai": 63780.34055152168,
+      "share": 0.0007483981299039867
+    },
+    {
+      "account": "0x99ed04c212dd3929e9063bd78b26ef41858cb62c",
+      "repaid_dai": 61519.27126642974,
+      "share": 0.0007218667566012805
+    },
+    {
+      "account": "0xa4f2b2557d78e31d48e1ffa8af8b25db8524ea3c",
+      "repaid_dai": 60050.24537976303,
+      "share": 0.000704629215740648
+    },
+    {
+      "account": "0x57adad5729e839acd4019fc9e79c2685a42ed489",
+      "repaid_dai": 58993.381507391416,
+      "share": 0.0006922279814605163
+    },
+    {
+      "account": "0xac8ec8ce2c927b263ba05dcf872308c0e7d49dca",
+      "repaid_dai": 55074.63782339392,
+      "share": 0.0006462454667966491
+    },
+    {
+      "account": "0xddc3abca0fc6f0cbb336db049347453c9aaa2460",
+      "repaid_dai": 52561.06366376813,
+      "share": 0.0006167512028248327
+    },
+    {
+      "account": "0xd4c5226e2108c722bb86ff8327727410dc120b42",
+      "repaid_dai": 45054.52394018456,
+      "share": 0.0005286695111530579
+    },
+    {
+      "account": "0x0f189fcfeb7335447b5ace6f65da1ac81ff9169a",
+      "repaid_dai": 40330.263616998905,
+      "share": 0.00047323506912157215
+    },
+    {
+      "account": "0x2c4ef3a24b1f38d848283c65b05b00987ee43fd8",
+      "repaid_dai": 38638.18830623109,
+      "share": 0.0004533802676688833
+    },
+    {
+      "account": "0x72d4d59f31d0cb4a4213a5dc81fc0108241ecc71",
+      "repaid_dai": 34980.59204187236,
+      "share": 0.0004104620552460653
+    },
+    {
+      "account": "0x6655459bab7a5e99f2d61279316f6d0a465be784",
+      "repaid_dai": 34540.581079268515,
+      "share": 0.00040529896927470776
+    },
+    {
+      "account": "0x674be6fa9ce93405e824bbd2fa6afe27290ba3aa",
+      "repaid_dai": 31713.14361576527,
+      "share": 0.0003721218351953286
+    },
+    {
+      "account": "0x8a6f60edd941a501d44deb1ff5130c1d4a221a5f",
+      "repaid_dai": 30785.85298835212,
+      "share": 0.0003612410125871003
+    },
+    {
+      "account": "0xf3373969cea17f5f83c416836debce6356f8ee0c",
+      "repaid_dai": 28623.87802671658,
+      "share": 0.00033587241147591223
+    },
+    {
+      "account": "0xf2b5a1aa79355ee5784160d69b04ff985aed19fb",
+      "repaid_dai": 25238.446856200288,
+      "share": 0.0002961477826165481
+    },
+    {
+      "account": "0xfa6eb19ecbd862f0de6ec12bba05f92b77b0b08f",
+      "repaid_dai": 24016.177119620643,
+      "share": 0.00028180567692717007
+    },
+    {
+      "account": "0x8e949b62a177452f5b327b539eaa63802a3ab6a4",
+      "repaid_dai": 21780.221731787853,
+      "share": 0.00025556898994286267
+    },
+    {
+      "account": "0x83a46ff2666568cadddea8300d6a17be5f5aabb1",
+      "repaid_dai": 17553.934520172723,
+      "share": 0.0002059777613878054
+    },
+    {
+      "account": "0x3ebc99631db3c4a7768430a3e57b1f047811e6fb",
+      "repaid_dai": 17505.66883845959,
+      "share": 0.000205411412170785
+    },
+    {
+      "account": "0xbbad1b5984bf3508b223379798e2f053993efaa7",
+      "repaid_dai": 17011.414788666934,
+      "share": 0.00019961183814274275
+    },
+    {
+      "account": "0xdeb08d04004ea00bb6898d19267f7d3399e2827d",
+      "repaid_dai": 16513.995662750418,
+      "share": 0.00019377512513062454
+    },
+    {
+      "account": "0x02b6590601400feae2a00e826025af233a569967",
+      "repaid_dai": 15894.559378038539,
+      "share": 0.0001865066635158961
+    },
+    {
+      "account": "0x42d02f4cd48bdac116b7e3a4895f586777948fae",
+      "repaid_dai": 15256.022113792471,
+      "share": 0.00017901407112295121
+    },
+    {
+      "account": "0xe8657850adaceaeb985f8fdf557f359094457623",
+      "repaid_dai": 15008.393823696651,
+      "share": 0.0001761084022661139
+    },
+    {
+      "account": "0xa97c3d39de10c67e4bd3dc3b7c245a6be8a25b6b",
+      "repaid_dai": 13511.175642883172,
+      "share": 0.00015854005319663997
+    },
+    {
+      "account": "0x2fb1abf81832728082f63b07b7ea1fdd4f134e31",
+      "repaid_dai": 13477.824157665282,
+      "share": 0.00015814870707100387
+    },
+    {
+      "account": "0x71be3a54c07cd49195cc12fc26f64535f00eba29",
+      "repaid_dai": 12032.9941233823,
+      "share": 0.0001411950801957598
+    },
+    {
+      "account": "0x0be0ecc301a1c0175f07a66243cff628c24db852",
+      "repaid_dai": 10857.66276748345,
+      "share": 0.0001274037491811243
+    },
+    {
+      "account": "0xbd178fe085a12505473a96a57d6f2ce0bbf3a490",
+      "repaid_dai": 10561.27279673502,
+      "share": 0.00012392591105871351
+    },
+    {
+      "account": "0xe630b16a6c270708f546086d64bcba69cec1f453",
+      "repaid_dai": 10467.529906496056,
+      "share": 0.00012282593255217103
+    },
+    {
+      "account": "0x93b220bc7c36ea8e4c64192301b680273a184ec3",
+      "repaid_dai": 10175.814186513342,
+      "share": 0.00011940294205994717
+    },
+    {
+      "account": "0x9c67dd13645be82695e71c3ebb0e5767532609b5",
+      "repaid_dai": 9791.242447921186,
+      "share": 0.00011489037960751248
+    },
+    {
+      "account": "0x260887431eaeb1c996366e406efbfc58a834ca30",
+      "repaid_dai": 9404.82385589409,
+      "share": 0.0001103561461880531
+    },
+    {
+      "account": "0x66215d23b8a247c80c2d1b7bef4befc2ab384bce",
+      "repaid_dai": 9102.270842988737,
+      "share": 0.00010680599096628422
+    },
+    {
+      "account": "0x05c0f2d1978a1da91e5d82b8935c610b3f93f36b",
+      "repaid_dai": 7691.062339027499,
+      "share": 9.024687892429001e-05
+    },
+    {
+      "account": "0x5443b2f07dc0af2c6629fb2853365a6f1f6e51ff",
+      "repaid_dai": 7577.83383362557,
+      "share": 8.891825632739161e-05
+    },
+    {
+      "account": "0xf5f017b1e9532aa86936ec922dbe334f48b7da46",
+      "repaid_dai": 7356.343073615753,
+      "share": 8.631928509034631e-05
+    },
+    {
+      "account": "0x916e06c6eab2ee40d443cb2e9ac2e7019b59c239",
+      "repaid_dai": 6640.12579619276,
+      "share": 7.791519589305987e-05
+    },
+    {
+      "account": "0xc3b91d7b118f8ba68734693d7077b45ecd5edb55",
+      "repaid_dai": 6399.289388725343,
+      "share": 7.508922294586606e-05
+    },
+    {
+      "account": "0x2af9da9c8c08b71ea1f916672e462c82b6ccec5d",
+      "repaid_dai": 6376.889742343717,
+      "share": 7.4826385630832e-05
+    },
+    {
+      "account": "0x26a6dc267e276fded7b40251c8fc08b1b40df367",
+      "repaid_dai": 6251.610176723786,
+      "share": 7.335635596629293e-05
+    },
+    {
+      "account": "0x667111254f8d2414635f89b2375ee7fa14e5d519",
+      "repaid_dai": 6068.713583373265,
+      "share": 7.121024844717787e-05
+    },
+    {
+      "account": "0x767d222a509d107522e50161ca17ffcf0e5aa3de",
+      "repaid_dai": 5838.229878945987,
+      "share": 6.850575405478157e-05
+    },
+    {
+      "account": "0xa5c07b2c9d55de33d3b9d9bf1c36a8915140fd4d",
+      "repaid_dai": 5744.392684312979,
+      "share": 6.740466898105026e-05
+    },
+    {
+      "account": "0x9ccc9b4ba41087f12c5d621be401388d9c1ee761",
+      "repaid_dai": 5312.309649206642,
+      "share": 6.233460926295259e-05
+    },
+    {
+      "account": "0xfd970da1613b2656777a500b7f410dcb4f8b5136",
+      "repaid_dai": 5193.191384131854,
+      "share": 6.0936876261709596e-05
+    },
+    {
+      "account": "0x008b1ffe244bf31896c833bff4ad9009e7a0f4eb",
+      "repaid_dai": 5003.879621233964,
+      "share": 5.871549318196329e-05
+    },
+    {
+      "account": "0x47fea52a4b79954fede50ee07b3f5d22696c8586",
+      "repaid_dai": 5002.140005194143,
+      "share": 5.86950805378837e-05
+    },
+    {
+      "account": "0xc940c870a54ba91c3e2a8dd0d01d0bc96fc2672a",
+      "repaid_dai": 4912.126409168238,
+      "share": 5.7638861547060005e-05
+    },
+    {
+      "account": "0xe9ed6d999f8640285bd6252c1ad12c65f987358e",
+      "repaid_dai": 4691.47363821044,
+      "share": 5.504972326847787e-05
+    },
+    {
+      "account": "0x26828dbffd78657c4b6da46fc5b570b8535b08ab",
+      "repaid_dai": 4645.590873974568,
+      "share": 5.4511335190709404e-05
+    },
+    {
+      "account": "0x40862f5a6b104ce7f666f172c509c071bdb42e32",
+      "repaid_dai": 4600.4271711963365,
+      "share": 5.398138457573167e-05
+    },
+    {
+      "account": "0xe79e19286e6c146f4e8d0ef11b67940177a1f240",
+      "repaid_dai": 4587.843624224076,
+      "share": 5.383372931174024e-05
+    },
+    {
+      "account": "0x6d16d74d0f6afe567b84a546cd2ef78076ce27e6",
+      "repaid_dai": 4509.219211985741,
+      "share": 5.291115093452952e-05
+    },
+    {
+      "account": "0x3d23ab914f5c6552689d824e7802e1b242e3f588",
+      "repaid_dai": 4396.072046018385,
+      "share": 5.1583482774063955e-05
+    },
+    {
+      "account": "0xdedd6d6eb6056470d687c832c477b8770ac20ed5",
+      "repaid_dai": 3981.4165637298975,
+      "share": 4.671791785522416e-05
+    },
+    {
+      "account": "0x44588eda41bab760dce9e92eb7bb0f83d8845a23",
+      "repaid_dai": 3893.5496483383354,
+      "share": 4.5686888001967785e-05
+    },
+    {
+      "account": "0xbb0db514daee431b9faf1281131fe269745b1690",
+      "repaid_dai": 3805.352067438633,
+      "share": 4.465197812164075e-05
+    },
+    {
+      "account": "0x8b05dc8566edd67abde1a4be2ca7807a542fa214",
+      "repaid_dai": 3762.5538987353575,
+      "share": 4.414978466917756e-05
+    },
+    {
+      "account": "0xdd10664a1f77c915048908587e6961fbf9d0813e",
+      "repaid_dai": 3677.9066021422163,
+      "share": 4.315653380341022e-05
+    },
+    {
+      "account": "0x5f6b9ee169f036f0c826f9664545fcb4049d49c8",
+      "repaid_dai": 3286.2110728086827,
+      "share": 3.856038083354379e-05
+    },
+    {
+      "account": "0x4ac757b018b703bfb51189ee6cd2f84ef4eee0ae",
+      "repaid_dai": 3278.3092722699944,
+      "share": 3.846766115386049e-05
+    },
+    {
+      "account": "0x9c84be7ba23a5034c56d0289eefb6c083e96dd94",
+      "repaid_dai": 3151.2432763828187,
+      "share": 3.6976669527380666e-05
+    },
+    {
+      "account": "0x5a9294da5a0fb5b75c9b19a92d8c9cb81da94bbd",
+      "repaid_dai": 2869.026975187702,
+      "share": 3.36651451577008e-05
+    },
+    {
+      "account": "0x3a7a0d512493c58ae5bd6ea652207f30ea75c2f5",
+      "repaid_dai": 2695.2560262336583,
+      "share": 3.162611789468715e-05
+    },
+    {
+      "account": "0x87e3cf2b34e54d8870f9d00b9d97dcd9b35322ed",
+      "repaid_dai": 2559.034984258695,
+      "share": 3.0027701012838082e-05
+    },
+    {
+      "account": "0x23b6d8e09cb33b1550de19ac25cc3f41ae4603bb",
+      "repaid_dai": 2542.3421748545315,
+      "share": 2.9831827688348262e-05
+    },
+    {
+      "account": "0x0b3abf8391fabe5f3d504c83363185354e2ae37a",
+      "repaid_dai": 2503.230639400586,
+      "share": 2.9372893168113748e-05
+    },
+    {
+      "account": "0x11f0c183051d94ac9d98703589d102f24f6d9b1b",
+      "repaid_dai": 2402.61456432727,
+      "share": 2.819226475233536e-05
+    },
+    {
+      "account": "0x1b7550aa83e9b82563194758949dc19fb39926eb",
+      "repaid_dai": 2351.527381361746,
+      "share": 2.7592808056700822e-05
+    },
+    {
+      "account": "0x3fbe910100bab901f389b69431b9de597264bf90",
+      "repaid_dai": 2204.2829137139775,
+      "share": 2.586504236474312e-05
+    },
+    {
+      "account": "0x4c3ac06e10c7aebd4daa17832f724fcc7b19b850",
+      "repaid_dai": 2082.7001193095543,
+      "share": 2.44383905912665e-05
+    },
+    {
+      "account": "0x078fc151d46911a80f611fcd01f381d9fcdd2c03",
+      "repaid_dai": 1999.991379586065,
+      "share": 2.3467886740071583e-05
+    },
+    {
+      "account": "0x0060f3570331bf192682afc1aabee27af2ce8e3d",
+      "repaid_dai": 1910.3803066776904,
+      "share": 2.24163909530721e-05
+    },
+    {
+      "account": "0x320a1d7a7f8c46cfeb85f46c9bcbe5b3df9956de",
+      "repaid_dai": 1899.879086414367,
+      "share": 2.2293169698076878e-05
+    },
+    {
+      "account": "0x9901a742e0b0873c83eee2826b97319ac085b94a",
+      "repaid_dai": 1782.4451502921236,
+      "share": 2.0915200602566075e-05
+    },
+    {
+      "account": "0x6b5554e9ceb15649ca558bb0a442912313673e53",
+      "repaid_dai": 1735.2660994426483,
+      "share": 2.0361601905521332e-05
+    },
+    {
+      "account": "0x88d695250c2d6f9568dbf2ce8044f50fc644a07f",
+      "repaid_dai": 1648.8114883274009,
+      "share": 1.9347144022093116e-05
+    },
+    {
+      "account": "0xe10fa11d966f172755e7baf6a7064c1bb345bf4b",
+      "repaid_dai": 1490.9869201017812,
+      "share": 1.749523149400706e-05
+    },
+    {
+      "account": "0x196d7a2f4f78a15fc52c35d9d4456db1e0e628d8",
+      "repaid_dai": 1481.763854245772,
+      "share": 1.7387008095089294e-05
+    },
+    {
+      "account": "0xe4c3b87dfb2c95c61384f9f5345e462912a735d1",
+      "repaid_dai": 1451.5253731716796,
+      "share": 1.703218994123031e-05
+    },
+    {
+      "account": "0x9efc76d55ffda4ab4e5d4c370a1449799351626e",
+      "repaid_dai": 1449.3595970632928,
+      "share": 1.7006776737486158e-05
+    },
+    {
+      "account": "0x036a24ee3e1fb7aa7eb34be000a6195d1d25123e",
+      "repaid_dai": 1418.1924727747714,
+      "share": 1.6641061889771098e-05
+    },
+    {
+      "account": "0xcaa33a01c9b7466ff9f3130f094b27ca916bc939",
+      "repaid_dai": 1350.0511804775417,
+      "share": 1.5841492378484267e-05
+    },
+    {
+      "account": "0xf43d6a3e07a99d52969fa72764ffbb3772a2ca80",
+      "repaid_dai": 1344.7482793857364,
+      "share": 1.5779268169176904e-05
+    },
+    {
+      "account": "0x8a5d3479663e6927f6c527de8b8c85add4444097",
+      "repaid_dai": 1323.1695913289807,
+      "share": 1.5526063974156776e-05
+    },
+    {
+      "account": "0xda629b790f4bd947a7569b6510b39a2cd0a8a05a",
+      "repaid_dai": 1296.7311701014883,
+      "share": 1.521583569953216e-05
+    },
+    {
+      "account": "0xbf5c6d85510e491cd45d1264fffec0c2c4282564",
+      "repaid_dai": 1268.3867586976737,
+      "share": 1.4883242547717484e-05
+    },
+    {
+      "account": "0xd138bb878d632f99d181f2dcbce3f934b2dcb474",
+      "repaid_dai": 906.6396611414515,
+      "share": 1.0638504295017567e-05
+    },
+    {
+      "account": "0xdda8b6f3124cfe8c520563a1ae89699ecc787933",
+      "repaid_dai": 903.4104030898803,
+      "share": 1.060061220059043e-05
+    },
+    {
+      "account": "0x2836545d6e07e9e96a9b622a2e5f4787ec9cc2ae",
+      "repaid_dai": 891.3659609038396,
+      "share": 1.0459282788896742e-05
+    },
+    {
+      "account": "0x77e25da0d77773277e722f2d17d7fffe7b6486ba",
+      "repaid_dai": 875.4607241217522,
+      "share": 1.0272650836786378e-05
+    },
+    {
+      "account": "0xc968ecbc3d20915bcb9e2cdcecb473c263dbab93",
+      "repaid_dai": 838.2954679440261,
+      "share": 9.836553945796208e-06
+    },
+    {
+      "account": "0xadd03f7448798723379e62c2b59f768a714ca206",
+      "repaid_dai": 727.2464011661065,
+      "share": 8.533504868517565e-06
+    },
+    {
+      "account": "0xcdbfabd0c716d05a3e03bbef95e62b32761aea84",
+      "repaid_dai": 652.0366664610735,
+      "share": 7.65099429681008e-06
+    },
+    {
+      "account": "0xc44f621fd412714606c793d96dd31ee9275adbc4",
+      "repaid_dai": 616.1313913329516,
+      "share": 7.229682015828011e-06
+    },
+    {
+      "account": "0xb00dbe1b1523306655a638dbe0824d0a77592d10",
+      "repaid_dai": 605.9749817308115,
+      "share": 7.110506767043624e-06
+    }
+  ],
+  "full_range_returned": true,
+  "event_accounting": "Repayment amounts are DAI token quantities. Seized amounts remain in each collateral cToken raw accounting units. Source-chain event window and debt contract define the sample."
+}
