@@ -2,17 +2,18 @@ cff-version: 1.2.0
 message: "Please cite the working paper when referring to its findings and include the repository commit when referring to an analysis run."
 title: Fulcrum Research
 type: software
+license: MIT
 authors:
   - family-names: Bouchaibi
     given-names: Mohamed Rayan
 repository-code: https://github.com/mrb-eel/fulcrum-research
 preferred-citation:
   type: report
-  title: Liquidation and creditor recovery in selected DeFi lending positions
+  title: Liquidation and lender shortfall in stressed Morpho markets
   authors:
     - family-names: Bouchaibi
       given-names: Mohamed Rayan
   year: 2026
   month: 11
-  version: "1.1"
-  url: https://github.com/mrb-eel/fulcrum-research/blob/main/paper/liquidation-and-creditor-recovery.pdf
+  version: "2.0"
+  url: https://github.com/mrb-eel/fulcrum-research/blob/main/paper/morpho-stress-losses.pdf

@@ -1,0 +1,671 @@
+# Chapter 1
+## Research question and design
+
+A DeFi lending position joins a valuation rule to a sequence of transactions. The rule determines when collateral supports borrowing and when liquidation becomes permissible. The transaction sequence determines which assets can be released, sold and delivered to the creditor. A useful risk calculation follows both through the same balance sheet.
+
+This paper examines the relationship with public evidence from Fulcrum, my dependency-analysis project. The empirical work combines a reconciled cross-section of vault borrower records, an independently extracted historical liquidation ledger, daily return-model evaluation and a counterfactual execution experiment at an identified Ethereum state. The reproducibility bundle contains the raw inputs and the scripts that produce the reported results. [1] [2]
+
+The opening ledgers come from ten retained Morpho vault captures. The sample contains 51 positive-allocation markets and 3,547 borrower-market observations. The dynamic experiment uses one WBTC/USDC market with 614 borrowers. The execution case studies one public PT-sUSDe borrowing account at a pinned Ethereum block. The Compound extraction covers the block window named by the compensation proposal. These choices support mechanism and accounting comparisons on observed positions. They leave protocol-wide loss rates and general route capacity outside the scope of the evidence.
+
+### Related work
+
+Perez et al. measure liquidation exposure, incentive changes and liquidator response on Compound through September 2020. The event reconstruction here examines a later cDAI liquidation window and reconciles the resulting ledger to the proposed compensation by address. Qin et al. compare liquidation designs across major lending protocols and show how discounted collateral affects the borrower and the liquidator. This study tracks a different quantity through the same transaction: how much loan-token debt can be recovered after seizure and disposal. Gudgeon et al. stress-test a stylised lending protocol under impaired liquidity. The policy experiment below uses that stress-testing perspective with a reconciled account ledger and reports the dependence of its results on assumed depth. [21] [22] [23]
+
+### Accounting and the estimand
+
+For a terminal collateral recovery, account-level shortfall is the positive part of debt minus available proceeds. Market loss is obtained by summing those account shortfalls before applying a supplier's ownership fraction. This recourse boundary is central when well-collateralised borrowers share a lending market with borrowers whose cushions have been exhausted.
+
+MATH paper_account_recovery
+L_m=\sum_i\max(0,D_{im}-R_{im})
+L_{\mathrm{holder}}=\theta\sum_m\omega_m L_m
+DEFINITIONS D_im is debt of borrower i in market m, R_im creditor-accessible recovery, omega_m the vault's supplier ownership fraction in that market, and theta the holder's vault ownership fraction.
+ENDMATH
+
+A dynamic experiment replaces terminal proceeds with a path of repayments, collateral seizures and writeoffs. Its estimand is expected creditor loss conditional on the opening ledger, fitted return process and specified intervention policy. Oracle delay, loan-token reserves and repayment throughput enter that policy explicitly.
+
+Comparisons use common generated paths. For each path, the simulator applies another capacity or recognition rule to the same opening positions and price history. This holds the market disturbance fixed while tracing the contractual consequence of the rule being changed. A paired standard error reports the numerical precision of each comparison.
+
+The calibrated parameters describe return distributions. Capacity and disposal costs are controlled experimental inputs, whose range shows how the same market process can produce another credit outcome. The transaction case complements that abstraction by running a declared route through historical contract state and recording the first constraint reached.
+
+### Evaluation and replication
+
+The forecast comparison rewards the probability assigned to subsequent observed returns and examines crossings of one and five per cent lower-tail forecasts. The liquidation model is checked against accounting conservation and hand-calculable boundary paths. The execution model is checked through actual local EVM receipts and post-transaction balances.
+
+These checks target different components of the analysis. Accurate price-density forecasts strengthen the market input; reconciled shares strengthen the opening loan book; completed transaction receipts strengthen the operational sequence. Together they support an investigation in which each reported number can be traced to an observation, an estimated parameter or an explicit experimental control.
+
+The following sections develop the dataset, estimation and results before returning to the historical event and execution cases. The accompanying book expands the underlying accounting, protocol mechanics and historical context. This working paper concentrates on the empirical measurements and the computations needed to reproduce them.
+
+
+# Chapter 2
+## Data, selection and borrower accounting
+
+Fulcrum's retained vault packets contain the information needed to move from a mechanism example to a borrower-level calculation. The sample covers ten named vaults observed during a short interval on 11 October 2026. Their allocations connect the holder to markets whose loans have different collateral cushions, sizes and account boundaries. Reconstructing those loans is the first part of the empirical study; applying the fitted price process is the second. [2]
+
+The source file records 71 market identifiers across the vault configurations. Restricting the study to positive supply allocations leaves 51 markets, with 3,547 borrower-market positions and 3,059 unique addresses. Some addresses borrow in several markets, and several vaults supply the same market. The dataset consequently preserves both market identity and account identity throughout aggregation.
+
+### Selection, duplication and reconciliation
+
+For a repeated market, a complete borrower capture takes precedence over an incomplete one; among qualifying records the earliest capture is selected. This gives each underlying market one canonical loan book. Vault allocations retain their own recorded supplies and observation times, allowing the same market loss to pass into each supplier according to its claim.
+
+The selection rule matters financially. Combining borrower rows from repeated captures would create fictitious additional loans. Treating repeated borrowers across independent markets as one cross-collateralised account would give creditors access to collateral they may have no right to seize. A position's analytical key is therefore the pair of market identifier and borrower address.
+
+Borrow-share totals provide a direct reconciliation. For every selected market, summing captured borrower shares equals the recorded total borrow shares exactly. Pagination completeness flags agree with that result. Asset quantities require a further convention because interest changes the asset value represented by a share, and conversions round at the account level.
+
+MATH empirical_share_coverage
+\kappa_m=\frac{\sum_i b_{im}}{B_m}
+\kappa_m=1\qquad\text{for all selected markets}
+DEFINITIONS b_im is borrower i's recorded borrow-share quantity in market m, and B_m is that market's recorded total borrow shares. Reconciliation is performed on integer shares.
+ENDMATH
+
+The capture interval runs from 02:23:31.562 to 02:23:57.132 UTC. Indexer observations within the packets carry their own blocks and timestamps. The dataset is an asynchronous historical inventory, suitable for the declared balance-sheet experiment. The execution study uses direct common-block contract reads for the tighter tolerances of transaction execution.
+
+This is a purposive sample of retained vaults, selected through Fulcrum's project work. Its reconciled accounting supports calculations for those observations. Estimating the prevalence of a feature across all DeFi would require a dated sampling universe and a selection design that represents that universe.
+
+### The distribution of borrower cushions
+
+The WBTC/USDC market selected for the dynamic experiment is 0x3a85e6...cfee49. It contains 614 captured borrowers and approximately 116.114 million USDC of debt. LLTV is 86%. The largest borrower accounts for about 7.70% of outstanding debt.
+
+Borrower debt concentration, measured by the sum of squared debt shares, is approximately 0.02636. Its reciprocal is about 37.93, the number of equal-sized borrowers that would produce the same concentration measure. The liquidation-event concentration in the historical event study uses repaid debt as its weight; the present measure describes the opening loan book.
+
+For each borrower, the initial collateral valuation and debt determine the price decline required to cross either the liquidation boundary or the recovery boundary. The two boundaries depend differently on LLTV and disposal costs. Aggregating their distributions reveals why a market can experience widespread liquidations while only a smaller tail reaches creditor shortfall.
+
+TABLE debt_weighted_boundary_quantiles
+Debt-weighted quantile | Liquidation decline | Recovery decline, 1% cost
+10% | 20.71% | 31.12%
+50% | 37.56% | 45.76%
+90% | 62.94% | 67.81%
+ENDTABLE
+
+Table sources: [2].
+
+The distinction is visible in the 35% decline scenario. With a one per cent sale discount, account-level shortfall in this market is approximately 1,394,925.51 USDC. Pooling every borrower's collateral before applying the shortfall operation gives 0.00 USDC. The difference comes from assigning each borrower's surplus to its own account under the model's recourse boundary.
+
+FIGURE borrower_loss_curve
+
+A loss curve across shock sizes preserves more information than one stress point. Its slope changes as additional borrowers exhaust their cushions. Disposal discounts move those crossing points, making the same underlying-price decline more costly. The figure is generated from the captured positions and uses a common initial debt denominator.
+
+### Passing market loss into vault claims
+
+A vault receives the part of a market's shortfall attributable to its supplier ownership. A holder then receives the corresponding fraction of the vault's impairment. The implementation applies account-level recovery first, aggregates by market, and only then multiplies by the supply and ownership fractions.
+
+The following table uses a simultaneous 35% decline in the BTC- and ETH-related collateral classes and a one per cent terminal sale discount. Other asset prices are held fixed. Where a loan is denominated in ETH, the relative collateral-to-loan price change includes the ETH move in the denominator. Reporting conversion uses the observed opening loan-asset dollar mark.
+
+TABLE conditional_supplier_credit_impairment
+Vault | Opening assets, USD | Credit loss per $1m
+Steakhouse USDC | 65,300,762.62 | 13,137.51
+Steakhouse USDT | 81,816,613.01 | 14,956.54
+Gauntlet USDC Prime | 21,998,102.44 | 9,770.19
+Spark Blue Chip USDC Vault | 15,026,995.30 | 2,590.79
+Smokehouse USDT | 21,618,937.73 | 17,514.95
+Smokehouse USDC | 12,746,275.04 | 9,913.44
+Gauntlet USDC RWA | 10,882,292.46 | 1,885.13
+Gauntlet DAI Core | 2,148,856.44 | 0.00
+ENDTABLE
+
+Table sources: [2].
+
+The reported amount is incremental supplier credit impairment per hypothetical $1 million opening deposit. A holder's own asset-price return, financing and timing of withdrawal enter its wider profit-and-loss account. The full companion ledger retains the ETH-denominated vaults as well as the stablecoin vaults shown here.
+
+The variation across vaults follows their market allocations and the borrower cushions within those markets. A collateral label alone gives a coarse exposure screen. The loss calculation asks which borrowers cross their recovery boundaries and what fraction of the resulting claim belongs to the supplier being studied.
+
+
+
+# Chapter 3
+## Return distributions, estimation and forecast evaluation
+
+A lending position converts an asset-price path into a sequence of permissions and payments. Estimating the distribution of that path supplies one input to the investigation, and the quality of the estimate can be tested before it is used to produce a credit-loss number. The estimation follows that order: construct a dated return sample, choose a volatility specification, estimate its parameters, evaluate predictions on later observations, and carry the resulting process into a position model.
+
+The data are Fulcrum's retained Bitstamp BTC/USD and ETH/USD daily closing series, captured on 11 October 2026. The completed study window is 1 January 2018 through 31 December 2025. The raw file and clean return table accompany the text, together with the estimation script and numerical results. Each exchange timestamp identifies the start of a daily UTC candle; its closing value becomes available at the following midnight. Dates below use the candle's bucket label. Checks establish unique timestamps, consecutive daily spacing and positive closes. [3] [2]
+
+For both assets, the sample contains 2,922 log returns. Training uses 1,461 returns from 2018-2021. Validation uses 730 returns from 2022-2023 to choose a volatility-decay parameter. Test evaluation uses 731 returns from 2024-2025. Once the test begins, the fitted distribution remains fixed while the volatility state updates from observations already received. This makes each test forecast an assessment of information available before the corresponding return.
+
+### Returns and the quantity being estimated
+
+A log return is the difference between consecutive log prices. Adding daily log returns gives the log price ratio over a longer holding period, which makes the same representation convenient for both estimation and simulation.
+
+MATH empirical_returns
+r_t=\log(P_t/P_{t-1})
+P_{t+H}/P_t=\exp\left(\sum_{j=1}^{H}r_{t+j}\right)
+DEFINITIONS P_t is the daily closing price in dollars per unit of the underlying. The index t follows the exchange's daily candle order. H is the horizon in days.
+ENDMATH
+
+The fitted object is a conditional distribution of daily log returns. The credit experiment later holds the borrower ledger fixed at its observation date and applies generated price paths to that ledger. Its loss distribution therefore depends on both a statistical return model and a declared liquidation policy. Identifying those inputs at the start gives the resulting probability a financial meaning.
+
+The sample shows substantial departures from a constant normal distribution. Pearson kurtosis is approximately 19.35 for BTC and 14.64 for ETH, against three for a normal distribution. Lag-one correlations of squared returns are approximately 0.095 and 0.124. These sample statistics describe heavy realised tails and persistence in return magnitude. A run of large changes carries information about the scale of tomorrow's change even when the direction is difficult to predict.
+
+Conditional heteroskedastic models were developed to represent this changing scale. The ARCH literature and conditionally Student-t extensions provide the statistical background for the simple benchmark used here. The implementation keeps the filter small enough for the reader to reproduce every forecast and trace its effect on a liquidation boundary. [4] [5]
+
+### A scale filter and a unit-variance innovation
+
+The exponential filter assigns declining weights to earlier squared returns. Its decay parameter controls how quickly a disturbance changes subsequent forecasts. With a decay close to one, a single large observation enters gradually and remains influential for longer.
+
+MATH empirical_ewma
+h_{t+1}=\lambda h_t+(1-\lambda)r_t^2
+r_t=\sqrt{h_t}\,z_t
+\mathbb{E}[z_t]=0,\qquad\mathbb{E}[z_t^2]=1
+DEFINITIONS h_t is the variance forecast formed before return r_t arrives. The decay parameter satisfies 0 < lambda < 1. Innovations z_t have mean zero and variance one.
+ENDMATH
+
+Initial variance is the training sample's mean squared return. Validation selects the decay that gives the highest mean Gaussian predictive log score over a grid of 0.90, 0.94, 0.97, 0.98, 0.985, 0.99, 0.9925, 0.995, 0.997, 0.999, 0.9995 and 0.9999. The grid includes finer steps near the original upper boundary of 0.99. All choices use the 2022-2023 validation period.
+
+TABLE estimated_return_parameters
+Asset | Decay | Tail nu | Start scale | Half-life, days
+BTC | 0.985 | 3.151 | 2.05% | 45.9
+ETH | 0.970 | 3.888 | 2.57% | 22.8
+ENDTABLE
+
+Table sources: [2].
+
+The BTC maximum occurs at 0.985, inside the expanded grid. Its mean validation score is 2.15539 nats per day, compared with 2.15520 at 0.99 and 2.14042 at 0.995. The first pair is close. ETH selects 0.970, with 0.980 close behind. The selected decays imply half-lives of roughly 46 and 23 days for the squared-return weights. The start scale in the table refers to the October 2026 conditional simulation, after updating the variance on completed observations.
+
+For the filtered Student-t model, the innovation is scaled to unit variance. If T has a standard Student-t distribution with degrees of freedom nu greater than two, multiplying T by the square root of (nu minus two) divided by nu gives the required innovation. This scaling keeps the variance forecast and simulation recursion in the same units.
+
+MATH empirical_t_innovation
+z_t=\sqrt{\frac{\nu-2}{\nu}}\,T_t,\qquad T_t\sim t_\nu
+\operatorname{Var}(r_t\mid\mathcal{F}_{t-1})=h_t
+DEFINITIONS nu controls tail thickness and is estimated on pre-test standardised returns. The information set contains returns observed before t. Innovations are independent in the specified simulation.
+ENDMATH
+
+The filtered tail parameter is fitted by conditional maximum likelihood using 2018-2023 observations after decay selection. The numerical search restricts nu to the interval from 2.05 to 100, enforcing finite innovation variance and allowing a nearly Gaussian upper end. Standardising a fitted t distribution after simulation would change its forecasts; the normalisation belongs inside estimation.
+
+A large tail estimate has an immediate interpretation. Standardised observations remain heavy-tailed after the volatility filter has absorbed changing market scale. A small estimate puts appreciable probability on isolated large innovations. Parameter uncertainty then matters particularly for multi-day barrier events, because a single draw can dominate the path.
+
+### The predictive density and its score
+
+Four forecasts are evaluated: a zero-mean Gaussian with constant scale, a zero-location Student-t with constant scale, an EWMA Gaussian, and the EWMA Student-t. Constant-scale parameters use the whole pre-test period. Each zero-mean specification deliberately concentrates estimation on volatility and tails over the selected horizon.
+
+A log score evaluates the density assigned to the realised return. Higher values reward a forecast that places more probability near observations it actually encounters. The change of scale from a standardised innovation to a return contributes a Jacobian term, which must enter the score.
+
+MATH empirical_log_score
+\ell_t=\log g\left(r_t/\sqrt{h_t}\right)-\frac{1}{2}\log h_t
+\overline{\ell}=\frac{1}{N}\sum_{t=1}^{N}\ell_t
+DEFINITIONS g is the innovation density. Scores use natural logarithms and the same daily return units for every model. Constant-scale models use their corresponding constant h.
+ENDMATH
+
+TABLE held_out_return_forecasts
+Asset | Model | Mean log score | 1% hits | 5% hits
+BTC | Gaussian | 2.1361 | 2/731 | 10/731
+BTC | Student t | 2.2799 | 0/731 | 14/731
+BTC | EWMA Gaussian | 2.2793 | 12/731 | 32/731
+BTC | EWMA Student t | 2.3152 | 6/731 | 45/731
+ETH | Gaussian | 1.8231 | 4/731 | 14/731
+ETH | Student t | 1.9370 | 1/731 | 21/731
+ETH | EWMA Gaussian | 1.8780 | 15/731 | 38/731
+ETH | EWMA Student t | 1.9503 | 8/731 | 45/731
+ENDTABLE
+
+Table sources: [2].
+
+EWMA Student-t improves mean log score over the fixed Gaussian by 0.1790 nats per day for BTC and 0.1271 for ETH. The paired 30-day block resampling intervals are [0.1041, 0.2641] and [0.0788, 0.1763], respectively. This comparison measures the change in predictive density on the same observations.
+
+At the 5% threshold, the revised BTC model records 45 misses versus 36.55 expected under unconditional coverage. Kupiec's test gives p = 0.166. The original grid gave 48 misses and p = 0.063, so the coverage result responds to the decay choice. The ETH 5% count is also 45. Its transition test gives p = 0.020, with seven consecutive miss pairs, which indicates clustering under that diagnostic. These are nominal p-values from several diagnostics. [19] [20]
+
+FIGURE forecast_validation
+
+At a one per cent lower-tail probability, 731 test days imply 7.31 expected exceedances under a correctly specified sequence. The table records actual counts at one and five per cent. The companion results include exact binomial reference intervals, unconditional coverage likelihood ratios and a transition-count diagnostic for clustered exceedances.
+
+A coverage count measures how often observations cross the forecast boundary. Clustering asks whether a crossing tends to be followed by another crossing. Financially, repeated misses during one volatile week can overwhelm a holder who could survive the same number of isolated misses scattered through two years. The forecast's timing therefore matters to the account's funding schedule.
+
+The paired log-score comparison resamples circular blocks of thirty consecutive test observations. Keeping each pair of model scores together preserves their common realised return; keeping observations in blocks retains short-range dependence. The resulting interval describes uncertainty in the performance difference over that evaluation sample. It leaves parameter re-estimation and alternative historical regimes for further sensitivity work.
+
+### Conditional simulation over thirty days
+
+The forward experiment begins after the last completed candle available before the vault capture. Distribution parameters remain those fitted before the test, while completed 2026 observations update the variance state through the 10 October bucket. Starting variance thus uses data available to a researcher observing the vaults early on 11 October.
+
+For each of 100,000 paths per asset, draw a standardised innovation, form a daily return, update price and carry the new squared return into the variance recursion. The next day's scale then depends on that path's own realised movement. This feedback lets a large simulated change produce a period of elevated volatility.
+
+A comparison uses filtered historical simulation. It samples five-day circular blocks from centred, unit-variance pre-test innovations and applies them through the same variance recursion. Blocks retain local patterns from the innovation sample, while the Student-t specification permits innovations outside the observed sample's support. Both procedures begin at the same dated scale.
+
+TABLE thirty_day_price_experiments
+Asset | EWMA t barrier | Monte Carlo SE | Block-5 barrier | 1% terminal ratio
+BTC | 0.193% | 0.014 pp | 0.425% | 0.7594
+ETH | 0.530% | 0.023 pp | 1.050% | 0.7082
+ENDTABLE
+
+Table sources: [2].
+
+The barrier event is a closing price at least 35% below the path's initial price at some point during thirty days. It differs economically from a terminal decline: a position may cross a liquidation boundary and later recover. Retaining the whole path allows the next chapter to locate that crossing and follow subsequent debt payments.
+
+Simulation error for a frequency is the square root of p times (1 minus p) divided by the number of paths. Those standard errors quantify variation from drawing a finite sample from the fitted model. Alternative return models, estimated parameters, daily observation resolution and the asset's actual trading environment contribute additional uncertainty. The comparison with historical resampling exposes one part of that specification sensitivity.
+
+The model's conditional mean log return is zero. It serves a finite-horizon risk experiment, with creditor losses bounded by the debt ledger. An exponentiated Student-t log return has problematic positive price moments, so the study uses barrier frequencies and bounded credit-loss functions instead of expected spot prices or option values. That choice keeps the mathematical object aligned with the question being answered.
+
+### Historical closing prices and intraday lows
+
+Bitstamp's daily BTC/USD OHLC history supplies the low reached inside each UTC bucket. All 2,923 closes match the original closing-price series over the same dates. Starting with the 31 December 2017 close, each complete 30-day window compares two events relative to its origin close: a subsequent close at least 35% lower, and an intraday low at least 35% lower. The last window ends on 31 December 2025. [3] [24]
+
+Among 2,893 overlapping origins, 123 cross at a close (4.25%) and 174 cross at an intraday low (6.01%). The additional 51 windows cross the threshold between closes. Contiguous hit windows form 9 runs by the close rule and 13 by the low rule. Overlap makes these descriptive frequencies across historical origins. The model's 0.193% BTC closing barrier instead conditions on the volatility state observed in October 2026. The older regimes in the historical average and the unobserved intraday sequence in the daily model both matter when applying these results to liquidations.
+
+The original edition generated 50,000 price paths and used a 5,000-path subset for the more expensive borrower simulation. This edition uses all 100,000 generated BTC paths in both experiments, with the same draws across the liquidation policies.
+
+# Chapter 4
+## Liquidation and terminal recovery
+
+The simulation starts with 614 borrowers and 116.114 million USDC of debt in the selected WBTC/USDC Morpho market. Debt stays fixed until repayment or writeoff. For each of 100,000 BTC paths, the model holds the WBTC/BTC basis and the USDC unit fixed. Every liquidation policy sees the same price draws. Spot and the oracle either move together or the oracle follows spot by one day.
+
+### Interim execution and the reserve threshold
+
+The liquidation incentive factor and oracle price determine how much collateral a liquidator receives for one USDC of repayment. Collateral quantities here are expressed in units of opening marked value so that multiplying by relative spot gives USDC. At the start of a day, a neutral constant-product pool has collateral reserve Y / S_t and USDC reserve Y. The experiment carries an excess collateral inventory I_t from earlier liquidations. With the pool re-anchored at the current mark, its collateral reserve is x_t and its USDC reserve is K_t / x_t. The product is fixed within the day. Only the fee-adjusted input increases pool inventory.
+
+MATH pool_inventory
+x_t=Y/S_t+I_t,\qquad K_t=Y^2/S_t
+k_t=(1-f)\mathrm{LIF}/O_t
+\operatorname{USDC}(R)=K_t\left(\frac{1}{x_t}-\frac{1}{x_t+k_t R}\right)
+DEFINITIONS S_t is relative spot, O_t the relative oracle price, Y the neutral USDC reserve, and f the proportional fee. R is cumulative USDC repayment and k_t is the fee-adjusted collateral delivered to the pool per USDC repaid.
+ENDMATH
+
+The next USDC unit of repayment is profitable when the marginal sale proceeds exceed one USDC. This gives the depth budget M_t. When the pool starts at neutral inventory and spot equals the oracle, the budget is a constant fraction of Y. For a daily cap of c times opening debt D_0, depth is the tighter bound when Y is below the threshold Y^*.
+
+MATH pool_repayment_budget
+M_t=\max\!\left(0,\frac{\sqrt{K_t k_t}-x_t}{k_t}\right)
+b=(1-f)\mathrm{LIF},\qquad \kappa=(\sqrt{b}-1)/b,\qquad Y^*=cD_0/\kappa
+DEFINITIONS The threshold equation applies at a matched spot and oracle with no inventory carry and b greater than one. If b is at most one, there is no profitable repayment in that state.
+ENDMATH
+
+At 86% LLTV and a 1% fee, the depth budget is about 1.603% of neutral USDC reserves in the matched state. The reserve thresholds are 72.4 million USDC for the 1% cap and 362.2 million for the 5% cap. The 100 million scenario lies between them by construction. An oracle mismatch or existing inventory shifts the budget away from the matched-state expression. The reserve grid is a scenario design. It contains no estimate of observed WBTC/USDC depth.
+
+### Partial refill and the order of execution
+
+Eligible loans are ranked by loan-to-value. Each repayment is bounded by the daily cap, the remaining depth budget, the balance due and the collateral available at the stated incentive. Each trade adds fee-adjusted seized collateral to the day's inventory. The next day carries a share of the accumulated excess inventory into the newly marked pool. Full refill carries zero. The 25% refill case carries three quarters. The no-refill case carries all of it. These are assumptions about the persistence of sale pressure. They do not estimate the speed of arbitrage or trace the balances of a deployed pool.
+
+### Recovery at the end of day 30
+
+The original benchmark applies a flat 1% haircut to terminal collateral. It imposes an interim execution constraint while allowing every residual loan to recover at the same terminal price, regardless of simultaneous demand for liquidity. The pool variant applies the same curve as interim sales, using the chosen reserve and the inventory left after that day's liquidations. There is no further refill before closing.
+
+The terminal sale is a hypothetical simultaneous closure of outstanding loans. All accounts with debt join the batch, with each selling enough collateral to repay in full or all its remaining collateral if it cannot repay. The model assigns a common net sale price p to those units. Proceeds remain with their account, so an account with surplus collateral sells fewer units and cannot fund another account. This gives one clearing equation and one account-level loss calculation.
+
+MATH terminal_pool_clearing
+q_i(p)=\min(C_i,D_i/p),\qquad Q(p)=\sum_i q_i(p)
+p=\frac{(1-f)K}{x\left(x+(1-f)Q(p)\right)}
+L_H=W_H+\sum_i\max(0,D_i-pC_i)
+DEFINITIONS x and K describe the pool immediately before the closing batch. C_i and D_i are remaining collateral and debt. W_H is cumulative writeoff from collateral exhausted earlier in the path. Loans with zero debt contribute zero volume.
+ENDMATH
+
+Multiplying the price equation through by its denominator gives a strictly increasing residual in p because p Q(p) equals the sum of min(D_i,p C_i). There is one positive clearing price for a pool with positive reserves. This also supplies a cash check: the sum of account recoveries equals aggregate pool proceeds. At infinite reserves the curve recovers the original per-unit haircut.
+
+### Policy comparisons
+
+The table reports mean loss under both terminal rules. The final column pairs each policy with the no-liquidation control at the same reserve and reports its mean difference and Monte Carlo standard error in USDC. Cumulative writeoffs enter both columns. The absolute values in the pool column measure a forced, simultaneous 30-day closure through one assumed route. Their size reflects the artificial requirement to close the entire residual book on one day.
+
+TABLE settlement_policy_comparison
+Policy | Y, millions | Flat loss, USDC | Pool loss, USDC | Paired pool change (SE)
+No liquidation, shallow | 25 | 10,947 | 93,428,569 | Control
+No liquidation, base | 100 | 10,947 | 45,377,972 | Control
+No liquidation, deep | 400 | 10,947 | 720,459 | Control
+No liquidation, no impact | Infinite | 10,947 | 10,947 | Control
+1% daily cap | 100 | 9,781 | 45,079,246 | -298,726 (4,639)
+5% daily cap | 100 | 9,497 | 45,020,743 | -357,229 (5,722)
+Uncapped, base | 100 | 9,497 | 45,020,743 | -357,229 (5,722)
+Uncapped, shallow | 25 | 10,220 | 93,242,021 | -186,548 (2,285)
+Uncapped, deep | 400 | 8,387 | 529,979 | -190,480 (3,193)
+Uncapped, no impact | Infinite | 6,754 | 6,754 | -4,193 (791)
+Uncapped, 25% refill | 100 | 9,929 | 45,203,467 | -174,506 (2,174)
+Uncapped, no refill | 100 | 10,262 | 45,381,333 | +3,360 (103)
+Uncapped, one-day lag | 100 | 11,293 | 45,039,620 | -338,352 (5,429)
+ENDTABLE
+
+Table sources: [26].
+
+The ranking changes within the 100 million reserve. With a flat haircut, one-day lag raises mean loss by 346 USDC (paired SE 401) against no liquidation, leaving the sign unresolved. With the terminal pool, it lowers mean loss by 338,352 USDC (SE 5,429). It still loses 18,877 USDC more than prompt intervention (SE 1,349). No refill changes from a 685 USDC benefit under flat salvage to a 3,360 USDC cost under the terminal curve (SE 103). Partial refill preserves a 174,506 USDC benefit (SE 2,174).
+
+At the shallow reserve, the pool-closing comparison improves by 186,548 USDC with intervention, against 727 under the flat convention. Interim repayment leaves less debt competing for the terminal reserve. The no-refill result shows the opposite force: carried sales deplete the last day's pool. The signs depend on the terminal rule and assumed refill. The model gives conditional comparisons for this book and this stress, with no calibration to available liquidity at the capture block.
+
+### Oracle lag and incentives on insolvent loans
+
+An oracle that still carries yesterday's higher price can leave a falling account above the liquidation boundary or make disposal unprofitable. When intervention becomes possible, a loan may already be insolvent at spot. If seized collateral is worth q S_t and the liquidator repays R, a positive q S_t minus R increases that account's spot-marked shortfall dollar for dollar. Its debt falls by R but its collateral falls by the larger amount. Price rebounds can also raise the spot value of a seizure priced off an older, lower oracle.
+
+The table sums positive spot-value premiums only on trades where spot-marked collateral was already below debt immediately before repayment. Premiums are gross of the fee and market impact. The repayment and premium columns are means across all 100,000 paths. No-liquidation controls have zero repayment and premium.
+
+TABLE insolvent_incentive_comparison
+Policy | Insolvent repayment, USDC | Share of repayment | Spot premium, USDC
+1% daily cap | 29,200 | 7.85% | 1,280
+5% daily cap | 32,400 | 7.28% | 1,420
+Uncapped, base | 32,400 | 7.28% | 1,420
+Uncapped, shallow | 13,754 | 6.80% | 603
+Uncapped, deep | 32,371 | 4.21% | 1,419
+Uncapped, no impact | 28,262 | 2.92% | 1,239
+Uncapped, 25% refill | 14,978 | 5.76% | 657
+Uncapped, no refill | 2,854 | 1.95% | 125
+Uncapped, one-day lag | 31,843 | 7.49% | 2,330
+ENDTABLE
+
+Table sources: [26].
+
+The lagged policy transfers an average of 2,330 USDC of gross premium on already-insolvent loans, compared with 1,420 under prompt intervention. It repays slightly less debt on those loans in absolute terms, though their share of all repayments is higher. This distinction matters: the larger premium comes from more spot value seized per USDC repaid on that cohort. It gives a mechanism for the higher flat-salvage point estimate. Subsequent prices and terminal proceeds also matter, so this premium ledger does not by itself decompose the total paired loss difference.
+
+# Chapter 5
+## Primary Compound liquidation evidence
+
+Compound reported a DAI price disruption and widespread liquidations on 26 November 2020. The event extraction below follows the debt repayments in the published compensation window and checks their aggregate against the address-level distribution file. [6] [7]
+
+### A primary event extraction
+
+The empirical reconstruction queries the cDAI debt contract 0x5d3a53...8e3643 for LiquidateBorrow events from blocks 11,332,733 through 11,335,286, inclusive. This is the event window declared by the compensation proposal's script. Requests are split into consecutive ranges of at most 256 blocks, and the raw requests and responses accompany the decoded ledger. [8] [9]
+
+The event ABI supplies the liquidator, borrower, DAI repaid, collateral cToken and seized cToken quantity. Events are ordered by block, transaction index and log index, with transaction hash plus log index as the uniqueness key. The extraction returns 141 events, 124 borrower addresses and ten liquidator addresses.
+
+TABLE primary_cdai_liquidation_extraction
+Measure | Reconstructed result
+Event window | 11,332,733-11,335,286 inclusive
+LiquidateBorrow events | 141
+Borrower addresses | 124
+Liquidator addresses | 10
+DAI repaid | 85,222,474.51
+Largest borrower share | 54.1435%
+Top five borrower share | 90.2767%
+Largest liquidator share | 64.6937%
+Repayment HHI | 0.34606
+ENDTABLE
+
+Table sources: [8].
+
+Integer repayment amounts sum to 85,222,474.513270326810927896 DAI. The largest borrower contributes approximately 46,142,428.60 DAI, or 54.1435% of the total. The five largest borrowers contribute approximately 90.2767%. Event counts therefore give a very different sense of scale from repayment-weighted concentration.
+
+The borrower repayment HHI is approximately 0.34606. Its reciprocal is about 2.89: a hypothetical group of fewer than three equally sized contributors would produce the same repayment concentration. This statistic refers to forced repayments during the chosen window. It describes how strongly a few large accounts determine the aggregate transfer.
+
+On the other side of those transactions, the largest liquidator accounts for approximately 64.6937% of DAI repaid. That amount measures operational participation through addresses. Ownership, shared financing and common transaction infrastructure can connect several addresses economically, so operator-level concentration requires the corresponding identity evidence.
+
+### Reconciling the proposal's numbers
+
+The proposal text reports 85,220,406.43 DAI repaid. [7] The extraction exceeds that figure by 2,068.083270326810927896 DAI, approximately 0.00243% of the independently extracted total. The published address-level distribution file provides a way to investigate the difference.
+
+That file contains 124 addresses and compensation amounts summing to approximately 6,817,797.961061626 DAI. Dividing by the stated eight per cent factor implies approximately 85,222,474.513270325 DAI of repayments. Every address-level compensation amount agrees with the extracted borrower's eight per cent calculation to within one millionth of a DAI, allowing for the decimal file's displayed precision. The retained script also applies the factor event by event. [9]
+
+The reproducible event ledger and the proposal's distribution file thus agree at practical token-reporting precision. The discrepancy sits in the proposal's prose aggregate. Preserving both source forms resolves an apparent conflict that disappears in a rounded 85.2 million headline.
+
+### Collateral units and the meaning of repayment
+
+Five events seize cDAI and account for approximately 61.20% of the repaid DAI. Other events seize collateral cTokens representing ETH, USDC, WBTC and additional assets. The ledger retains those cToken addresses and raw seized quantities.
+
+A seized cToken quantity becomes an underlying-asset quantity through the relevant exchange rate; it becomes a dollar value through another valuation. The current extraction measures repayments and concentration directly from emitted quantities. Its public event ledger supplies the inputs for a later account-specific valuation using declared exchange-rate and price conventions.
+
+The immediate financial result remains the movement of creditor claims into DAI repayment and of borrower collateral into the liquidators' accounts. Concentration tells the investigator which transactions dominate that movement. A study of source-price representativeness or a different liquidation rule can begin with those transactions and their actual order.
+
+
+# Chapter 6
+## Valuation and execution in a financed PT-sUSDe position
+
+Fulcrum is my project. This case follows a public Morpho account holding Pendle principal tokens against USDC debt at an identified historical block. Its financial question is concrete: how much collateral can the holder release and convert into the debt asset while funding the operations required to do so? The investigation now combines common-block accounting with counterfactual execution on a local fork. [1] [10]
+
+The account is 0xdf8198...012730. Its Morpho market is 0x5613b1...46cb05, with PT collateral 0xB195B6...Fa9390 and USDC as the loan asset. Full addresses and block identifiers appear in the evidence files. The public account is unattributed.
+
+### An identified state
+
+The anchor is Ethereum block 26,162,436, hash 0xfb54f6...593969, timestamped 10 October 2026 at 13:49:11 UTC. Direct calls read the account's borrow shares and collateral, market totals, configured parameters and oracle price at that block. The same block reference is used for the interest-rate view needed to accrue the debt.
+
+TABLE common_block_pt_position
+Quantity | Result at anchor
+Block | 26,162,436
+Collateral, PT | 3,961,491.354129141559967243
+Account borrow shares | 3398641061377110652
+Accrued debt, USDC | 3,415,021.348409
+Oracle collateral, USDC | 3,931,259.740859
+LLTV | 91.5%
+Health factor | 1.05331777
+ENDTABLE
+
+Table sources: [10].
+
+The account contains 3,961,491.354129141559967243 PT and 3,398,641,061,377,110,652 borrow shares. Shares represent debt through a market-wide conversion. The market's stored totals precede the anchor timestamp because interest accrues on interaction, so reproducing the account's debt requires the elapsed interval and the deployed rate model.
+
+At the anchor, elapsed time since the market's last update is 170,376 seconds. The recorded per-second rate in 18-decimal fixed-point units is 1,165,800,601. Applying Morpho's integer third-order compounding adds 1,389,049,966 atomic USDC units to total market borrowing before the borrow-share conversion. [11]
+
+MATH fulcrum_accrual
+u_1=r_w\tau
+u_2=\left\lfloor\frac{u_1^2}{2\times10^{18}}\right\rfloor
+u_3=\left\lfloor\frac{u_2u_1}{3\times10^{18}}\right\rfloor
+I=\left\lfloor\frac{A(u_1+u_2+u_3)}{10^{18}}\right\rfloor
+D=\left\lceil\frac{b(A+I+1)}{B+10^6}\right\rceil
+DEFINITIONS A is stored total borrow assets in atomic USDC, B total borrow shares, b the account's borrow shares, r_w the per-second fixed-point rate, and tau elapsed seconds. The virtual asset and share terms and rounding directions follow the source implementation.
+ENDMATH
+
+Expected debt is 3,415,021.348409 USDC. The oracle's raw price is 992368628234398783000000. Applying the contract's 36-decimal price scale gives approximately 3,931,259.740859 USDC of collateral value. With LLTV of 91.5%, the account's computed health is approximately 1.05331777.
+
+This calculation replaces the earlier health display that combined API balances with an independently pinned oracle. The direct state, rate call, integer arithmetic and resulting units are retained together in the companion. The API's originally reported debt was 3,415,010.817768 USDC, about 10.53 USDC lower than the common-block accrued calculation. [12] [10]
+
+### The valuation branch
+
+The configured oracle at 0xF8b29e...a01b08 delegates through minimal-proxy runtime to implementation 0x9b4655...42de5b. The primary branch consumes a PendleSparkLinearDiscountOracle with a configured annual discount of 6%. The backup includes an additional USDe/USD feed and a quote-side conversion. [1] [13]
+
+The saved block-specific checks identify the primary as active and the deviation flag as false. The deviation threshold is 0.75%, challenge period 57,600 seconds and healing period 86,400 seconds. This state gives the lending calculation a formulaic price path whose inputs differ from those used by a secondary-market disposal route. [14]
+
+A fall in the price obtainable for PT can therefore consume recoverable equity before a corresponding change reaches the lending valuation. The holder's initial cushions quantify that exposure. At the anchor price, debt is about 86.87% of collateral value, while a price decline of approximately 5.06% brings the account to the stipulated LLTV boundary if debt remains fixed.
+
+### Recorded quote economics
+
+The original packet, observed at 13:49:16.881 UTC, preserves Pendle aggregator route estimates at quarter, half and full collateral size. They return 983,043.179610, 1,964,984.917125 and 3,844,988.933583 USDC. The full-size record identifies KyberSwap aggregation and omits a gas estimate. [12]
+
+Multiplying quarter-size proceeds by four overstates the stored full-size estimate by 87,183.784857 USDC. Scaling the half-size estimate doubles it to a value 84,980.900667 USDC higher than the full-size result. Both calculations expose economically meaningful nonlinearity in the captured routes.
+
+The full quote averages approximately 0.97059 USDC per PT, about 2.19% below the anchored lending price. Subtracting the common-block accrued debt gives quote-conditioned equity of approximately 429,967.59 USDC, compared with 516,238.39 USDC at the oracle mark. The disposal gap consumes about 16.71% of that marked equity.
+
+These benchmarks join an identified lending state to nearby recorded sale estimates. The quote packet preserves amounts, minimum outputs and route summaries. The original capture discarded the router target and transaction calldata, so the quoted KyberSwap route cannot be replayed from the retained evidence. A fresh quote would describe another state. The fork below uses a declared route through different pools. [25]
+
+### A complete transaction sequence
+
+The local rehearsal forks the anchor state with chain identifier 31337. A small helper contract obtains temporary USDC through Morpho's flash-loan interface, repays enough debt to release the chosen PT quantity, withdraws it, sells PT into SY through the Pendle market, redeems SY into sUSDe, and converts sUSDe through a stated route into USDC. Available proceeds fund further debt repayment before the flash loan settles.
+
+The experiment assumes holder authorisation and grants it locally by impersonating the public account. Synthetic ether funds local transaction fees. The provider's USDC balance, lending checks, token transfers, Pendle state and swap-pool balances come from the historical fork. Deployment, authorisation and the tested operation use deterministic timestamps one, two and three seconds after the anchor. [15] [10]
+
+A full reduction first repays by shares, clearing the live accrued debt. Partial reductions repay an asset quantity sufficient to release collateral under the health rule, plus a 1,000 USDC buffer. The helper then uses remaining sale proceeds for another repayment. Every attempt begins from a restored local snapshot, so one test consumes none of the next test's liquidity.
+
+MATH fulcrum_release
+R_{\min}=\max\left(0,D-tV_{\mathrm{remaining}}\right)
+R=R_{\min}+\varepsilon
+DEFINITIONS R_min is the continuous minimum initial repayment, t LLTV, and V_remaining the oracle value of retained collateral. The experiment uses contract arithmetic and epsilon of 1,000 USDC; execution itself checks the resulting account.
+ENDMATH
+
+The first tested route used Uniswap v3 sUSDe/USDT and USDT/USDC pools. [16] Its returned USDC was insufficient to settle the temporary loan at the tested sizes. The traces preserve the actual calls and the helper's ShortOutput error. This result prompted inspection of another route's historical pools.
+
+The second path exchanges sUSDe for crvUSD at Curve pool 0x57064F...982e85 and crvUSD for USDC at 0x4DEcE6...bAD69E. Common-block calls identify the coin ordering and disposal quotes. The helper executes those exact exchanges after collateral release and SY redemption. [17]
+
+TABLE financed_curve_route_attempts
+PT reduction | Temporary USDC | Route proceeds | Result
+1% | 1,000.00 | 39,300.89 | Completed
+10% | 178,628.95 | 371,560.75 | Completed
+25% | 718,194.35 | 375,936.51 | Insufficient USDC
+50% | 1,617,470.02 | 375,982.87 | Insufficient USDC
+100% | 3,416,021.35 | Trade rejected | Pendle proportion
+ENDTABLE
+
+Table sources: [10].
+
+TABLE completed_pt_reductions
+Reduction | Gas used | Residual USDC debt | Residual PT
+1% | 678,561 | 3,375,720.47 | 3,921,876.440588
+10% | 680,587 | 3,043,460.61 | 3,565,342.218716
+ENDTABLE
+
+Table sources: [10].
+
+The one per cent reduction returns 39,300.89 USDC and leaves 3,375,720.47 USDC of debt. The ten per cent reduction returns 371,560.75 USDC and leaves 3,043,460.61 USDC of debt. All returned USDC is used in the repayment sequence, with no residual cash distributed to the holder. Gas figures cover the tested operation; deployment and holder authorisation are additional transactions. The one per cent withdrawal lies within the opening collateral headroom, making its initial 1,000 USDC repayment a buffer. At ten per cent, release requires approximately 177,628.95 USDC before that buffer. The historical Morpho flash loan settles by returning its principal; gas funds the operation's transaction expense.
+
+A successful receipt establishes completion under the declared local authorisation, timestamp and route. Morpho's flash-loan settlement enforces repayment within the operation. Post-transaction account and market reads provide the residual collateral and debt; the receipt records gas consumed by the tested transaction.
+
+### The constraint at larger size
+
+Quarter and half reductions on the Curve path returned too little USDC to settle their temporary repayment requirement. At full size, Pendle rejected the PT sale with MarketProportionTooHigh. The reverted call returned the proposed market proportion and its maximum, locating the failure in the AMM's own trading constraint. [18] [10]
+
+The reverted traces show about 376,000 USDC in intermediate proceeds at both 25% and 50%. Neither sale settled. The quarter, half and full attempts consumed 787,444, 788,109 and 398,723 gas units, respectively. Reversion left no sale proceeds or position change from those transactions.
+
+The recorded full-size aggregator estimate of 3.845 million USDC is roughly ten times the proceeds seen at the plateau of the Curve path. It covers a quoted swap, and the fork also imposes financing and collateral release. The captured data therefore leave both the aggregator route’s executable proceeds and any position-wide exit limit unresolved.
+
+### Execution cost and residual health
+
+The table values both the opening and residual PT at the same anchor oracle price. The health change comes from applying the 91.5% liquidation threshold to the marked collateral and dividing by accrued debt. Equity is marked PT less residual debt. This comparison isolates the change caused by the trade and excludes gas. The prior table reports gas units, whose value depends on the chosen gas and ETH prices.
+
+TABLE fork_equity_and_health
+PT sold | Oracle mark, USDC | Proceeds, USDC | Discount | Residual health | Equity change, USDC
+1% | 39,312.60 | 39,300.89 | 0.030% | 1.05492 | -11.72
+10% | 393,125.97 | 371,560.75 | 5.486% | 1.06372 | -21,565.24
+ENDTABLE
+
+Table sources: [10] [24].
+
+Opening health was 1.05332 and marked equity was 516,238.39 USDC. Selling 10%, about 396,149 PT, raised health by 0.01040 while consuming 21,565.24 USDC of equity, or 4.18% of the opening cushion. The 1% sale consumed 11.72 USDC before gas. The 2.19% discount implied by the full aggregator quote is a quote measure. The 0.030% and 5.486% discounts in the table come from the Curve execution receipts. A repayment can improve the health ratio even when the accompanying sale reduces equity.
+
+# Chapter 7
+## Interpretation and replication
+
+The empirical results connect three levels of a position investigation. Borrower records locate the recourse boundary and distribute collateral cushions across accounts. A return model assigns probabilities to market paths and is evaluated on later observations. The transaction sequence determines whether a holder or liquidator can use the resources indicated by that path.
+
+The Compound extraction demonstrates the value of checking an aggregate against its primary ledger. Repayments are concentrated in a few borrowers and a few liquidator addresses. The address-level compensation file agrees with the event extraction while the prose total differs. The resulting reconciliation is small in dollar scale but consequential for reproducibility: it identifies which source representation a later calculation should use.
+
+The vault study demonstrates why account-level recovery is needed. Aggregate collateral can exceed aggregate debt while individual loans contribute shortfall. Applying supplier ownership after that calculation preserves the connection between a holder and the creditor claim whose value is being estimated.
+
+The forecast study gives the statistical input an empirical test. A volatility filter and scaled Student-t innovations improve held-out predictive density relative to the fixed Gaussian benchmark in the selected sample. Tail counts provide another view of the same forecasts, while the block-resampled score comparison measures uncertainty in their performance difference.
+
+The dynamic comparison is sensitive to the form of terminal recovery. Applying the same pool curve at the horizon reverses the ranking against no liquidation for the lagged and no-refill policies in the 100 million reserve scenario. The paired results and the premium ledger identify which mechanisms contribute to the estimates. They apply to the sampled WBTC/USDC book and the specified closing convention.
+
+The execution case shows the cost of decreasing exposure through a particular path. Marked equity declined as the health ratio rose. Larger tests located two different constraints for that path. General exit capacity would require original aggregator transaction data or further independently timestamped route and position studies.
+
+### Practical use
+
+An analyst applying the workflow begins with a dated ledger and a declared action. For a supplier, the calculation follows borrower shortfalls into the supplier's market share and then into holder ownership. For a financed borrower, it follows temporary funding into collateral release, disposal proceeds and residual obligations.
+
+The required evidence becomes more demanding as the decision approaches a boundary. A broad portfolio screen can work with an explicitly timed inventory capture. An operation close to its health limit benefits from common-block reads, contract-scale rounding and a rehearsal of the exact route. The present study illustrates both levels and retains their records.
+
+The standard models used here make the calculations accessible to inspection. Their empirical value comes from joining them to a reconciled account structure and a tested execution sequence. That combination lets another researcher replace a price process, alter a queue discipline or examine another route while preserving the accounting identity against which the result is checked.
+
+### Data and code availability
+
+The reproducibility bundle accompanying this version contains the retained public vault and price packets; the cDAI event requests, responses and decoded CSV; common-block account and oracle reads; local-fork receipts and traces; cleaned returns; model parameters; and simulation summaries. It also includes the helper source, verification scripts and instructions for regenerating the analysis.
+
+Fulcrum's project repository is available at https://github.com/mrb-eel/fulcrum-research. The accompanying bundle is the versioned source of the additional analyses reported in this paper. Raw-file fingerprints identify the exact inputs used, and the supplied manifest records the released files.
+
+Offline verification reproduces event totals, borrow-share reconciliation, interest arithmetic, model conventions and receipt decoding from the retained records. Re-estimation and the liquidation experiment use the numerical dependencies listed in the requirements file. The local-fork experiment additionally uses the documented archive endpoint and checksum-verified toolchain.
+
+This version is prepared for public circulation as a working paper with its companion research files. The broader book remains a reference edition for readers who want the mechanisms, worked examples and source histories developed in more detail.
+
+
+# Appendix A
+## Statistical calculations and computational checks
+
+The empirical chapters use a small set of probability calculations repeatedly. Writing their conventions explicitly makes the generated tables easier to reproduce and prevents a change of units or tail definition from changing an investment conclusion.
+
+### The scaled Student-t density
+
+For degrees of freedom nu greater than two, the innovation used in return-model section rescales a standard Student-t variable to variance one. Combining that innovation with the volatility state h gives the conditional return density below.
+
+MATH appendix_t_density
+f(r\mid h,\nu)=\frac{\Gamma((\nu+1)/2)}{\Gamma(\nu/2)\sqrt{(\nu-2)\pi h}}
+\times\left(1+\frac{r^2}{(\nu-2)h}\right)^{-(\nu+1)/2}
+DEFINITIONS Γ denotes the gamma function, h the conditional variance and nu the tail parameter. The displayed density is for zero conditional mean.
+ENDMATH
+
+The factor containing h is the change-of-units term. Removing it would score standardised innovations in one model and raw returns in another, altering the comparison as market volatility changes. The implementation evaluates the full return density for every test observation.
+
+Unit variance also determines the simulation recursion. Conditional on h_t, the next squared return has expectation h_t, so the EWMA update has expected value h_t. For this finite-horizon specification, the variance state reacts to simulated observations while preserving that conditional expectation.
+
+The fitted nu values allow finite second moments. Their implications for higher moments follow from the t distribution's tail order. The credit-loss experiment remains numerically integrable because each path's aggregate unpaid debt is bounded by the opening debt plus the assumed accrual over the horizon.
+
+### Coverage as a likelihood calculation
+
+For a lower-tail forecast q_t at probability alpha, define the hit indicator as one when the realised return falls below q_t. Correct unconditional coverage assigns hit probability alpha. The empirical hit frequency estimates that probability from the test sample.
+
+MATH appendix_coverage
+I_t=\mathbf{1}\{r_t<q_t\},\qquad x=\sum_t I_t
+\widehat p=x/N
+\mathrm{LR}_{\mathrm{uc}}=2\left[x\log\frac{\widehat p}{\alpha}+(N-x)\log\frac{1-\widehat p}{1-\alpha}\right]
+DEFINITIONS N is the test sample size, x the exceedance count and alpha the forecast tail probability. Terms of the form zero times log zero use their limiting value zero.
+ENDMATH
+
+The statistic compares the likelihood at the forecast probability with the likelihood at the sample's fitted frequency. Its usual large-sample reference has one chi-squared degree of freedom. The companion reports the statistic alongside raw counts and exact binomial reference intervals, which remain easier to interpret when the nominal tail contains only a few observations. [19]
+
+For an interior count, the two-sided 95% Clopper-Pearson interval uses the 2.5% quantile of a Beta(x, N minus x plus one) distribution and the 97.5% quantile of Beta(x plus one, N minus x). Zero hits set the lower endpoint to zero; N hits set the upper endpoint to one. These are reference intervals for an independent Bernoulli sampling model.
+
+Serial dependence is examined through the transition counts n_00, n_01, n_10 and n_11. The fitted probability of a hit after a non-hit is n_01 divided by n_00 plus n_01; after a hit it is n_11 divided by n_10 plus n_11. A likelihood comparison with a common transition probability provides an independence diagnostic. A small tail sample limits the precision of both transition estimates. [20]
+
+### Comparing two forecasting rules
+
+Model scores share a realised return on each day. Their paired difference is therefore the natural observation for comparing performance. Circular block resampling draws a start point, takes thirty consecutive score differences with wraparound, repeats until it has a full-length sample and calculates its mean.
+
+The reported 95% percentile interval uses 2,000 such resamples. This procedure carries local dependence into the comparison and conditions on the fitted forecasting rules. Re-estimating the rules inside each resample would address another component of uncertainty and would require repeating the complete chronological selection procedure.
+
+### Expected shortfall with an atom at zero
+
+Creditor-loss distributions often contain many zeros because collateral cushions absorb ordinary movements. Their value at risk can equal zero even while the worst paths contain substantial shortfall. Expected shortfall averages the specified upper probability mass.
+
+MATH appendix_expected_shortfall
+\operatorname{ES}_\alpha=\frac{1}{1-\alpha}\int_\alpha^1 Q(u)\,du
+DEFINITIONS Q is the loss quantile function and alpha the tail boundary. For the 100,000-path experiment, the worst one per cent consists of the 1,000 largest losses.
+ENDMATH
+
+Selecting every observation greater than or equal to a zero quantile would include the entire zero-loss mass and change the statistic into an ordinary mean. The implementation sorts the simulated losses and averages the upper fifty. A fractional-mass convention would be needed when the chosen tail fraction times the path count is non-integer.
+
+Monte Carlo standard error of a sample mean is the sample standard deviation divided by the square root of the path count. For a probability estimate it is the square root of p times (1 minus p) divided by that count. These calculations concern sampling from the declared simulation. Parameter uncertainty, alternative mechanisms and empirical coverage remain attached to their own evidence.
+
+### Paired policy differences
+
+Let L_A and L_B be the losses generated by two intervention rules on the same price path. Their difference is calculated path by path before averaging. The standard error then follows the variation of those differences, preserving the covariance supplied by their common market history.
+
+MATH appendix_paired_mc
+\widehat\Delta=\frac{1}{M}\sum_{m=1}^{M}(L_{Am}-L_{Bm})
+\operatorname{SE}(\widehat\Delta)=\frac{s_{A-B}}{\sqrt{M}}
+DEFINITIONS M is the number of simulated paths, and s_(A-B) the sample standard deviation of the paired loss differences.
+ENDMATH
+
+A comparison whose estimated effect is close to that error deserves additional paths or a coarser economic conclusion. In this study, the policy table therefore carries simulation uncertainty beside the estimated loss. The calculation makes the scale of the available evidence visible before the result enters an expected-cost decision.
+
+### Reproducible computation
+
+The companion keeps raw packets, request-response records, cleaned tables, fitted parameters, generated paths and final summaries. The raw manifest fingerprints the bytes analysed. Reproduction starts with the offline verification, then runs the model and liquidation scripts against the retained files.
+
+The event decoder checks unique transaction-and-log keys and consecutive requested block coverage. The vault decoder reconciles integer borrow shares before producing floating-point stress calculations. The PT calculation preserves contract-scale integers and rounding directions. The fork helper restricts execution to its local chain identifier, and the driver sends state-changing calls only to its loopback endpoint.
+
+Boundary checks exercise healthy loans, gradual and instantaneous declines, zero liquidation capacity and stale-price purchase economics. The executable cases are deliberately small enough to inspect by hand. They connect the larger simulation to the repayment and collateral equations on which its conclusions depend.
+
+
+# Sources
+
+[1] Fulcrum: Oracle investigation, snapshot fulcrum-dab2ca7e9ba2a333, 10 October 2026. https://github.com/mrb-eel/fulcrum-research/blob/main/ORACLE_INVESTIGATION.md
+
+[2] Bouchaibi, Mohamed Rayan. Fulcrum Research quantitative companion. Retained Morpho and Bitstamp inputs, model estimates and replication code. Results for each working-paper version are archived together. https://github.com/mrb-eel/fulcrum-research/tree/main/research
+
+[3] Bitstamp. Public API, OHLC market data specification. https://www.bitstamp.net/api/
+
+[4] Engle, Robert F. Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation. Econometrica 50(4), 1982. https://doi.org/10.2307/1912773
+
+[5] Bollerslev, Tim. A Conditionally Heteroskedastic Time Series Model for Speculative Prices and Rates of Return. Review of Economics and Statistics 69(3), 1987, pp.542-547. https://doi.org/10.2307/1925546
+
+[6] Robert Leshner: DAI Liquidation Event. https://www.comp.xyz/t/dai-liquidation-event/642
+
+[7] Proposal: Distribute DAI to Users Affected by DAI Liquidations. https://www.comp.xyz/t/proposal-distribute-dai-to-users-affected-by-dai-liquidations/2110
+
+[8] Ethereum mainnet. cDAI LiquidateBorrow event records, blocks 11,332,733 through 11,335,286, inclusive. Primary extraction retained in raw/compound-liquidation-logs.json and compound-events.csv in the research companion. Contract: https://etherscan.io/address/0x5d3a536e4d6dbd6114cc1ead35777bab948e3643
+
+[9] arr00. Compound compensation proposal: generateAddressBalances.js and addressBalancesDecimal.json. Retained source files and per-address reconciliation accompany the event study. https://github.com/arr00/compound-compensation-proposal
+
+[10] Bouchaibi, Mohamed Rayan. Common-block PT account analysis and financed local-fork experiment, November 2026. Block 26,162,436; raw common-block calls, pinned rate calculation, replay receipts, traces, post-transaction balances and Unwind.sol in the research companion.
+
+[11] Morpho. Morpho.sol, SharesMathLib.sol and MathLib.sol. Source for share conversion, virtual quantities, rounding and interest compounding. https://github.com/morpho-org/morpho-blue/tree/main/src
+
+[12] Fulcrum historical evidence record. fulcrum-snapshot.json; verification-results.json. Electronic companion to this edition, evidence/ directory. Account observation: 10 October 2026; block-specific corroboration captured 17 October 2026; offline comparison checked 15 November 2026.
+
+[13] MetaOracleDeviationTimelock: verified implementation source. https://eth.blockscout.com/address/0x9b4655239e91dc9e1f7599bb88fba41b4542de5b?tab=contract
+
+[14] Fulcrum historical evidence record. public-probe.json; verification-results.json. Electronic companion to this edition, evidence/ directory. Account observation: 10 October 2026; block-specific corroboration captured 17 October 2026; offline comparison checked 15 November 2026.
+
+[15] Foundry. Anvil, historical forking and local state control. Replay toolchain version and verified release fingerprints retained in the companion. https://www.getfoundry.sh/anvil
+
+[16] Uniswap. Ethereum v3 deployments and SwapRouter02 interface. https://developers.uniswap.org/docs/protocols/v3/deployments/v3-ethereum-deployments
+
+[17] Curve Finance. Public pool registry and Ethereum pools. Registry responses supplied address discovery; coin ordering and disposal calls were checked at the anchor block and retained in the research companion. https://api.curve.finance/v1/getPools/ethereum/factory-stable-ng
+
+[18] Pendle. IPMarket and Errors interfaces, including MarketProportionTooHigh. Source and fork-returned error data retained in the companion. https://github.com/pendle-finance/pendle-core-v2-public/blob/main/contracts/core/libraries/Errors.sol
+
+[19] Kupiec, Paul H. Techniques for Verifying the Accuracy of Risk Measurement Models. Finance and Economics Discussion Series 95-24, 1995; Journal of Derivatives 3(2), pp.73-84. https://fraser.stlouisfed.org/title/finance-economics-discussion-series-1491/techniques-verifying-accuracy-risk-measurement-models-717921
+
+[20] Christoffersen, Peter F. Evaluating Interval Forecasts. International Economic Review 39(4), 1998, pp.841-862. https://doi.org/10.2307/2527341
+
+[21] Perez, Daniel, Sam M. Werner, Jiahua Xu and Benjamin Livshits. Liquidations: DeFi on a Knife-edge. Financial Cryptography and Data Security, 2021, pp. 457-476. https://doi.org/10.1007/978-3-662-64331-0_24
+
+[22] Qin, Kaihua, Liyi Zhou, Pablo Gamito, Philipp Jovanovic and Arthur Gervais. An Empirical Study of DeFi Liquidations: Incentives, Risks, and Instabilities. ACM Internet Measurement Conference, 2021. https://doi.org/10.1145/3487552.3487811
+
+[23] Gudgeon, Lewis, Daniel Perez, Dominik Harz, Benjamin Livshits and Arthur Gervais. The Decentralized Financial Crisis. 2020. https://arxiv.org/abs/2002.08099
+
+[24] Fulcrum Research, working paper 1.1 evidence and replication code. Bitstamp BTC/USD OHLC observations, expanded forecast comparison, liquidation policies and common-block fork accounting. https://github.com/mrb-eel/fulcrum-research/tree/main/research
+
+[25] Pendle. Hosted SDK, ConvertResponse and TransactionDto. The route response includes transaction details in the tx field. https://docs.pendle.finance/pendle-v2-dev/Backend/HostedSdk Archived capture code: https://github.com/mrb-eel/fulcrum-research/blob/8e41f8b6c95654ca3bf74971a6692a4a7511369c/src/providers.js
+
+[26] Fulcrum Research, working paper 1.2. Matched terminal recovery, inventory refill, reserve thresholds and insolvent-loan premiums. https://github.com/mrb-eel/fulcrum-research/tree/main/research/results/v1.2

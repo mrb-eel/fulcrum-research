@@ -1,31 +1,32 @@
 # Fulcrum Research
 
-An empirical study of how collateral valuation and liquidation capacity affect what lenders recover in DeFi.
+Liquidation and lender shortfall in stressed Morpho markets.
 
-[Working paper (PDF)](paper/liquidation-and-creditor-recovery.pdf) · [Replication guide](research/README.md) · [Revision results](research/results/v1.1) · [Citation](CITATION.cff)
+[Working paper (PDF)](paper/morpho-stress-losses.pdf) · [Replication guide](research/README.md) · [Policy grid](research/results/v2.0/intraday-policy-grid.csv) · [Citation](CITATION.cff)
 
 ## Working paper
 
-*Liquidation and creditor recovery in selected DeFi lending positions*
+*Liquidation and lender shortfall in stressed Morpho markets*
 
-Mohamed Rayan Bouchaibi · Working paper, version 1.1 · November 2026
+Mohamed Rayan Bouchaibi · Version 2.0 · November 2026
 
-A lending market can have enough collateral in aggregate and still leave creditors short. In a captured Morpho WBTC/USDC market with 614 borrowers, a 35% collateral price decline and a 1% sale discount produced **1,394,925.51 USDC** of modeled shortfall when recovery was calculated loan by loan. Pooling the collateral produced zero for the same shock. Surplus collateral in one account cannot settle another account's debt under the specified recourse rules. [Borrower ledger](research/results/borrower-ledger.csv) · [Market analysis](research/results/vault-study.json)
+The study applies four severe historical price paths to 51 captured Morpho borrower books. A scan of each market's recorded block found usable direct Uniswap v3 quotes for 23. The other markets are included in the standardised relative-price stress. That stress holds the price path and reserves per unit of debt fixed across books.
 
-- Ten Morpho vault captures supply 3,547 borrower-market records across 51 markets with positive allocation. In the selected WBTC/USDC market, the 100,000-path experiment finds that assumed pool depth binds before a 5% daily repayment cap under its base reserve. [Forecasts](research/results/v1.1/model-results.json) · [Policy comparisons](research/results/v1.1/depth-study.json)
-- A ledger of 141 Compound cDAI liquidation events records 85.22 million DAI of repayments. It reconciles the proposal's address-level compensation file and identifies a discrepancy in the proposal's prose total. [Event ledger](research/results/compound-events.csv) · [Reconciliation](research/results/compound-reconciliation.json)
-- On a historical fork, a financed 10% PT-sUSDe reduction raised health from 1.0533 to 1.0637 at the opening oracle mark and consumed 21,565 USDC of marked equity before gas. Larger tests encountered constraints on the chosen route. [Fork evidence](research/raw/fork-replay-curve.json) · [Cost calculations](research/results/v1.1/fork-costs.json)
+In the anchor WBTC/USDC market, a pinned quote returned about 684,000 USDC at a 2% marginal price move. Under the resulting depth approximation and full refill, hourly liquidation checks lowered mean pool-closing shortfall by 217 basis points of opening debt compared with daily checks. Refill, oracle timing, execution depth and borrower repayments materially change that result. [Depth and sensitivity results](research/results/v2.0/intraday-study.json)
 
-The repo covers a selected sample of vaults, one market for the dynamic experiment and one account for the fork test. Pool reserves and daily repayment caps are scenario assumptions. The retained aggregator quote includes its proposed proceeds and summary. Its router calldata was unavailable for a historical replay.
+The 30-day forecast check covers 702 held-out origins. No 35% crossing occurred in that period. The paper reports conditional stress losses and leaves unconditional crash-loss forecasts uncalibrated. [Held-out forecasts](research/results/v2.0/rolling-backtest.json) · [Conditional losses](research/results/v2.0/conditional-stress.json)
 
 ## Replication
 
-From the repository root, run the evidence checks with Python 3.12 or later. They read the retained files and require only the standard library.
+Paper replication uses `research/` and the retained inputs in `data/`. The original dashboard is optional.
 
 ```bash
 python research/verify_evidence.py
+python research/reproduce_study.py
 ```
 
-The [replication guide](research/README.md) maps each paper result to its inputs and output tables and gives the commands to re-estimate the models and regenerate the experiments.
+The [replication guide](research/README.md) lists the Python dependencies, archived inputs and outputs. The [earlier working paper](paper/liquidation-and-creditor-recovery.pdf) retains the Compound and PT unwind studies and the 1% fee reserve thresholds of 72.4M and 362.2M USDC under matched spot and oracle. The [dashboard](docs/dashboard.md) and [early project notes](docs/archive/README.md) document the prototype.
 
-The [original analysis dashboard](docs/dashboard.md) and [early project notes](docs/archive/README.md) are available for reference.
+## Licensing
+
+Original code is available under the [MIT License](LICENSE). The working papers, manuscripts and original paper figures are available under [CC BY 4.0](paper/LICENSE). Third-party material and raw source records retain their applicable terms.

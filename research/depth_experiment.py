@@ -22,30 +22,57 @@ def profitable_budget(lif, spot, oracle, reserve, fee):
 
 
 @njit(parallel=True)
-def simulate(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
-             fee=0.01, terminal_discount=0.01):
-    """Rank eligible loans by LTV and allocate daily profitable repayment capacity."""
+def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
+                      fee=0.01, terminal_discount=0.01, daily_refill=1.0,
+                      steps_per_day=1, oracle_multiplier=1.0, rescue_fraction=0.0):
+    """Return path losses under both terminal conventions and execution totals."""
     count, steps = paths.shape
     accounts = len(initial_d)
     lif = 1 / (0.7 + 0.3 * lltv)
-    losses = np.zeros(count)
+    flat_losses = np.zeros(count)
+    pool_losses = np.zeros(count)
     repayments = np.zeros(count)
+    underwater_repayments = np.zeros(count)
+    underwater_premiums = np.zeros(count)
+    cumulative_writeoffs = np.zeros(count)
+    borrower_repayments = np.zeros(count)
     for path in prange(count):
         collateral = initial_c.copy()
         debt = initial_d.copy()
         order = np.empty(accounts, dtype=np.int64)
         ranks = np.empty(accounts, dtype=np.float64)
         writeoff = 0.0
-        for day in range(1, steps):
-            spot = paths[path, day]
-            oracle = paths[path, max(0, day - lag)]
-            budget = min(daily_budget, profitable_budget(lif, spot, oracle, reserve, fee))
+        inventory = 0.0
+        remaining_daily = daily_budget
+        outside_cash = initial_d * rescue_fraction
+        for step in range(1, steps):
+            spot = paths[path, step]
+            oracle = paths[path, max(0, step - lag)] * oracle_multiplier
+            if (step - 1) % steps_per_day == 0:
+                inventory *= 1 - daily_refill
+                remaining_daily = daily_budget
+            net_collateral_per_repaid = (1 - fee) * lif / oracle
+            if inventory == 0.0 or np.isinf(reserve):
+                depth_budget = profitable_budget(lif, spot, oracle, reserve, fee)
+            else:
+                neutral_collateral = reserve / spot
+                pool_product = reserve * neutral_collateral
+                break_even_reserve = np.sqrt(pool_product * net_collateral_per_repaid)
+                depth_budget = max(0.0, (break_even_reserve - neutral_collateral - inventory)
+                                   / net_collateral_per_repaid)
+            budget = min(remaining_daily, depth_budget)
             eligible = 0
             for i in range(accounts):
+                oracle_limit = collateral[i] * oracle * lltv
+                if outside_cash[i] > 0 and debt[i] > oracle_limit + 1e-9:
+                    own_payment = min(outside_cash[i], debt[i] - oracle_limit)
+                    debt[i] -= own_payment
+                    outside_cash[i] -= own_payment
+                    borrower_repayments[path] += own_payment
                 if collateral[i] < 1e-8:
                     writeoff += debt[i]
                     debt[i] = 0
-                elif budget > 0 and debt[i] > 1e-9 and collateral[i] * oracle * lltv < debt[i] - 1e-9:
+                elif budget > 0 and debt[i] > 1e-9 and oracle_limit < debt[i] - 1e-9:
                     rank = debt[i] / collateral[i]
                     at = eligible
                     while at > 0 and ranks[at - 1] < rank:
@@ -60,18 +87,84 @@ def simulate(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
                     break
                 i = order[place]
                 payment = min(budget, debt[i], collateral[i] * oracle / lif)
+                seized = payment * lif / oracle
+                if collateral[i] * spot < debt[i] - 1e-9:
+                    underwater_repayments[path] += payment
+                    underwater_premiums[path] += max(0.0, seized * spot - payment)
                 budget -= payment
+                remaining_daily -= payment
                 repayments[path] += payment
-                collateral[i] = max(0.0, collateral[i] - payment * lif / oracle)
+                if not np.isinf(reserve):
+                    inventory += (1 - fee) * seized
+                collateral[i] = max(0.0, collateral[i] - seized)
                 debt[i] = max(0.0, debt[i] - payment)
                 if collateral[i] < 1e-8:
                     writeoff += debt[i]
                     debt[i] = 0.0
-        recovery_multiple = paths[path, -1] * (1 - terminal_discount)
+        spot = paths[path, -1]
+        recovery_multiple = spot * (1 - terminal_discount)
+        batch_price = terminal_batch_price(collateral, debt, spot, reserve, fee, inventory)
+        flat_losses[path] = writeoff
+        pool_losses[path] = writeoff
+        cumulative_writeoffs[path] = writeoff
         for i in range(accounts):
-            writeoff += max(0.0, debt[i] - collateral[i] * recovery_multiple)
-        losses[path] = writeoff
-    return losses, repayments
+            flat_losses[path] += max(0.0, debt[i] - collateral[i] * recovery_multiple)
+            pool_losses[path] += max(0.0, debt[i] - collateral[i] * batch_price)
+    return (flat_losses, pool_losses, repayments, underwater_repayments,
+            underwater_premiums, cumulative_writeoffs, borrower_repayments)
+
+
+@njit
+def terminal_batch_price(collateral, debt, spot, reserve, fee, inventory):
+    """Solve for the uniform net proceeds per collateral unit in the closing batch."""
+    fee_multiplier = 1 - fee
+    if np.isinf(reserve):
+        return spot * fee_multiplier
+    neutral_collateral = reserve / spot
+    available_collateral = neutral_collateral + inventory
+    available_loan = reserve * neutral_collateral / available_collateral
+    slope_scale = fee_multiplier / available_collateral
+    zero_size_bid = available_loan * slope_scale
+
+    # For p >= 0, F(p) = p + slope_scale * sum(min(D_i, p*C_i)) is
+    # increasing and concave. Newton iterations from zero approach its root
+    # from below, and finish as soon as the set of fully repayable loans settles.
+    price = 0.0
+    for _ in range(64):
+        recovered = 0.0
+        slope = 1.0
+        for i in range(len(debt)):
+            marked = price * collateral[i]
+            if marked < debt[i]:
+                recovered += marked
+                slope += slope_scale * collateral[i]
+            else:
+                recovered += debt[i]
+        increment = (zero_size_bid - price - slope_scale * recovered) / slope
+        if abs(increment) <= zero_size_bid * 1e-13:
+            return min(zero_size_bid, price + increment)
+        price += increment
+
+    lower, upper = 0.0, zero_size_bid
+    for _ in range(48):
+        price = (lower + upper) / 2
+        recovered = 0.0
+        for i in range(len(debt)):
+            recovered += min(debt[i], price * collateral[i])
+        if price + slope_scale * recovered < zero_size_bid:
+            lower = price
+        else:
+            upper = price
+    return (lower + upper) / 2
+
+
+def simulate(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
+             fee=0.01, terminal_discount=0.01):
+    """Reproduce the v1.1 flat-salvage comparison."""
+    flat, _, repayments, _, _, _, _ = simulate_recovery(
+        paths, initial_c, initial_d, lltv, daily_budget, reserve, lag, fee, terminal_discount,
+    )
+    return flat, repayments
 
 
 def check_boundary():

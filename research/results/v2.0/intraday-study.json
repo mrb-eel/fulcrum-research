@@ -1,0 +1,771 @@
+{
+  "markets": 51,
+  "rows": 4144,
+  "markets_ge_1m_usd": 29,
+  "positive_direct_quotes": 23,
+  "transport_errors": 0,
+  "standardised_reserve_per_debt": 0.5860208113991732,
+  "standardised_fee": 0.003,
+  "episodes": [
+    {
+      "origin_bucket": "2018-01-07",
+      "last_bucket": "2018-02-06",
+      "daily_close_drawdown": 0.5736627714428535,
+      "hourly_close_drawdown": 0.6302218677476212,
+      "hourly_low_drawdown": 0.6328012493162375,
+      "end_return": -0.5201339368222069
+    },
+    {
+      "origin_bucket": "2020-02-14",
+      "last_bucket": "2020-03-15",
+      "daily_close_drawdown": 0.5328395104611716,
+      "hourly_close_drawdown": 0.6032647500395599,
+      "hourly_low_drawdown": 0.6285232399720573,
+      "end_return": -0.4844056950764374
+    },
+    {
+      "origin_bucket": "2018-11-07",
+      "last_bucket": "2018-12-07",
+      "daily_close_drawdown": 0.47997538840178433,
+      "hourly_close_drawdown": 0.5015643747115828,
+      "hourly_low_drawdown": 0.5062298107983387,
+      "end_return": -0.47997538840178433
+    },
+    {
+      "origin_bucket": "2021-05-08",
+      "last_bucket": "2021-06-07",
+      "daily_close_drawdown": 0.43065588986983916,
+      "hourly_close_drawdown": 0.4537401616519524,
+      "hourly_low_drawdown": 0.49027502871504924,
+      "end_return": -0.43065588986983916
+    }
+  ],
+  "selected_depth": {
+    "block": 26166103,
+    "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+    "transport_error": null,
+    "qualified_pools": 4,
+    "direct_route": {
+      "pool": "0x99ac8ca7087fa4a2a1fb6357269965a2014abc35",
+      "fee": 0.003,
+      "out_to_2pct": 683889.025341,
+      "equivalent_reserve": 68045230.98488788,
+      "ticks_crossed": 4
+    }
+  },
+  "depth_by_market": {
+    "0x85252bb8485c99bba46fe149c7dd2aad83672640f53c630890673cf1848ba16e": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xfb8d92086861bae6fb778917afd1de5dbbc4ec70edfb636fed48238e225e7e3d": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x99ac8ca7087fa4a2a1fb6357269965a2014abc35",
+        "fee": 0.003,
+        "out_to_2pct": 683889.025341,
+        "equivalent_reserve": 68045230.98488788,
+        "ticks_crossed": 4
+      }
+    },
+    "0x7e585a933ffe8443c371b4f8cfeb4430f5f6a14c2f32a898c26662c67a1cb8b8": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x173821f6ad4c5324cd35753a9fd12d92f2eaab29",
+        "fee": 0.003,
+        "out_to_2pct": 820.310362,
+        "equivalent_reserve": 81618.80947534578,
+        "ticks_crossed": 2
+      }
+    },
+    "0x09dc9e7eb5d8fc54b2bc41d1135fd4e99057a580f680321faeb90c7a21e631c1": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x99ac8ca7087fa4a2a1fb6357269965a2014abc35",
+        "fee": 0.003,
+        "out_to_2pct": 683889.025341,
+        "equivalent_reserve": 68045230.98488788,
+        "ticks_crossed": 4
+      }
+    },
+    "0xbc99de6a88904cd0e69042ad6f266e63182801f030c636507c3caf590ffd84fe": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x4548280ac92507c9092a511c7396cbea78fa9e49",
+        "fee": 0.003,
+        "out_to_2pct": 15626.011804,
+        "equivalent_reserve": 1554748.7138656676,
+        "ticks_crossed": 1
+      }
+    },
+    "0x94b823e6bd8ea533b4e33fbc307faea0b307301bc48763acc4d4aa4def7636cd": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8",
+        "fee": 0.003,
+        "out_to_2pct": 2227534.101801,
+        "equivalent_reserve": 221634017.89959508,
+        "ticks_crossed": 4
+      }
+    },
+    "0xc498f4bfdda99e60ea8eb04c1e145654a70bc59da76ef9c6ed54a1314d78e5b5": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x64d65c9a2d91c36d56fbc42d69e979335320169b3df63bf92789e2c8883fcc64": {
+      "block": 26166139,
+      "block_hash": "0xc5c962877aeae8494e63a247312b26bbb0f2c7903c8929795facd3fef3a31cd2",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x4548280ac92507c9092a511c7396cbea78fa9e49",
+        "fee": 0.003,
+        "out_to_2pct": 15161.78531,
+        "equivalent_reserve": 1508559.3500316974,
+        "ticks_crossed": 1
+      }
+    },
+    "0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc": {
+      "block": 26166109,
+      "block_hash": "0x5a91eb159f12626bed7583411ab7254a4b440a0c9109879e549b98483beef404",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x173821f6ad4c5324cd35753a9fd12d92f2eaab29",
+        "fee": 0.003,
+        "out_to_2pct": 820.310362,
+        "equivalent_reserve": 81618.80947534578,
+        "ticks_crossed": 2
+      }
+    },
+    "0x34377fc4f617c51818e92c79df31ff270c6a91bc94ad32e367fdf59b9f4ac5dd": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x3274643db77a064abd3bc851de77556a4ad2e2f502f4f0c80845fa8f909ecf0b": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x3c5a244b778095e1e1b2e44b7c2ecc9bf4fda9cd85cc22740e09205a7a4bf510": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x56534741cd8b152df6d48adf7ac51f75169a83b2",
+        "fee": 0.0005,
+        "out_to_2pct": 2414914.734121,
+        "equivalent_reserve": 240277917.61994982,
+        "ticks_crossed": 16
+      }
+    },
+    "0xa6a4c1f15490a1ff39d9de3a366b408dd5647a436d8b179726d3e0562aff1292": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xe7e9694b754c4d4f7e21faf7223f6fa71abaeb10296a4c43a54a7977149687d2": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 1,
+      "direct_route": {
+        "pool": "0xec5055067d60292ab2c514a1090bc8e014e4abaa",
+        "fee": 0.0005,
+        "out_to_2pct": 0.501179,
+        "equivalent_reserve": 49.86604486418072,
+        "ticks_crossed": 0
+      }
+    },
+    "0xa921ef34e2fc7a27ccc50ae7e4b154e16c9799d3387076c421423ef52ac4df99": {
+      "block": 26166182,
+      "block_hash": "0x1a249d9af1cf0eb50bd2e60346b6e7c0e8b70ca425746f5afb0452116b1de462",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x56534741cd8b152df6d48adf7ac51f75169a83b2",
+        "fee": 0.0005,
+        "out_to_2pct": 2414913.273471,
+        "equivalent_reserve": 240277772.28896344,
+        "ticks_crossed": 16
+      }
+    },
+    "0x4fe72543c5c95cd6b5f3cb516cd235ba882e2e705fe3424db6f99dfe5811d0d3": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xb7843fe78e7e7fd3106a1b939645367967d1f986c2e45edb8932ad1896450877": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 3,
+      "direct_route": {
+        "pool": "0x6546055f46e866a4b9a4a13e81273e3152bae5da",
+        "fee": 0.0005,
+        "out_to_2pct": 918581.983732,
+        "equivalent_reserve": 91396587.67068858,
+        "ticks_crossed": 18
+      }
+    },
+    "0x6a57d77b9a173c5ed10d432e7009dd1ee9a97fac62a7bc970b4bd715e2fff5c8": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 1,
+      "direct_route": {
+        "pool": "0xec5055067d60292ab2c514a1090bc8e014e4abaa",
+        "fee": 0.0005,
+        "out_to_2pct": 0.501179,
+        "equivalent_reserve": 49.86604486418072,
+        "ticks_crossed": 0
+      }
+    },
+    "0x45671fb8d5dea1c4fbca0b8548ad742f6643300eeb8dbd34ad64a658b2b05bca": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x0367161b7cb23dfd03747dd3815d1c445b0437b648a6d50346249c6e7b92ff1b": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x6acd18854e43f93f5a90446004c35c72a68af1ad99f08cb247782ce6457914ca": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x02bb03bf55f07c3ed3eee8a25d8df60fb9d09a38db612f0e07cf5c4d3df0100d": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x04f82076dd379cf1dc479cb166324b640f6c25b0793391d79ccfcb6efb61ee7b": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xc2c53d2b868e163da71de14a5113cc2743fc9b5ad7488334720ed2846566a8f6": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xdc5333039bcf15f1237133f74d5806675d83d9cf19cfd4cfdd9be674842651bf": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x7eb59373d63627be64b42406b108b602174b4ccc",
+        "fee": 0.0001,
+        "out_to_2pct": 1245.693792,
+        "equivalent_reserve": 123943.38653236348,
+        "ticks_crossed": 2
+      }
+    },
+    "0x3758a9e2abbd67b5621f23ec482608f2f98b3c792874661ce49df7843aadcfd2": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x4e68ccd3e89f51c3074ca5072bbac773960dfa36",
+        "fee": 0.003,
+        "out_to_2pct": 5904834.186479,
+        "equivalent_reserve": 587516089.9768543,
+        "ticks_crossed": 4
+      }
+    },
+    "0x9105a5447f3eecdf768f04da12d580a878106e2e6b234312db2ee0f304539e35": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x2a0b893471c785a1f0fda00df7fca578b703eef7ae7186d2429c2824b5212467": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x4565ac05d38b19374ccbb04c17cca60ca9353cd41824f0803d0fc7704f60eaed": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xeffa583f87a425f68b8ba0c62408b2afe5c30dac436c680fbd2ee3836f037e1d": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x31227b50eccdc9c589826aa2d9e7c5619b1895da",
+        "fee": 0.01,
+        "out_to_2pct": 15770.448576,
+        "equivalent_reserve": 1569119.8079310404,
+        "ticks_crossed": 2
+      }
+    },
+    "0x1e9d614631a7df0ec07fb05b2c8cb2491575fd1a63a33bf187a6afb295a4fc64": {
+      "block": 26166137,
+      "block_hash": "0x0741ed65e42e431ba9179cf1d8a7063dc496990d547a8ef07f1f52307ccfb52c",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xef2c308b5abecf5c8750a1aa82b47c558005feb7a03f4f8e1ad682d71ac8d0ba": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x61765602144e91e5ac9f9e98b8584eae308f9951596fd7f5e0f59f21cd2bf664": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x1a9ccaca2dba9469cd9cba3d077466761b05f465c412d2bf2c71614c4963dd84": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x755f954513d31d5f24aaf3d0cdc5e913a28383f8ea8ff85be9ffffa7371fb64d": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 1,
+      "direct_route": {
+        "pool": "0x5b70a1582135bd04e39ca94a6a56fc3a828e3115",
+        "fee": 0.0001,
+        "out_to_2pct": 5148134.35266,
+        "equivalent_reserve": 512226367.4187736,
+        "ticks_crossed": 1
+      }
+    },
+    "0xe83d72fa5b00dcd46d9e0e860d95aa540d5ec106da5833108a9f826f21f36f52": {
+      "block": 26166111,
+      "block_hash": "0x7eb02df211d594b66c28162672f9b051fce3960692bf8f402e4e300e2924d860",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x526d6d2e334afcb8ffc183eba1bdb1ed58e5a71fa9bd1a75a95eb71c6808081f": {
+      "block": 26166104,
+      "block_hash": "0xb39be714d6fe20b6333d57eadd755c14f4b68247ed3c2379868f3183ce4cfebc",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x5638bbde046ec2efc7c8f3fd8dc5a9a1016f7eeb",
+        "fee": 0.003,
+        "out_to_2pct": 27630.859177,
+        "equivalent_reserve": 2749200.7114347196,
+        "ticks_crossed": 5
+      }
+    },
+    "0xd3c7b3668b91b90f7571817009503826025159111743b95f542730b42c94d3ea": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 1,
+      "direct_route": {
+        "pool": "0xf9adf9525342587bd4620e56c8a86c64ff3fed38",
+        "fee": 0.01,
+        "out_to_2pct": 0.22813,
+        "equivalent_reserve": 22.698358899446198,
+        "ticks_crossed": 1
+      }
+    },
+    "0xe475337d11be1db07f7c5a156e511f05d1844308e66e17d2ba5da0839d3b34d9": {
+      "block": 26166107,
+      "block_hash": "0xc0f4bd6bf071f7b6ee8a9cfbb0fdceefa413fc50ab9338a1b7629625dc890e57",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xa458018cf1a6e77ebbcc40ba5776ac7990e523b7cc5d0c1e740a4bbc13190d8f": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x39d11026eae1c6ec02aa4c0910778664089cdd97c3fd23f68f7cd05e2e95af48": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x1247f1c237eceae0602eab1470a5061a6dd8f734ba88c7cdc5d6109fb0026b28": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xc581c5f70bd1afa283eed57d1418c6432cbff1d862f94eaf58fdd4e46afbb67f": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x760b14c9003f08ac4bf0cfb02596ee4d6f0548a4fde5826bfd56befb9ed62ae9": {
+      "block": 26166105,
+      "block_hash": "0xd71efe5e0dce0c016fcbfefd787261d7bf91264f78ef654e07bfbf53e8b93293",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0xb81eaed0df42ff6646c8daf4fe38afab93b13b6a89c9750d08e705223a45e2ef": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 0,
+      "direct_route": null
+    },
+    "0x12dbf4937132ff2c6445212519295ce9afbee3c765ba626af5b197fe6c3941a0": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 2,
+      "direct_route": {
+        "pool": "0x15aa01580ae866f9ff4dbe45e06e307941d90c7b",
+        "fee": 0.003,
+        "out_to_2pct": 14.525189990304884,
+        "equivalent_reserve": 1445.219723326979,
+        "ticks_crossed": 3
+      }
+    },
+    "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 3,
+      "direct_route": {
+        "pool": "0x109830a1aaad605bbf02a9dfa7b0b92ec2fb7daa",
+        "fee": 0.0001,
+        "out_to_2pct": 1706.3547307520364,
+        "equivalent_reserve": 169777.9866233183,
+        "ticks_crossed": 27
+      }
+    },
+    "0xd0e50cdac92fe2172043f5e0c36532c6369d24947e40968f34a5e8819ca9ec5d": {
+      "block": 26166106,
+      "block_hash": "0xb5e34d39a9cb54224c04552ae63d066f7066d28214fddd925170f1aa8c043e08",
+      "transport_error": null,
+      "qualified_pools": 3,
+      "direct_route": {
+        "pool": "0x109830a1aaad605bbf02a9dfa7b0b92ec2fb7daa",
+        "fee": 0.0001,
+        "out_to_2pct": 1706.3547307520364,
+        "equivalent_reserve": 169777.9866233183,
+        "ticks_crossed": 27
+      }
+    },
+    "0x138eec0e4a1937eb92ebc70043ed539661dd7ed5a89fb92a720b341650288a40": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 4,
+      "direct_route": {
+        "pool": "0x4585fe77225b41b697c938b018e2ac67ac5a20c0",
+        "fee": 0.0005,
+        "out_to_2pct": 907.1635524015063,
+        "equivalent_reserve": 90260.48258846253,
+        "ticks_crossed": 16
+      }
+    },
+    "0x37e7484d642d90f14451f1910ba4b7b8e4c3ccdd0ec28f8b2bdb35479e472ba7": {
+      "block": 26166103,
+      "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
+      "transport_error": null,
+      "qualified_pools": 3,
+      "direct_route": {
+        "pool": "0x7a415b19932c0105c82fdb6b720bb01b0cc2cae3",
+        "fee": 0.0005,
+        "out_to_2pct": 5031.623775767091,
+        "equivalent_reserve": 500633.8592440627,
+        "ticks_crossed": 5
+      }
+    }
+  },
+  "selected_policy_means_bp": {
+    "No liquidation": {
+      "flat_loss_bp": 765.4436364359553,
+      "pool_loss_bp": 6170.126930952257,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0,
+      "liquidated_debt_bp": 0.0,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 0.0
+    },
+    "No liquidation, half reserve": {
+      "flat_loss_bp": 765.4436364359553,
+      "pool_loss_bp": 7682.030357367496,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0,
+      "liquidated_debt_bp": 0.0,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 0.0
+    },
+    "No liquidation, double reserve": {
+      "flat_loss_bp": 765.4436364359553,
+      "pool_loss_bp": 4333.135313175648,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0,
+      "liquidated_debt_bp": 0.0,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 0.0
+    },
+    "Daily, prompt": {
+      "flat_loss_bp": 483.0428389053357,
+      "pool_loss_bp": 4412.32908695583,
+      "flat_delta_bp": -282.4007975306198,
+      "pool_delta_bp": -1757.7978439964272,
+      "liquidated_debt_bp": 2103.3040463318625,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 62.18773703134134
+    },
+    "Hourly, prompt": {
+      "flat_loss_bp": 404.6069584101174,
+      "pool_loss_bp": 4195.297626098533,
+      "flat_delta_bp": -360.8366780258381,
+      "pool_delta_bp": -1974.829304853723,
+      "liquidated_debt_bp": 2355.3783732470793,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 58.46378115909752
+    },
+    "Hourly lows and closes": {
+      "flat_loss_bp": 415.5404478680472,
+      "pool_loss_bp": 4162.841201909661,
+      "flat_delta_bp": -349.9031885679083,
+      "pool_delta_bp": -2007.285729042595,
+      "liquidated_debt_bp": 2397.6035371489024,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 57.589614948215434
+    },
+    "Hourly, 1% daily cap": {
+      "flat_loss_bp": 450.27389568544766,
+      "pool_loss_bp": 4521.496040305161,
+      "flat_delta_bp": -315.1697407505078,
+      "pool_delta_bp": -1648.6308906470967,
+      "liquidated_debt_bp": 1957.3345979494811,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 46.409563064212996
+    },
+    "Hourly, 25% refill": {
+      "flat_loss_bp": 625.2881463607705,
+      "pool_loss_bp": 5588.776197409016,
+      "flat_delta_bp": -140.155490075185,
+      "pool_delta_bp": -581.3507335432405,
+      "liquidated_debt_bp": 769.6186043013199,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 19.41005596100981
+    },
+    "Hourly, no refill": {
+      "flat_loss_bp": 724.3807203997255,
+      "pool_loss_bp": 6123.845171779073,
+      "flat_delta_bp": -41.062916036229836,
+      "pool_delta_bp": -46.281759173184355,
+      "liquidated_debt_bp": 181.29072046500448,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 2.222119836951631
+    },
+    "Hourly, one-day lag": {
+      "flat_loss_bp": 395.8904444599564,
+      "pool_loss_bp": 2732.4662585128644,
+      "flat_delta_bp": -369.553191975999,
+      "pool_delta_bp": -3437.6606724393923,
+      "liquidated_debt_bp": 4238.643467110534,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 164.94386604730417
+    },
+    "Hourly, oracle 2% high": {
+      "flat_loss_bp": 565.1086892432003,
+      "pool_loss_bp": 5174.902786195151,
+      "flat_delta_bp": -200.3349471927552,
+      "pool_delta_bp": -995.2241447571064,
+      "liquidated_debt_bp": 1175.2087428331708,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 19.067788421907405
+    },
+    "Hourly, borrower rescue": {
+      "flat_loss_bp": 240.21982590828037,
+      "pool_loss_bp": 3963.5137251403776,
+      "flat_delta_bp": -525.223810527675,
+      "pool_delta_bp": -2206.613205811879,
+      "liquidated_debt_bp": 2196.5739286589433,
+      "outside_repayment_bp": 377.40895737633707,
+      "insolvent_premium_bp": 35.351824935041904
+    },
+    "Hourly, half reserve": {
+      "flat_loss_bp": 567.5283972163581,
+      "pool_loss_bp": 6581.4213551029325,
+      "flat_delta_bp": -197.91523921959728,
+      "pool_delta_bp": -1100.609002264563,
+      "liquidated_debt_bp": 1208.2170948107432,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 33.37248389777896
+    },
+    "Hourly, double reserve": {
+      "flat_loss_bp": 218.78024229146163,
+      "pool_loss_bp": 1482.347387569305,
+      "flat_delta_bp": -546.6633941444937,
+      "pool_delta_bp": -2850.7879256063425,
+      "liquidated_debt_bp": 4243.245730884293,
+      "outside_repayment_bp": 0.0,
+      "insolvent_premium_bp": 46.838707565354966
+    }
+  },
+  "standardised_ge_1m_policy_medians_bp": {
+    "No liquidation": {
+      "flat_loss_bp": 2291.3131382073752,
+      "pool_loss_bp": 6618.740068561828,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0
+    },
+    "No liquidation, half reserve": {
+      "flat_loss_bp": 2291.3131382073752,
+      "pool_loss_bp": 7855.647400672676,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0
+    },
+    "No liquidation, double reserve": {
+      "flat_loss_bp": 2291.3131382073752,
+      "pool_loss_bp": 5255.108964417686,
+      "flat_delta_bp": 0.0,
+      "pool_delta_bp": 0.0
+    },
+    "Daily, prompt": {
+      "flat_loss_bp": 1774.6410611749461,
+      "pool_loss_bp": 5311.1208350572415,
+      "flat_delta_bp": -310.62169881511795,
+      "pool_delta_bp": -1489.1820347410642
+    },
+    "Hourly, prompt": {
+      "flat_loss_bp": 1646.9921523128032,
+      "pool_loss_bp": 5081.032322957215,
+      "flat_delta_bp": -376.1319998600843,
+      "pool_delta_bp": -1625.7860293732624
+    },
+    "Hourly lows and closes": {
+      "flat_loss_bp": 1668.9490281201315,
+      "pool_loss_bp": 4978.119297349442,
+      "flat_delta_bp": -366.42918268466883,
+      "pool_delta_bp": -1626.8151781160905
+    },
+    "Hourly, 1% daily cap": {
+      "flat_loss_bp": 1764.2667780972338,
+      "pool_loss_bp": 5217.9532295161935,
+      "flat_delta_bp": -331.1081437112446,
+      "pool_delta_bp": -1597.1169402184573
+    },
+    "Hourly, 25% refill": {
+      "flat_loss_bp": 2129.9930128973638,
+      "pool_loss_bp": 6047.037906955117,
+      "flat_delta_bp": -126.29400175006381,
+      "pool_delta_bp": -469.3830114611669
+    },
+    "Hourly, no refill": {
+      "flat_loss_bp": 2247.667289202269,
+      "pool_loss_bp": 6567.771918105336,
+      "flat_delta_bp": -37.79102311751788,
+      "pool_delta_bp": -40.7377487159368
+    },
+    "Hourly, one-day lag": {
+      "flat_loss_bp": 1598.4722466694966,
+      "pool_loss_bp": 3381.1035634981463,
+      "flat_delta_bp": -537.9206255209472,
+      "pool_delta_bp": -3167.0649587164717
+    },
+    "Hourly, oracle 2% high": {
+      "flat_loss_bp": 1926.6082511664022,
+      "pool_loss_bp": 5696.577494161595,
+      "flat_delta_bp": -109.77219209130119,
+      "pool_delta_bp": -632.6870847713332
+    },
+    "Hourly, borrower rescue": {
+      "flat_loss_bp": 1416.68008918149,
+      "pool_loss_bp": 4856.214133435678,
+      "flat_delta_bp": -735.7252148986795,
+      "pool_delta_bp": -1951.124927315438
+    },
+    "Hourly, half reserve": {
+      "flat_loss_bp": 1928.5494730542687,
+      "pool_loss_bp": 6942.654819140015,
+      "flat_delta_bp": -192.87359311400337,
+      "pool_delta_bp": -930.3197134070854
+    },
+    "Hourly, double reserve": {
+      "flat_loss_bp": 1161.4501677623687,
+      "pool_loss_bp": 2909.5169351588274,
+      "flat_delta_bp": -668.7314404298029,
+      "pool_delta_bp": -2425.6678430277584
+    }
+  },
+  "inputs_sha256": {
+    "morpho-direct-depth.json": "45b9de65882c115b4726fecf17bac7e116daba85d05e5412440bd37c0a5237cf",
+    "bitstamp-btcusd-hourly-stress.json": "fffeb0205c0df0b685cd37598f2282cadb663fc763e23b379b90c63009befe15"
+  }
+}
