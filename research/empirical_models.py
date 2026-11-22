@@ -110,7 +110,7 @@ def mean_block_interval(x, block=30, draws=2000, seed=SEED):
     return [float(v) for v in np.quantile(b, [0.025, 0.975])]
 
 
-def run(output: Path):
+def run(output: Path, decay_grid=(0.90, 0.94, 0.97, 0.99), path_count=50_000):
     output.mkdir(parents=True, exist_ok=True)
     data = json.loads((RAW / "market-history.json").read_text(encoding="utf-8"))[
         "snapshot"
@@ -139,7 +139,7 @@ def run(output: Path):
         pre = ~test
         scores = {}
         v0 = float(np.mean(x[train] ** 2))
-        for lam in [0.90, 0.94, 0.97, 0.99]:
+        for lam in decay_grid:
             v, _ = ewma(x, lam, v0)
             scores[str(lam)] = float(
                 np.mean(stats.norm.logpdf(x[val], 0, np.sqrt(v[val])))
@@ -247,7 +247,7 @@ def run(output: Path):
             "variance": vt.tolist(),
         }
         rng = np.random.default_rng(SEED + (0 if asset == "BTC" else 1))
-        n = 50000
+        n = path_count
         h = 30
         sim = np.ones((n, h + 1))
         v = np.full(n, latest)
@@ -379,5 +379,5 @@ def run(output: Path):
     fig.savefig(output / "borrower-loss-curve.pdf", metadata={"CreationDate": None})
     plt.close(fig)
     print(
-        "Saved fitted models, held-out forecasts, 50,000-path simulations and vector figures."
+        f"Saved fitted models, held-out forecasts, {path_count:,}-path simulations and vector figures."
     )

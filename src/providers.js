@@ -70,6 +70,13 @@ async function getPendleExitQuote(collateralAmount, exitFraction) {
     throw new Error(`Pendle did not return a direct PT-to-USDC route for the ${(exitFraction * 100).toFixed(0)}% exit quote.`);
   }
   const outputConfig = route.contractParamInfo?.contractCallParams?.[3];
+  const tx = route.tx;
+  const unsignedTransaction = tx && {
+    to: tx.to,
+    from: tx.from,
+    value: tx.value,
+    data: tx.data
+  };
   return {
     fraction: exitFraction,
     request: Object.fromEntries(request),
@@ -77,6 +84,7 @@ async function getPendleExitQuote(collateralAmount, exitFraction) {
     input: quote.inputs?.[0],
     output,
     minTokenOut: outputConfig?.minTokenOut ?? null,
+    unsignedTransaction: unsignedTransaction ?? null,
     routeData: {
       aggregatorType: route.data?.aggregatorType ?? null,
       priceImpact: route.data?.priceImpact ?? null,

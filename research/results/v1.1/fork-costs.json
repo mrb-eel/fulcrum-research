@@ -1,0 +1,35 @@
+{
+  "anchor_block": 26162436,
+  "opening_health": 1.0533177675626622,
+  "opening_equity_usdc": 516238.39245000016,
+  "full_aggregator_quote_usdc": 3844988.933583,
+  "full_aggregator_quote_discount": 0.021944825059345807,
+  "executions": [
+    {
+      "fraction": 0.01,
+      "pt_sold": 39614.91354129142,
+      "marked_pt_usdc": 39312.597408,
+      "proceeds_usdc": 39300.887233,
+      "sale_discount": 0.0002978733477838613,
+      "health_at_anchor_mark": 1.0549249159069343,
+      "health_change": 0.0016071483442721135,
+      "equity_at_anchor_mark_usdc": 516226.6703059999,
+      "equity_change_usdc": -11.72214400023222,
+      "equity_change_ratio": -2.270684275262917e-05,
+      "gas_used": 678561
+    },
+    {
+      "fraction": 0.1,
+      "pt_sold": 396149.13541291415,
+      "marked_pt_usdc": 393125.974085,
+      "proceeds_usdc": 371560.750452,
+      "sale_discount": 0.05485575885234495,
+      "health_at_anchor_mark": 1.0637208137473066,
+      "health_change": 0.010403046184644493,
+      "equity_at_anchor_mark_usdc": 494673.1568479999,
+      "equity_change_usdc": -21565.235602000263,
+      "equity_change_ratio": -0.0417737927232697,
+      "gas_used": 680587
+    }
+  ]
+}

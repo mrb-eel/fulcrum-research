@@ -1,0 +1,14 @@
+{
+  "rows": 2923,
+  "windows": 2893,
+  "anchor_from": "2017-12-31",
+  "last_bucket": "2025-12-31",
+  "close_hits": 123,
+  "low_hits": 174,
+  "low_only_hits": 51,
+  "close_hit_frequency": 0.04251641894227445,
+  "low_hit_frequency": 0.06014517801590045,
+  "close_hit_runs": 9,
+  "low_hit_runs": 13,
+  "sha256": "59b8ed47449f951fa77c2d68f64e36753e8c133454846286c70db19221f09c5a"
+}
