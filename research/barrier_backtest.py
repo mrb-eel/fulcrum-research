@@ -43,19 +43,24 @@ def gjr_cost(parameters, returns, initial):
 
 
 def fit_gjr(returns, initial):
-    def stability(params):
-        return 0.999 - params[1] - params[2] / 2 - params[3]
+    target = float(np.mean(returns**2))
 
-    fits = [minimize(gjr_cost, guess, args=(returns, initial), method='SLSQP',
-                     bounds=((1e-6, 50), (0, 0.8), (0, 1), (0, 0.999), (2.05, 100)),
+    def stability(params):
+        alpha, gamma, beta, _ = params
+        return 1 - alpha - gamma / 2 - beta
+
+    def coefficients(params):
+        return np.r_[max(0.0, stability(params)) * target, params]
+
+    fits = [minimize(lambda x: gjr_cost(coefficients(x), returns, initial), guess, method='SLSQP',
+                     bounds=((0, 1), (0, 2), (0, 1), (2.05, 100)),
                      constraints={'type': 'ineq', 'fun': stability},
                      options={'maxiter': 750, 'ftol': 1e-11})
-            for guess in ([0.2, 0.08, 0.08, 0.85, 4], [0.5, 0.04, 0.12, 0.85, 7],
-                          [1.0, 0.08, 0.02, 0.80, 9])]
+            for guess in ([0.08, 0.08, 0.85, 4], [0.04, 0.12, 0.85, 7], [0.08, 0.02, 0.80, 9])]
     feasible = [fit for fit in fits if fit.success and stability(fit.x) >= -1e-8]
     if not feasible:
         raise RuntimeError('GJR-GARCH estimation did not converge inside the feasible set.')
-    return min(feasible, key=lambda fit: fit.fun).x
+    return coefficients(min(feasible, key=lambda fit: fit.fun).x)
 
 
 @njit(parallel=True)

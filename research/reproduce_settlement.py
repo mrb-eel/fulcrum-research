@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 import numpy as np
 from numba import get_num_threads, set_num_threads
 
-from depth_experiment import profitable_budget, simulate_recovery, terminal_batch_price
+from depth_experiment import archived_full_book_price, profitable_budget, simulate_recovery
 from liquidation_study import describe
 from reproduce import compare
 from reproduce_revision import OUTPUT as PRICE_OUTPUT, main as reproduce_v11, read, save
@@ -24,12 +24,12 @@ FEE = 0.01
 def check_boundary():
     collateral = np.array([100.0, 100.0])
     debt = np.array([10.0, 100.0])
-    price = terminal_batch_price(collateral, debt, 1.0, 100.0, 0.0, 0.0)
+    price = archived_full_book_price(collateral, debt, 1.0, 100.0, 0.0, 0.0)
     np.testing.assert_allclose(price, 0.45)
     sale = np.minimum(collateral, debt / price)
     np.testing.assert_allclose((sale * price).sum(), 100 * sale.sum() / (100 + sale.sum()))
     np.testing.assert_allclose(debt - sale * price, [0.0, 55.0], atol=1e-12)
-    assert terminal_batch_price(collateral, debt, 1.0, 100.0, 0.0, 20.0) < price
+    assert archived_full_book_price(collateral, debt, 1.0, 100.0, 0.0, 20.0) < price
 
     paths = np.array([[1.0, 0.75, 0.75]])
     args = paths, np.array([100.0]), np.array([80.0]), 0.86, np.inf, 1e3
@@ -80,7 +80,7 @@ def run(output: Path, prices: Path):
     for label, cap, reserve, lag, refill in policies:
         flat_loss, pool_loss, repaid, distressed, premium, written_off, _ = simulate_recovery(
             paths, c, d, lltv, cap * initial_debt, reserve, lag,
-            fee=FEE, terminal_discount=FEE, daily_refill=refill,
+            fee=FEE, terminal_discount=FEE, daily_refill=refill, archived_full_book=True,
         )
         if not (np.all(pool_loss >= flat_loss - 1e-6) and np.all(pool_loss <= initial_debt + 1e-6)):
             raise ValueError(f"Terminal recovery or loss conservation failed for {label}.")

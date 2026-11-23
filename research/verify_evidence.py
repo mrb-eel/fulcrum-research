@@ -318,6 +318,43 @@ def verify():
         liq["rows"][6]["liquidation_probability"],
         0,
     )
+    results = OUT / "v2.0"
+    study = json.loads((results / "intraday-study.json").read_text(encoding="utf-8"))
+    abstract = json.loads((ROOT / "paper/edition.json").read_text(encoding="utf-8"))["abstract"]
+    means = study["selected_policy_means_bp"]
+    daily, hourly = means["Daily, prompt"], means["Hourly, prompt"]
+    flat_gain = round(daily["flat_loss_bp"] - hourly["flat_loss_bp"])
+    pool_gain = round(daily["pool_loss_bp"] - hourly["pool_loss_bp"])
+    check("Abstract crash windows", len(study["episodes_by_factor"]["BTC"]), 4)
+    check("Abstract crash-count wording", "Across four historical crash paths" in abstract, True)
+    check("Abstract flat clock effect", flat_gain, 78)
+    check("Abstract pool clock effect", pool_gain, 145)
+    check("Abstract contains both verified effects",
+          re.findall(r"\d+(?= basis points)", abstract), [str(flat_gain), str(pool_gain)])
+    check("Policy grid combinations", study["rows"], (study["replayed_markets"] + study["replayed_direct_quotes"]) * 4 * 14)
+    check("Pool net creditor recovery", hourly["pool_net_recovery_bp"], 10000 - hourly["pool_loss_bp"])
+    curve = study["anchor_depth_audit"]["curve_at_price_limits"]
+    check("Anchor depth limits", [r["decline_pct"] for r in curve], [2, 5, 10, 20, 40])
+    check("Anchor 40 percent quote matches paper", round(curve[-1]["direct_30bp_usdc"] / 1e6, 1), 7.1)
+    check("Anchor 40 percent extrapolation matches paper", round(curve[-1]["model_usdc"] / 1e6, 1), 15.3)
+    comparison = json.loads((results / "historical-event.json").read_text(encoding="utf-8"))
+    packet = json.loads((R / "raw/morpho-wbtc-2025-10-10.json").read_text(encoding="utf-8"))
+    opening_positions = [words(value) for _, value in packet["positions"]]
+    check("Historical opening share reconciliation", sum(p[1] for p in opening_positions), words(packet["market_state"])[3])
+    check("Historical opening block", comparison["opening_block"], packet["local_fork"]["opening_block"])
+    observed = [words(log["data"]) for log in packet["observed_liquidations"]]
+    check("Historical observed liquidation count", len(observed), 11)
+    check("Historical observed repayment", sum(e[0] for e in observed) / 1e6, comparison["observed"]["repayment_usdc"])
+    check("Historical observed bad debt", sum(e[3] for e in observed) / 1e6, comparison["observed"]["bad_debt_usdc"])
+    model = comparison["model"][0]
+    chain_borrowers = {"0x" + log["topics"][3][-40:] for log in packet["observed_liquidations"]}
+    overlap = len(chain_borrowers.intersection(model["addresses"]))
+    repayment_share = round(100 * model["repayment_usdc"] / comparison["observed"]["repayment_usdc"])
+    check("Abstract event borrower overlap", [overlap, len(chain_borrowers)], [9, 11])
+    check("Abstract event repayment share", repayment_share, 80)
+    check("Abstract event write-offs", [comparison["observed"]["bad_debt_usdc"], model["writeoff_usdc"]], [0, 0])
+    check("Abstract numbers and ordering", re.findall(r"\d+", abstract),
+          [str(n) for n in (flat_gain, pool_gain, overlap, len(chain_borrowers), repayment_share)])
     return {
         "offline_checks_passed": len(checks),
         "legacy_reference_calculations_passed": len(ns["checks"]),

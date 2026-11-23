@@ -17,7 +17,7 @@ RAW = HERE / 'raw'
 RPC = 'https://ethereum.reth.rs/rpc'
 FACTORY = '0x1F98431c8aD98523631AE4a59f267346ea31F984'
 QUOTER = '0x61fFE014bA17989E743c5F6cB21bF9697530B21e'
-ENDPOINT = 'https://www.bitstamp.net/api/v2/ohlc/btcusd/'
+ENDPOINT = 'https://www.bitstamp.net/api/v2/ohlc/'
 NUMBER_OF_EPISODES = 4
 
 
@@ -54,14 +54,15 @@ def stamp(day):
     return int(datetime.combine(day, datetime.min.time(), UTC).timestamp())
 
 
-def capture_hourly():
-    if (RAW / 'bitstamp-btcusd-hourly-stress.json').exists():
+def capture_hourly(pair='btcusd'):
+    name = f'bitstamp-{pair}-hourly-stress.json'
+    if (RAW / name).exists():
         raise FileExistsError('Retained hourly observations already exist.')
     episodes = []
     for anchor, end in episode_windows():
         start_stamp = stamp(anchor) + 23 * 3600
         last_stamp = stamp(end) + 23 * 3600
-        url = ENDPOINT + '?' + urlencode({'step': 3600, 'limit': 1000, 'start': start_stamp,
+        url = f'{ENDPOINT}{pair}/?' + urlencode({'step': 3600, 'limit': 1000, 'start': start_stamp,
                                            'end': last_stamp + 3600, 'exclude_current_candle': 'true'})
         result = get(url)['data']['ohlc']
         records = sorted([[int(x['timestamp']), x['open'], x['high'], x['low'], x['close']] for x in result
@@ -70,7 +71,7 @@ def capture_hourly():
             raise ValueError(f'Incomplete hourly series for {anchor}: {len(records)} observations')
         episodes.append({'origin_bucket': str(anchor), 'last_bucket': str(end), 'source': url, 'bars': records})
         print(f'{anchor} to {end}: {len(records)} hourly bars', flush=True)
-    write_once('bitstamp-btcusd-hourly-stress.json', {'captured_utc': datetime.now(UTC).isoformat(),
+    write_once(name, {'captured_utc': datetime.now(UTC).isoformat(),
               'bar_columns': ['bucket', 'open', 'high', 'low', 'close'], 'episodes': episodes})
 
 
@@ -107,7 +108,7 @@ def capture_depth():
     print(f'{len(records)} market blocks inspected.', flush=True)
 
 
-def quote_market(args):
+def quote_market(args, decline_pct=2):
     market_id, block, collateral, loan = args
     token_in = collateral['address'].lower()
     token_out = loan['address'].lower()
@@ -158,8 +159,9 @@ def quote_market(args):
             record['slot0_unavailable'] = True
             continue
         price = words(result)[0]
-        target = (math.isqrt(price * price * 98 // 100) if collateral_is_token0
-                  else math.isqrt(price * price * 100 // 98) + 1)
+        remaining_pct = 100 - decline_pct
+        target = (math.isqrt(price * price * remaining_pct // 100) if collateral_is_token0
+                  else math.isqrt(price * price * 100 // remaining_pct) + 1)
         # A large read-only input ensures the price target, rather than the input,
         # stops the quote. QuoterV2 returns the resulting price and proceeds.
         quantity = 10**int(collateral['decimals']) * 10**10
@@ -177,8 +179,64 @@ def quote_market(args):
             'loan': loan, 'pools': results, 'journal': journal}
 
 
+def capture_anchor_depth():
+    prior = json.loads((RAW / 'morpho-direct-depth.json').read_text(encoding='utf-8'))
+    study = json.loads((HERE / 'results/vault-study.json').read_text(encoding='utf-8'))
+    anchor_id = study['selected_market']['market_id']
+    anchor = next(row for row in prior['markets'] if row['market_id'] == anchor_id)
+    args = (anchor_id, anchor['block'], anchor['collateral'], anchor['loan'])
+    quotes = {'2': anchor}
+    for decline_pct in (5, 10, 20, 40):
+        quotes[str(decline_pct)] = quote_market(args, decline_pct)
+        sleep(1)
+    write_once('morpho-anchor-depth-curve.json', {'source': RPC, 'captured_utc': datetime.now(UTC).isoformat(),
+                'quotes': quotes})
+
+
+def capture_anchor_routes():
+    """Compare direct and routed execution on the same historical state."""
+    from morpho_event import call, rpc
+
+    quotes = json.loads((RAW / 'morpho-anchor-depth-curve.json').read_text(encoding='utf-8'))['quotes']['2']
+    collateral, loan = (quotes[key]['address'].lower()[2:] for key in ('collateral', 'loan'))
+    weth = 'c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    block = quotes['block']
+    paths = {str(fee): collateral + f'{fee:06x}' + loan for fee in (500, 3000)}
+    for left in (500, 3000):
+        for right in (500, 3000):
+            paths[f'WETH/{left}/{right}'] = collateral + f'{left:06x}' + weth + f'{right:06x}' + loan
+
+    cases, results = [], []
+    for size in (1, 10, 50, 100, 200):
+        for portion in (0.5, 1.0):
+            amount = int(size * portion * 10**quotes['collateral']['decimals'])
+            for name, path in paths.items():
+                # quoteExactInput(bytes,uint256), path offset then quantity and padded path.
+                data = '0xcdca1753' + word(64) + word(amount) + word(len(path) // 2) + path.ljust(128, '0')
+                cases.append((size, portion, name, data))
+    for start in range(0, len(cases), 10):
+        requests = [{'jsonrpc': '2.0', 'id': i, 'method': method, 'params': params}
+                    for i, (method, params) in enumerate(call(QUOTER, row[3], block) for row in cases[start:start+10])]
+        for attempt in range(5):
+            try:
+                batch = sorted(get(RPC, requests), key=lambda row: row['id'])
+                break
+            except HTTPError as error:
+                if error.code != 429 or attempt == 4:
+                    raise
+                sleep(4 * (attempt + 1))
+        results.extend(batch)
+    header = next(rpc([('eth_getBlockByNumber', [hex(block), False])]))
+    assert header['hash'] == quotes['block_hash']
+    write_once('morpho-anchor-route-comparison.json', {'source': RPC, 'block': block,
+        'block_hash': header['hash'], 'quoter': QUOTER, 'paths': paths,
+        'quotes': [{'size_wbtc': size, 'portion': portion, 'route': route, 'calldata': data, 'response': response}
+                   for (size, portion, route, data), response in zip(cases, results)]})
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('source', choices=['hourly', 'depth'])
+    parser.add_argument('source', choices=['hourly', 'eth-hourly', 'depth', 'anchor-depth', 'anchor-routes'])
     args = parser.parse_args()
-    (capture_hourly if args.source == 'hourly' else capture_depth)()
+    {'hourly': capture_hourly, 'eth-hourly': lambda: capture_hourly('ethusd'),
+     'depth': capture_depth, 'anchor-depth': capture_anchor_depth, 'anchor-routes': capture_anchor_routes}[args.source]()

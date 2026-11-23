@@ -6,13 +6,13 @@
   "draws_per_origin": 20000,
   "seed": 20261122,
   "gjr": {
-    "omega_pct_squared": 0.11926286496834161,
-    "alpha": 0.07291365794377672,
-    "gamma": 4.9432214087508955e-18,
-    "beta": 0.9260863420562233,
-    "degrees_of_freedom": 3.194998137662089
+    "omega_pct_squared": 0.07109290182387598,
+    "alpha": 0.06178312595021727,
+    "gamma": 0.0,
+    "beta": 0.9332548711808012,
+    "degrees_of_freedom": 3.4100977859086203
   },
-  "gjr_variance_persistence": 0.999,
+  "gjr_variance_persistence": 0.9950379971310185,
   "pre_test_origins": 2162,
   "summary": [
     {
@@ -87,10 +87,10 @@
       "decline": 0.15,
       "events": 101,
       "hit_runs": 15,
-      "mean_probability": 0.18858195266874833,
-      "expected_events": 132.38453077346134,
-      "brier": 0.13321891059462546,
-      "log_loss": 0.44108528969510613
+      "mean_probability": 0.16335208880581611,
+      "expected_events": 114.67316634168292,
+      "brier": 0.13202132891704071,
+      "log_loss": 0.44003730769177135
     },
     {
       "model": "GJR-GARCH Student t",
@@ -98,10 +98,10 @@
       "decline": 0.25,
       "events": 3,
       "hit_runs": 1,
-      "mean_probability": 0.053423254763187766,
-      "expected_events": 37.50312484375781,
-      "brier": 0.007507890664742146,
-      "log_loss": 0.06936128999662455
+      "mean_probability": 0.041407331342834565,
+      "expected_events": 29.067946602669863,
+      "brier": 0.006426184080270102,
+      "log_loss": 0.058447287879589575
     },
     {
       "model": "GJR-GARCH Student t",
@@ -109,10 +109,10 @@
       "decline": 0.35,
       "events": 0,
       "hit_runs": 0,
-      "mean_probability": 0.016569399450255404,
-      "expected_events": 11.631718414079295,
-      "brier": 0.00038044591279093944,
-      "log_loss": 0.01676358608537873
+      "mean_probability": 0.010994037192727258,
+      "expected_events": 7.717814109294535,
+      "brier": 0.00019296321566041337,
+      "log_loss": 0.011092138098878393
     },
     {
       "model": "Five-day filtered blocks",
@@ -120,10 +120,10 @@
       "decline": 0.15,
       "events": 101,
       "hit_runs": 15,
-      "mean_probability": 0.16155830385118922,
-      "expected_events": 113.41392930353483,
-      "brier": 0.1294878459896159,
-      "log_loss": 0.43692573388256967
+      "mean_probability": 0.16167517834934464,
+      "expected_events": 113.49597520123993,
+      "brier": 0.1294145225885211,
+      "log_loss": 0.43663135842727185
     },
     {
       "model": "Five-day filtered blocks",
@@ -131,10 +131,10 @@
       "decline": 0.25,
       "events": 3,
       "hit_runs": 1,
-      "mean_probability": 0.039708057332176125,
-      "expected_events": 27.87505624718764,
-      "brier": 0.005975037771527417,
-      "log_loss": 0.05805696899049074
+      "mean_probability": 0.04044434530410232,
+      "expected_events": 28.391930403479826,
+      "brier": 0.006067303573206614,
+      "log_loss": 0.059113514531506726
     },
     {
       "model": "Five-day filtered blocks",
@@ -142,10 +142,10 @@
       "decline": 0.35,
       "events": 0,
       "hit_runs": 0,
-      "mean_probability": 0.01079946002699865,
-      "expected_events": 7.581220938953052,
-      "brier": 0.0001479660203357437,
-      "log_loss": 0.010874217768992582
+      "mean_probability": 0.010664495265265226,
+      "expected_events": 7.486475676216188,
+      "brier": 0.00014141165442119966,
+      "log_loss": 0.010735928507078985
     },
     {
       "model": "Pre-test empirical",
@@ -186,10 +186,10 @@
       "decline": 0.15,
       "events": 137,
       "hit_runs": 20,
-      "mean_probability": 0.22973922528944782,
-      "expected_events": 161.27693615319237,
-      "brier": 0.16575187567832314,
-      "log_loss": 0.5191948877029671
+      "mean_probability": 0.2283373723051739,
+      "expected_events": 160.29283535823208,
+      "brier": 0.16550984750995018,
+      "log_loss": 0.5185865218635564
     },
     {
       "model": "Five-day filtered blocks",
@@ -197,10 +197,10 @@
       "decline": 0.25,
       "events": 22,
       "hit_runs": 4,
-      "mean_probability": 0.058059846295434515,
-      "expected_events": 40.75801209939503,
-      "brier": 0.032899295221491716,
-      "log_loss": 0.16378302365052266
+      "mean_probability": 0.059681061530969026,
+      "expected_events": 41.89610519474026,
+      "brier": 0.03297527494526672,
+      "log_loss": 0.16387530829411376
     },
     {
       "model": "Five-day filtered blocks",
@@ -208,10 +208,10 @@
       "decline": 0.35,
       "events": 0,
       "hit_runs": 0,
-      "mean_probability": 0.01772333035769864,
-      "expected_events": 12.441777911104445,
-      "brier": 0.00036252920735527764,
-      "log_loss": 0.017907323646928014
+      "mean_probability": 0.017960640429516988,
+      "expected_events": 12.608369581520925,
+      "brier": 0.00037811716419013997,
+      "log_loss": 0.018152674935027716
     }
   ]
 }

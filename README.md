@@ -10,11 +10,11 @@ Liquidation and lender shortfall in stressed Morpho markets.
 
 Mohamed Rayan Bouchaibi · Version 2.0 · November 2026
 
-The study applies four severe historical price paths to 51 captured Morpho borrower books. A scan of each market's recorded block found usable direct Uniswap v3 quotes for 23. The other markets are included in the standardised relative-price stress. That stress holds the price path and reserves per unit of debt fixed across books.
+Hourly liquidation checks reduced mean lender shortfall by 78 basis points of opening debt relative to daily checks in the WBTC/USDC anchor book, under the flat recovery haircut. The corresponding distressed-only pool sale gave a 145 basis point reduction. Both comparisons use four historical crash paths and full daily refill. [Policy results](research/results/v2.0/intraday-study.json)
 
-In the anchor WBTC/USDC market, a pinned quote returned about 684,000 USDC at a 2% marginal price move. Under the resulting depth approximation and full refill, hourly liquidation checks lowered mean pool-closing shortfall by 217 basis points of opening debt compared with daily checks. Refill, oracle timing, execution depth and borrower repayments materially change that result. [Depth and sensitivity results](research/results/v2.0/intraday-study.json)
+The study replays ten BTC- and ETH-collateral books with stablecoin debt, using each asset's own observed prices over the same dates. The pinned anchor quotes show approximately 7.1 million USDC of proceeds at a 40% marginal move against 15.3 million from the curve fitted at 2%. The route audit compares two direct fee tiers, WETH routes and splits. [Depth results](research/results/v2.0/intraday-study.json)
 
-The 30-day forecast check covers 702 held-out origins. No 35% crossing occurred in that period. The paper reports conditional stress losses and leaves unconditional crash-loss forecasts uncalibrated. [Held-out forecasts](research/results/v2.0/rolling-backtest.json) · [Conditional losses](research/results/v2.0/conditional-stress.json)
+An event benchmark compares a pre-drop reconstruction of the same Morpho market with its 10 October 2025 liquidations. The rolling 30-day forecast check estimates 110 hits at the 15% closing barrier against 101 observed, with weaker agreement at more severe thresholds. [Historical event](research/results/v2.0/historical-event.json) · [Held-out forecasts](research/results/v2.0/rolling-backtest.json)
 
 ## Replication
 
@@ -25,7 +25,7 @@ python research/verify_evidence.py
 python research/reproduce_study.py
 ```
 
-The [replication guide](research/README.md) lists the Python dependencies, archived inputs and outputs. The [earlier working paper](paper/liquidation-and-creditor-recovery.pdf) retains the Compound and PT unwind studies and the 1% fee reserve thresholds of 72.4M and 362.2M USDC under matched spot and oracle. The [dashboard](docs/dashboard.md) and [early project notes](docs/archive/README.md) document the prototype.
+The [replication guide](research/README.md) lists the Python dependencies, archived inputs and outputs. The [paper archive](paper/archive/) contains the Compound ledger and PT unwind. The [dashboard](docs/dashboard.md) and [early project notes](docs/archive/README.md) document the prototype.
 
 ## Licensing
 

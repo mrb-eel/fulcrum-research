@@ -24,7 +24,8 @@ def profitable_budget(lif, spot, oracle, reserve, fee):
 @njit(parallel=True)
 def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
                       fee=0.01, terminal_discount=0.01, daily_refill=1.0,
-                      steps_per_day=1, oracle_multiplier=1.0, rescue_fraction=0.0):
+                      steps_per_day=1, oracle_multiplier=1.0, rescue_fraction=0.0,
+                      archived_full_book=False, oracle_paths=None, account_repaid=None):
     """Return path losses under both terminal conventions and execution totals."""
     count, steps = paths.shape
     accounts = len(initial_d)
@@ -47,7 +48,8 @@ def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, 
         outside_cash = initial_d * rescue_fraction
         for step in range(1, steps):
             spot = paths[path, step]
-            oracle = paths[path, max(0, step - lag)] * oracle_multiplier
+            marked_at = max(0, step - lag)
+            oracle = (paths[path, marked_at] if oracle_paths is None else oracle_paths[path, marked_at]) * oracle_multiplier
             if (step - 1) % steps_per_day == 0:
                 inventory *= 1 - daily_refill
                 remaining_daily = daily_budget
@@ -94,6 +96,8 @@ def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, 
                 budget -= payment
                 remaining_daily -= payment
                 repayments[path] += payment
+                if account_repaid is not None:
+                    account_repaid[path, i] += payment
                 if not np.isinf(reserve):
                     inventory += (1 - fee) * seized
                 collateral[i] = max(0.0, collateral[i] - seized)
@@ -103,11 +107,16 @@ def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, 
                     debt[i] = 0.0
         spot = paths[path, -1]
         recovery_multiple = spot * (1 - terminal_discount)
-        batch_price = terminal_batch_price(collateral, debt, spot, reserve, fee, inventory)
+        if archived_full_book:
+            batch_price = archived_full_book_price(collateral, debt, spot, reserve, fee, inventory)
+        else:
+            batch_price = terminal_batch_price(collateral, debt, spot, reserve, fee, inventory)
         flat_losses[path] = writeoff
         pool_losses[path] = writeoff
         cumulative_writeoffs[path] = writeoff
         for i in range(accounts):
+            if not archived_full_book and collateral[i] * spot >= debt[i] - 1e-9:
+                continue
             flat_losses[path] += max(0.0, debt[i] - collateral[i] * recovery_multiple)
             pool_losses[path] += max(0.0, debt[i] - collateral[i] * batch_price)
     return (flat_losses, pool_losses, repayments, underwater_repayments,
@@ -116,7 +125,22 @@ def simulate_recovery(paths, initial_c, initial_d, lltv, daily_budget, reserve, 
 
 @njit
 def terminal_batch_price(collateral, debt, spot, reserve, fee, inventory):
-    """Solve for the uniform net proceeds per collateral unit in the closing batch."""
+    """Pro-rata execution price for selling the collateral of spot-insolvent loans."""
+    if np.isinf(reserve):
+        return spot * (1 - fee)
+    forced_inventory = 0.0
+    for i in range(len(debt)):
+        if collateral[i] * spot < debt[i] - 1e-9:
+            forced_inventory += collateral[i]
+    neutral_collateral = reserve / spot
+    available_collateral = neutral_collateral + inventory
+    available_loan = reserve * neutral_collateral / available_collateral
+    return available_loan * (1 - fee) / (available_collateral + (1 - fee) * forced_inventory)
+
+
+@njit
+def archived_full_book_price(collateral, debt, spot, reserve, fee, inventory):
+    """Withdrawn v1.2 convention, kept solely to reproduce that archived edition."""
     fee_multiplier = 1 - fee
     if np.isinf(reserve):
         return spot * fee_multiplier
@@ -163,6 +187,7 @@ def simulate(paths, initial_c, initial_d, lltv, daily_budget, reserve, lag=0,
     """Reproduce the v1.1 flat-salvage comparison."""
     flat, _, repayments, _, _, _, _ = simulate_recovery(
         paths, initial_c, initial_d, lltv, daily_budget, reserve, lag, fee, terminal_discount,
+        archived_full_book=True,
     )
     return flat, repayments
 

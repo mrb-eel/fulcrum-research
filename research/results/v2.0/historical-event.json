@@ -1,0 +1,94 @@
+{
+  "date_utc": "2025-10-10",
+  "market_id": "0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49",
+  "opening_block": [
+    23543615,
+    "0xacaf6dc7e29b333e24d5142d4863f867d51f20a86cdb10ab89c9bb4241a01496",
+    1760054399
+  ],
+  "closing_block": [
+    23550763,
+    "0x50c644e1dabace57b72fd13ff3145158de9911e32a4386723d8d557200264478",
+    1760140799
+  ],
+  "observed_book_borrowers": 362,
+  "opening_debt_usdc": 172292319.590782,
+  "observed_total_borrow_shares": "153656184738567157468",
+  "oracle_path_marks": 287,
+  "minimum_oracle_return": -0.11970313229917307,
+  "minimum_spot_return": -0.0971641288180719,
+  "direct_reserve_usdc": 885626975.4416326,
+  "direct_fee": 0.003,
+  "observed": {
+    "liquidations": 11,
+    "borrowers": 11,
+    "borrowers_in_opening_book": 11,
+    "repayment_usdc": 4853652.547195,
+    "bad_debt_usdc": 0.0
+  },
+  "model": [
+    {
+      "policy": "Direct pool, open depth",
+      "borrowers_liquidated": 11,
+      "actual_borrowers_also_predicted": 9,
+      "repayment_usdc": 3889551.63628,
+      "writeoff_usdc": 0.0,
+      "terminal_loss_usdc": 0.0,
+      "addresses": [
+        "0x0c21241c90821e6f4a949156a5c2d18aa8aa2bde",
+        "0x34ccb8756bfab8289bd9c18b766dfabdf4c94a43",
+        "0x37396d4039415562fb6aa1259753169e305d0c2f",
+        "0x4e7a16094ece78c64411da431e4c72b541695190",
+        "0x5191bc74f0825c7b15b89215969f69aa22df9d6e",
+        "0x7a082f34519306057d644f87c7c95474717b643d",
+        "0x8cf5d7f7afcc0c81040f1a278af47b99b30ae7ae",
+        "0xcd0d16cccfaac4e2415383968e246f6a5a1d5e02",
+        "0xf5194bb8e3b2d6e0269dfe14573aa42406975fc6",
+        "0xfa7f05db27939d9d1d839a3c7239e7d4b5750b66",
+        "0xfd4c87e0c92fc81d6eb4acc2fdb7f4aeedbcb635"
+      ]
+    },
+    {
+      "policy": "Direct pool, hourly refill",
+      "borrowers_liquidated": 11,
+      "actual_borrowers_also_predicted": 9,
+      "repayment_usdc": 3889551.63628,
+      "writeoff_usdc": 0.0,
+      "terminal_loss_usdc": 0.0,
+      "addresses": [
+        "0x0c21241c90821e6f4a949156a5c2d18aa8aa2bde",
+        "0x34ccb8756bfab8289bd9c18b766dfabdf4c94a43",
+        "0x37396d4039415562fb6aa1259753169e305d0c2f",
+        "0x4e7a16094ece78c64411da431e4c72b541695190",
+        "0x5191bc74f0825c7b15b89215969f69aa22df9d6e",
+        "0x7a082f34519306057d644f87c7c95474717b643d",
+        "0x8cf5d7f7afcc0c81040f1a278af47b99b30ae7ae",
+        "0xcd0d16cccfaac4e2415383968e246f6a5a1d5e02",
+        "0xf5194bb8e3b2d6e0269dfe14573aa42406975fc6",
+        "0xfa7f05db27939d9d1d839a3c7239e7d4b5750b66",
+        "0xfd4c87e0c92fc81d6eb4acc2fdb7f4aeedbcb635"
+      ]
+    },
+    {
+      "policy": "Unbounded execution",
+      "borrowers_liquidated": 11,
+      "actual_borrowers_also_predicted": 9,
+      "repayment_usdc": 3889551.63628,
+      "writeoff_usdc": 0.0,
+      "terminal_loss_usdc": 0.0,
+      "addresses": [
+        "0x0c21241c90821e6f4a949156a5c2d18aa8aa2bde",
+        "0x34ccb8756bfab8289bd9c18b766dfabdf4c94a43",
+        "0x37396d4039415562fb6aa1259753169e305d0c2f",
+        "0x4e7a16094ece78c64411da431e4c72b541695190",
+        "0x5191bc74f0825c7b15b89215969f69aa22df9d6e",
+        "0x7a082f34519306057d644f87c7c95474717b643d",
+        "0x8cf5d7f7afcc0c81040f1a278af47b99b30ae7ae",
+        "0xcd0d16cccfaac4e2415383968e246f6a5a1d5e02",
+        "0xf5194bb8e3b2d6e0269dfe14573aa42406975fc6",
+        "0xfa7f05db27939d9d1d839a3c7239e7d4b5750b66",
+        "0xfd4c87e0c92fc81d6eb4acc2fdb7f4aeedbcb635"
+      ]
+    }
+  ]
+}

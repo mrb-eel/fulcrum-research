@@ -1,184 +1,190 @@
 # Chapter 1
 ## Research design
 
-A creditor in Morpho can be repaid early by liquidation or recover from the collateral still pledged when the stress window ends. Both channels draw on traders' ability to turn seized assets into the loan token. This study asks how interim liquidation rules and subsequent sale capacity change lender shortfall when the opening borrower book and the price path are held fixed.
+At the end of a crash, a performing loan is still a claim on its borrower. Treating its collateral as an additional sale in a closing auction can drive down the price obtained by genuinely distressed loans. This paper asks how much the choice of liquidation clock, oracle mark and pool refill changes lender shortfall once the closing sale is confined to accounts whose remaining collateral is worth less than their debt.
 
-The study uses the retained October 2026 snapshot of ten Morpho vaults. Included markets have a positive vault allocation, a captured borrower book and exact reconciliation of integer borrow shares. Repeated markets use the earliest complete capture. This yields 51 markets and 3,547 borrower-market positions. The sample follows the available captures rather than a probability selection from Morpho. The coverage audit reports every included market, including very small books. [1]
+The October 2026 capture covers ten Morpho vaults. The full capture reconciles integer borrow shares across 51 markets. The price replays use the ten books with WBTC, cbBTC or WETH collateral and USDC or USDT debt. This restriction gives each book an observed BTC or ETH price path and avoids assuming that principal tokens and dollar-linked collateral fall with BTC. The largest captured WBTC/USDC book is the anchor for the execution tests. A separate 2025 exercise uses the same market ID and the borrower balances that actually entered that day. [1] [2] [13]
 
-The detailed case is the largest captured WBTC/USDC market by debt, with 614 borrowers and 116.1 million USDC outstanding. WBTC/USDC gives the study a deliberate link between a documented borrower book, a long BTC price history and a direct on-chain conversion route. Two other comparisons use the whole captured sample. One applies a common relative collateral-price stress and common reserve per unit of debt. The other uses pair-specific direct pool quotes where a usable measurement is available. The common path is a local price stress for each market. It does not assign a BTC price exposure to stablecoins, principal tokens or other collateral. [1] [2]
-
-Perez et al. study who liquidates on Compound, what incentives they face and how promptly they act. Qin et al. compare mechanisms and the transfer of discounted collateral to liquidators. Gudgeon et al. use stylised liquidity stress to study lending solvency. This paper works at the creditor claim level and conditions on selected realised crash paths. The experiment measures how the same opening loans settle under different execution assumptions. The earlier working paper archives the Compound repayment ledger and the borrower-led PT unwind as separate exercises. [3] [4] [5] [6]
+Perez et al. and Qin et al. examine the operation and incentives of DeFi liquidations. Gudgeon et al. study lending solvency under liquidity stress. The contribution here is to compare the execution choices on fixed borrower books, audit the assumed depth curve against quotes, and compare the engine with a day of observed repayment data. The archive contains two earlier exercises on Compound repayments and a principal-token unwind. [3] [4] [5] [6]
 
 # Chapter 2
-## Observed depth and crash paths
+## Observed depth and price paths
 
-### Direct-pool coverage
+The direct-pool scan queries four Uniswap v3 fee tiers at each market's recorded block. A quote qualifies if a collateral sale produces positive loan-token proceeds and reaches the specified marginal price limit. The scan finds qualifying 2% quotes in 23 of the 51 captured markets. Eight of the ten replayed books have a matching direct-pool sensitivity. [2] [7]
 
-At each market's recorded allocation block, I query four Uniswap v3 fee tiers for a direct conversion from its collateral token into its loan token. For each available pool with a usable price, I quote a read-only sale up to the square-root price limit that corresponds to a 2% decline in marginal collateral price in loan-token units. The retained return includes proceeds, ending square-root price and ticks crossed. A quote qualifies if it reaches the limit and yields positive proceeds. I select the qualifying pool with the largest proceeds for each pair. The raw journal includes misses and successful calls. [2] [7]
+At block 26,166,103, the anchor's 0.30% pool quoted about 683,889 USDC for a 2% marginal move. Matching that point gives a constant-product equivalent USDC reserve of 68.05 million. Direct Uniswap v3 quotes give a floor on gross proceeds for liquidators who can search other routes at that state. Pool balances, ticks and marginal prices vary between routes. Gas and competition for inclusion affect what liquidators actually realise. The appendix compares the constant-product curve with same-block quotes at larger moves and includes a two-hop and split-route benchmark. [2] [7]
 
-The scan yields qualifying quotes for 23 of 51 markets. At Ethereum block 26,166,103, the anchor market's 30 basis point WBTC/USDC pool quoted 683,889 USDC across four ticks. I translate that local quote to a constant-product equivalent USDC reserve. A zero-inventory constant-product pool with reserve Y pays Y times one minus the square root of 0.98 when the marginal price moves down by 2%. Dividing the quote by that factor gives 68.05 million USDC. Holding the quote's fee fixed, the stylised curve matches one observed point. Its shape for larger sales, its evolution over the stress window and its daily refill remain scenario assumptions. The measurement excludes routed trades, other exchanges and competing orders. A missing qualifying pool is a coverage limit for this venue scan. [2]
-
-### Historical stress paths
-
-For each origin close in the 2018-2025 history, I calculate the lowest BTC/USD daily low in the next 30 UTC buckets relative to the origin. I rank those windows by that drawdown and retain the four most severe, excluding any window that overlaps an earlier choice. The selected episodes are a retrospective stress set. For each, the hourly capture supplies the origin close and 720 hourly prices. Daily closes reconstructed from those hourly bars agree with the archived daily closes. An additional run inserts the low before each hourly close. It tests sensitivity to missed lows without identifying the exact time of the low or reconstructing intrahour transaction order. [8]
+I select four disjoint 30-day windows by the largest decline of the BTC/USD daily low relative to the origin close between 2018 and 2025. The replay uses the BTC and ETH hourly prices observed on those dates. Each path starts from its own origin close. Daily closes reconstructed from the hourly feeds agree with the retained daily closes. The additional low-and-close clock places the observed low before the close within each hour. It is a sensitivity for missed threshold crossings. [8]
 
 TABLE intraday_episodes
-Origin close | Final close | Daily drawdown | Hourly drawdown | Intrahour low
-2018-01-07 | 2018-02-06 | 57.4% | 63.0% | 63.3%
-2020-02-14 | 2020-03-15 | 53.3% | 60.3% | 62.9%
-2018-11-07 | 2018-12-07 | 48.0% | 50.2% | 50.6%
-2021-05-08 | 2021-06-07 | 43.1% | 45.4% | 49.0%
+Origin close | Final close | BTC low drawdown | ETH low drawdown
+2018-01-07 | 2018-02-06 | 63.3% | 49.5%
+2020-02-14 | 2020-03-15 | 62.9% | 69.2%
+2018-11-07 | 2018-12-07 | 50.6% | 62.5%
+2021-05-08 | 2021-06-07 | 49.0% | 55.8%
 ENDTABLE
 
-Table sources: [8].
+Table sources: [8]. Drawdowns are measured from the origin close. BTC and ETH lows in this table are intrahour lows.
 
-All paths are replayed on the same October 2026 borrower positions. The dates in the table identify the price paths. They do not identify the dates on which those borrowers held the captured balances. Each replay starts with the same borrower book. The BTC/WBTC basis and the loan currency stay fixed in the anchor case, with additional oracle sensitivity described below.
+These replays apply the older price ratios to the October 2026 borrower balances. Stablecoin loan marks and the conversion between collateral wrappers and their reference assets are fixed. The depth scale, like the opening book, also comes from the 2026 capture. Section 6 instead uses the opening book, oracle and market price path from one historical day.
 
 # Chapter 3
 ## Validation of 30-day barrier forecasts
 
-For each of 702 complete forecast origins with targets in 2024-2025, I forecast whether the lowest of the next 30 closing prices falls 15%, 25% or 35% below the origin close. A second target replaces the closing minimum with the lowest recorded daily low. The first origin is the 31 December 2023 close. Model parameters use data through that close. At later origins, the variance state uses returns already observed. All windows end by 31 December 2025. [8] [9]
+At the 15% closing-price barrier, EWMA Student t forecasts imply about 110 hits and the holdout records 101. This is good aggregate agreement for that threshold. The test has 702 overlapping daily origins with outcomes in 2024 and 2025, equivalent to about 23 disjoint 30-day windows by duration. Even disjoint windows can share a persistent volatility state. Agreement in total counts does not establish calibration at individual origins. [8] [9]
 
-The closing-price forecasts include a constant pre-test event frequency, an EWMA with variance-scaled Student t innovations, a GJR-GARCH Student t challenger and a five-day filtered block resampler. EWMA gives a parsimonious heavy-tailed baseline. The GJR specification adds a variance intercept and an asymmetric response to negative returns. Its persistence is restricted below one. In this fit, the asymmetry estimate is effectively zero and persistence reaches the imposed upper bound of 0.999. The filtered blocks retain observed pre-test return shapes and extremes. For the daily-low target, the resampler carries each observed low excursion with its closing return, so the two share a sampled day and scale. The parametric models here have no explicit jump process. [9] [10]
-
-MATH gjr_variance
-h_{t+1}=\omega+\alpha r_t^2+\gamma\,\mathbf{1}_{\{r_t<0\}}r_t^2+\beta h_t
-DEFINITIONS h_t is the one-day variance forecast and r_t the realised log return. The intercept permits mean reversion. Under symmetric unit-variance innovations, persistence is alpha plus half gamma plus beta.
-ENDMATH
-
-The dynamic models simulate 20,000 paths per origin. I use half-count smoothing for Monte Carlo probabilities and for the pre-test empirical frequency. Brier score is the mean squared error of the probability forecast. Log loss is the negative log probability assigned to the realised binary outcome. Lower values are better. Overlapping windows share outcomes and are not independent trials. The table reports descriptive scores on the same origins and event definitions. [9] [11]
+The first forecast uses information through 31 December 2023. Later forecasts update the variance state using returns known at the origin. The pre-test event frequency is a constant reference. Five-day blocks resample volatility-filtered returns and carry each daily low excursion with its close. The GJR-GARCH t fit targets the pre-test unconditional variance and permits persistence up to one. Its solution is 0.995 with essentially zero asymmetry. Mean reversion remains in the fit, though the estimated variance half-life is about 139 days. It is a near-integrated challenger to EWMA with little evidence here for a separate negative-return term. The filtered blocks preserve some historical extremes. The parametric specifications lack an explicit jump process. [9] [10]
 
 TABLE rolling_barrier_scores
 Event | Model | Hits | Expected | Brier | Log loss
 15% close | Pre-test empirical | 101 | 198.8 | 0.14258 | 0.4665
-25% close | Pre-test empirical | 3 | 79.4 | 0.01608 | 0.1288
-35% close | Pre-test empirical | 0 | 40.1 | 0.00326 | 0.0588
 15% close | EWMA Student t | 101 | 110.1 | 0.12977 | 0.4395
+15% close | GJR-GARCH Student t | 101 | 114.7 | 0.13202 | 0.4400
+15% close | Filtered blocks | 101 | 113.5 | 0.12941 | 0.4366
+25% close | Pre-test empirical | 3 | 79.4 | 0.01608 | 0.1288
 25% close | EWMA Student t | 3 | 20.6 | 0.00530 | 0.0504
-35% close | EWMA Student t | 0 | 3.8 | 0.00004 | 0.0055
-15% close | GJR-GARCH Student t | 101 | 132.4 | 0.13322 | 0.4411
-25% close | GJR-GARCH Student t | 3 | 37.5 | 0.00751 | 0.0694
-35% close | GJR-GARCH Student t | 0 | 11.6 | 0.00038 | 0.0168
-15% close | Filtered blocks | 101 | 113.4 | 0.12949 | 0.4369
-25% close | Filtered blocks | 3 | 27.9 | 0.00598 | 0.0581
-35% close | Filtered blocks | 0 | 7.6 | 0.00015 | 0.0109
+25% close | GJR-GARCH Student t | 3 | 29.1 | 0.00643 | 0.0584
+25% close | Filtered blocks | 3 | 28.4 | 0.00607 | 0.0591
 25% low | Pre-test empirical | 22 | 112.1 | 0.04684 | 0.2261
-25% low | Filtered blocks | 22 | 40.8 | 0.03290 | 0.1638
+25% low | Filtered blocks | 22 | 41.9 | 0.03298 | 0.1639
 ENDTABLE
 
-Table sources: [9].
+Table sources: [9]. Expected hits sum the probabilities across origins. Lower proper scores indicate better forecasts.
 
-At the 25% threshold, the holdout contains three close-hit windows and 22 low-hit windows. The models overpredict these crossings in this period. The 35% holdout contains zero hits, even by the low rule. The preferred low probability under log loss in such a sample only shows which model assigned less probability to an event that never arrived. It supplies no evidence about performance during realised crashes at that severity. Across the longer 2018-2025 history, the comparable frequencies are 4.25% at closes and 6.01% at lows, against the earlier October 2026 conditional forecast of 0.193%. The regime gap motivates the use of observed stress paths and conditional losses rather than a 30-day expected-loss claim. [8] [9]
+At 25% the EWMA expects about 21 close hits and the holdout has three. At 35% the holdout has zero crossings at closes or lows, which leaves the forecast for that severity unvalidated. The loss comparisons below condition on specified observed paths. [9] [11]
 
 # Chapter 4
-## Liquidation and closing cash flows
+## Liquidation and terminal recovery
 
-At a check, a loan is eligible if its remaining debt exceeds the liquidation threshold times its oracle-valued collateral. The model orders eligible borrowers by loan-to-value. A repayment R seizes collateral worth LIF times R at the oracle price, up to the balance of that account. Any debt left when collateral is exhausted counts as a writeoff. The sale can use the pool only while marginal net proceeds cover another unit of repayment. [1] [12]
+All balances are in loan-token units. Let D be a borrower's debt and C its collateral marked at the opening price. At a decision check, O is the oracle price divided by its opening mark, S is the corresponding spot ratio, and the market's liquidation threshold is lambda. The simulator tries the most indebted accounts per unit of collateral first. A liquidator repays R and receives collateral with opening value I times R divided by O, subject to the remaining collateral and debt. The continuous approximation uses the Morpho incentive multiplier I. [12]
 
-The neutral pool is marked to S_t, the relative collateral spot price at that check, with neutral loan-token reserve Y. Previously sold collateral leaves a fee-adjusted inventory I_t. Thus its current collateral reserve x and same-step product K define the conversion. A liquidation sends k units of net collateral to the pool per unit repaid. Differentiating cumulative proceeds in R and equating that derivative to one gives the maximum profitable repayment M.
-
-MATH liquidation_budget
-x=Y/S_t+I_t,\qquad K=Y^2/S_t,\qquad k=(1-f)\mathrm{LIF}/O_t
-U(R)=K\left(\frac{1}{x}-\frac{1}{x+kR}\right)
-U'(R)=\frac{Kk}{(x+kR)^2},\qquad M=\max\left(0,\frac{\sqrt{Kk}-x}{k}\right)
-DEFINITIONS O_t is the relative oracle price and f is the fee. Collateral units are measured at the opening relative price. A daily cap and debt balance may lower actual repayment below M.
+MATH liquidation_eligibility
+D>\lambda C O,\qquad I=\frac{1}{0.7+0.3\lambda}
 ENDMATH
 
-With matched oracle and spot and zero inventory, M equals Y times a coefficient determined by the fee and incentive. This makes the reserve/cap threshold a mechanical implication of the inputs. The prior edition gives the derivation and thresholds for the 1% fee scenario. The measured WBTC case in this paper uses the selected pool fee of 0.30%. [2] [6]
+For an inventory-free pool with loan reserve Y, the marginal net proceeds per unit repaid start at M. As liquidators sell, the available proceeds fall. Continuing until that marginal multiple reaches one gives the total profitable repayment budget B. A cap can reduce this budget further. The pool re-anchors to the incoming spot mark at each check. Any previous sales carried into that check reduce the new budget. The daily refill removes the chosen fraction of net inventory at the start of each new day. [2]
 
-Inventory persists across checks. At UTC day boundaries the model removes all, a quarter, or none of the excess inventory. Re-anchoring the neutral curve to the new price and carrying that inventory defines a stylised persistence rule. It does not fit an arbitrage model. The optional cap applies to all checks in the day combined. The oracle sensitivity uses either a 24-hour lag or a quoted oracle value 2% above the sale mark. The base book has no borrower payments or new activity. In a rescue sensitivity, each borrower can spend outside funds equal to at most 5% of initial debt to restore eligibility headroom before liquidation. Actual borrower liquidity is unobserved.
-
-For terminal loss, one convention values each residual account with a flat haircut equal to the pool fee. The pool convention instead gives all unpaid borrowers a common closing price from the post-liquidation state. An account sells enough to repay at that price or sells its remaining collateral. An account's proceeds cannot pay another's debt. If p is the net common price, its sold collateral is q_i and the pool clears when aggregate outputs divided by aggregate sales equal p. Individual uncovered balances plus earlier writeoffs are the lender's shortfall.
-
-MATH closing_batch
-q_i(p)=\min(C_i,D_i/p),\qquad Q(p)=\sum_i q_i(p)
-p=\frac{(1-f)K}{x\left(x+(1-f)Q(p)\right)}
-L_H=W_H+\sum_i\max(0,D_i-p C_i)
-DEFINITIONS C_i and D_i are residual collateral and debt, and W_H is earlier writeoff. The last pool state is used before any further refill.
+MATH daily_sale_budget
+M=(1-f)IS/O,\qquad B=Y\,\frac{\sqrt{M}-1}{M}\quad(M>1)
+DEFINITIONS f is the pool fee. The budget is zero when M is at or below one.
 ENDMATH
 
-To solve the equation, rewrite it as p plus a positive constant times the sum of min(D_i, p C_i) equal to the net zero-size price. Its left side is continuous and strictly increasing. This gives a unique positive price and an accounting check on aggregate cash. The closing exercise forces all residual debt through one route on one day. It is a stress liquidation convention, and high absolute losses partly reflect that simultaneous closure. Comparisons pair the same terminal convention and reserve with the no-liquidation control.
+At the horizon, I count interim bad debt already written off. I then test each remaining borrower at the terminal spot price. When the collateral covers the debt, the claim is carried at par and the account sends zero collateral to the pool. Each borrower below par sells its full remaining collateral. Let Q be the sum of the collateral units those borrowers sell. Let X and Y be the pool reserves after accounting for earlier net sales and before this batch. The batch gives each seller the same net price per unit, p. On a solvent book without interventions, both closing conventions give zero loss.
+
+MATH closing_execution_price
+p=\frac{(1-f)Y}{X+(1-f)Q}
+DEFINITIONS Q includes only positions for which terminal spot value is below debt. Each distressed borrower receives p times the collateral it contributes.
+ENDMATH
+
+The flat comparison uses the same distress test and credits terminal spot less the pool fee, with no sale impact. In both cases any unpaid amount belongs to the lender of that borrower. Net creditor recovery is opening debt less the relevant loss. It includes interim repayments, repayments from outside borrower cash where allowed, and the closing value of unpaid claims.
 
 # Chapter 5
-## Losses conditional on stress
+## Conditional shortfall
 
-### Measured WBTC/USDC route
+### WBTC/USDC anchor
 
-The table reports equal-weight means across the four historical crash windows for the selected borrower book. All numbers are basis points of opening debt. The fourth column is the paired difference against no liquidation using the same reserve. The last column counts gross spot-value premium on repayments made while collateral was already worth less than debt at the time of seizure. It measures a transfer before disposal costs. [2]
+The entries below average four stress windows with equal weights. The strongest headline that survives both measures is an improvement from checking hourly under full replenishment. Loss falls by 78 basis points under the flat recovery rule and 145 basis points with the distressed-only pool batch. The pool result depends on size and replenishment. With 25% daily refill the prompt hourly policy improves on its no-liquidation control by 449 basis points. With no refill the gain is 46 basis points. Every depth variant is paired with a control at the same starting reserve. [2]
 
-TABLE measured_policy_losses
-Policy | Flat loss | Pool loss | Pool change | Insolvent premium
-No liquidation | 765 | 6,170 | +0 | 0.0
-Daily, prompt | 483 | 4,412 | -1,758 | 62.2
-Hourly, prompt | 405 | 4,195 | -1,975 | 58.5
-Hourly lows and closes | 416 | 4,163 | -2,007 | 57.6
-Hourly, 1% daily cap | 450 | 4,521 | -1,649 | 46.4
-Hourly, 25% refill | 625 | 5,589 | -581 | 19.4
-Hourly, no refill | 724 | 6,124 | -46 | 2.2
-Hourly, one-day lag | 396 | 2,732 | -3,438 | 164.9
-Hourly, oracle 2% high | 565 | 5,175 | -995 | 19.1
-Hourly, borrower rescue | 240 | 3,964 | -2,207 | 35.4
-Hourly, half reserve | 568 | 6,581 | -1,101 | 33.4
-Hourly, double reserve | 219 | 1,482 | -2,851 | 46.8
+TABLE measured_policy_losses_corrected
+Policy | Flat loss | Pool loss | Pool change | Pool net | Premium
+No liquidation | 765 | 2,524 | +0 | 7,476 | 0
+Daily, prompt | 483 | 1,344 | -1,180 | 8,656 | 62
+Hourly, prompt | 405 | 1,199 | -1,325 | 8,801 | 58
+Hourly lows and closes | 416 | 1,188 | -1,336 | 8,812 | 58
+Hourly, 1% daily cap | 450 | 1,377 | -1,147 | 8,623 | 46
+Hourly, 25% refill | 625 | 2,075 | -449 | 7,925 | 19
+Hourly, no refill | 724 | 2,478 | -46 | 7,522 | 2
+Hourly, one-day lag | 396 | 616 | -1,907 | 9,384 | 165
+Hourly, oracle 2% high | 565 | 1,790 | -734 | 8,210 | 19
+Hourly, borrower rescue | 240 | 860 | -1,664 | 9,140 | 35
+Hourly, half reserve | 568 | 2,307 | -922 | 7,693 | 33
+Hourly, double reserve | 219 | 398 | -1,487 | 9,602 | 47
 ENDTABLE
 
-Table sources: [2].
+Table sources: [2]. All figures are basis points of opening debt. Pool net equals 10,000 less pool loss. Premium is the gross spot-valued cost of seizure above the amount repaid, counted on already-insolvent accounts.
 
-With full refill, checking hourly instead of daily reduces mean pool-based shortfall by 217 bp. Inserting hourly lows gives a further reduction in the pool measure but raises the flat-salvage loss. Earlier intervention can retire more debt, while the sale incentive and the path through account impairment can change which dollars remain uncovered. The experiment therefore finds no general direction for the daily discretisation error.
+When an account is already insolvent, the positive difference between the spot value of seized collateral and the payment received comes out of creditor recovery. The loss calculation already incorporates that transfer through the remaining collateral and debt balances. Subtracting the premium again would double-count it. The lagged policy pays about 165 basis points of this premium, compared with 58 for prompt hourly checks. On a rebound, a stale low oracle mark can increase sale proceeds per unit repaid and allow the simulator to retire more debt ahead of the closing batch. The lag improves on prompt hourly execution by 9 basis points under flat recovery and 583 under pool recovery. The larger pool advantage reflects the change in the volume of distressed debt and collateral left for that terminal sale. [2]
 
-Reducing refill to one quarter removes most of the simulated pool-based advantage of prompt liquidation. With no refill, the advantage falls to 46 bp. Doubling and halving the measured equivalent reserve change both terminal losses and the intervention benefit against their own matched controls. The 2% oracle premium also reduces the benefit. The borrower rescue pays an average 377 bp of initial debt from outside funds and lowers creditor loss further. These comparisons show how the effects of execution and borrower financing depend on the assumed closing rule.
+### BTC and ETH borrower books
 
-The lagged oracle has the lowest pool-closure loss among the base-reserve interim policies on these four paths, and its gross premium on already-insolvent loans is about 164.9 bp versus 58.5 bp for prompt hourly checks. A stale higher mark can delay a liquidation on the way down, while a stale lower mark gives a larger collateral payment per loan unit repaid after a rebound. In this model the latter can expand the profitable depth budget. More debt leaves the book before the terminal batch but more spot value is transferred on insolvent accounts. This result pertains to the selected paths and the specified treatment of a stale oracle. It gives no reason to prefer delayed marks on a live market.
+The policy grid contains 1008 rows. It crosses four dated episodes and fourteen policies with ten standardised books and eight extra direct-pool book variants. In the standardised rows the reserve is held at 58.6% of opening debt and each book follows its own BTC or ETH reference series. The table groups results by collateral class. ETH covers two WETH books and is shown as a two-book descriptive comparison. [2]
 
-### Coverage across markets
-
-The complete grid contains 4,144 market-policy-episode rows. It includes all 51 markets under the same relative collateral shock and standardised reserve, and 23 under measured direct-pool quotes. For a compact comparison, the table takes medians across the four episodes and the 29 captured markets with at least $1 million of opening debt. The standardised reserve is 58.6% of opening debt in each market's own loan units. The threshold keeps near-empty books in the released grid while limiting their effect on the summary. These are conditional accounting comparisons across different ledgers. They do not rank vaults or estimate the risk of their underlying assets. [1] [2]
-
-TABLE standard_policy_losses
-Policy | Median flat loss | Median pool loss | Median paired pool change
-No liquidation | 2,291 | 6,619 | +0
-Daily, prompt | 1,775 | 5,311 | -1,489
-Hourly, prompt | 1,647 | 5,081 | -1,626
-Hourly, 25% refill | 2,130 | 6,047 | -469
-Hourly, no refill | 2,248 | 6,568 | -41
-Hourly, one-day lag | 1,598 | 3,381 | -3,167
-Hourly, oracle 2% high | 1,927 | 5,697 | -633
-Hourly, borrower rescue | 1,417 | 4,856 | -1,951
+TABLE standard_policy_losses_corrected
+Policy | BTC loss | BTC change | ETH loss | ETH change
+No liquidation | 2,802 | +0 | 2,128 | +0
+Daily, prompt | 1,200 | -887 | 1,392 | -190
+Hourly, prompt | 1,067 | -1,002 | 1,347 | -277
+Hourly lows and closes | 1,048 | -1,037 | 1,371 | -329
+Hourly, 1% daily cap | 1,305 | -883 | 1,454 | -258
+Hourly, 25% refill | 2,262 | -404 | 1,877 | -103
+Hourly, no refill | 2,756 | -45 | 2,076 | -36
+Hourly, one-day lag | 512 | -1,467 | 1,089 | -636
+Hourly, oracle 2% high | 1,830 | -598 | 1,684 | -147
+Hourly, borrower rescue | 359 | -1,936 | 1,146 | -435
 ENDTABLE
 
-Table sources: [2].
-
-### Conditional simulated comparison
-
-To compare with the earlier daily process, I retain the 193 of 100,000 simulated BTC paths whose minimum close lies at least 35% below the start. Each policy runs on the same subset. The table shows basis points of opening debt and paired standard errors within that subset. The errors describe simulation sampling conditional on the fitted model and threshold. Their scale does not encode uncertainty about crash probability, market depth or the design of a real unwind. The holdout supplies no observed 35% event for calibration. [2] [9]
-
-TABLE simulated_stress_losses
-Policy | Flat loss | Flat change (SE) | Pool loss | Pool change (SE)
-No liquidation | 430 | +0 (0.0) | 5,976 | +0 (0.0)
-Daily, prompt | 403 | -27 (12.3) | 4,510 | -1,466 (49.8)
-1% daily cap | 406 | -25 (11.1) | 4,659 | -1,316 (44.9)
-25% refill | 413 | -17 (4.3) | 5,563 | -412 (13.9)
-No refill | 419 | -11 (1.2) | 5,965 | -10 (1.8)
-One-day lag | 453 | +23 (15.5) | 4,691 | -1,285 (48.0)
-Borrower rescue | 295 | -135 (14.5) | 4,416 | -1,560 (46.2)
-ENDTABLE
-
-Table sources: [2].
-
-The large advantage of prompt execution under simultaneous pool closure is consistent with less debt competing for a finite reserve at the horizon. The flat measure gives a much smaller reduction and one-day lag raises its point estimate. Together with the historical replay, this identifies terminal recovery, refill and oracle timing as consequential modelling choices for the opening book. The study's fitted and historical paths remain two distinct sources of conditional evidence.
+Table sources: [2]. Each class shows the median pool loss and median paired change across its own markets and four episodes. No liquidation is the control.
 
 # Chapter 6
+## Historical event comparison
+
+The event window is 10 October 2025 UTC. A local Anvil fork was pinned to block 23,543,615 before the window. The state reads agree with the archive on the market totals, the oracle mark and a sample of borrower positions. To reconstruct the opening book, I collect historical Borrow log identities and read their positions at that block. The 362 debt balances account for every borrow share in the market. The initial balances include accrued interest at the opening timestamp. The engine reads the frozen book, sampled on-chain oracle state and completed Bitstamp minute closes. Spot changes are measured relative to the opening exchange print. The pool calibration uses the pre-event quote. [12] [13]
+
+The records for the full day show 11 borrowers liquidated, repayments of 4,853,653 USDC and 0 USDC of protocol bad debt. There are 287 recorded oracle samples including the opening and closing blocks. I keep the engine's same-day write-offs next to protocol bad debt. The expected value of unresolved closing claims is a different quantity and has its own column. [13]
+
+TABLE historical_event_comparison
+Case | Borrowers | Repaid USDC | Write-off USDC | Closing loss USDC
+On-chain events | 11 | 4,853,653 | 0 | —
+Direct pool, open depth | 11 | 3,889,552 | 0 | 0
+Direct pool, hourly refill | 11 | 3,889,552 | 0 | 0
+Unbounded execution | 11 | 3,889,552 | 0 | 0
+ENDTABLE
+
+Table sources: [13]. The replay keeps the opening borrower book fixed except for its own liquidations. The hourly-refill case realigns the pool after every twelve sampled steps.
+
+The open-depth replay predicted 11 borrowers and captured 9 of the 11 observed liquidations by borrower. It repaid 80.1% of the recorded amount and matched zero realised write-offs. The repayment and borrower sets are identical at hourly refill and unbounded depth, so depth cannot explain the repayment gap in this replay. The fixed book, price sampling and modelled repayment sizes are remaining sources of error. With zero realised bad debt, this day tests borrower selection and execution volume but provides no positive write-off event against which to assess loss severity.
+
+# Chapter 7
 ## Scope and replication
 
-These experiments use a captured cohort, an ex post selection of severe price windows and a local calibration point for direct pool depth. They do not measure liquidity on centralised venues, route splitting, changes in protocol state during a historical crash or competition for block inclusion. Borrower rescue, oracle mismatch, refill and reserve multiples are sensitivity inputs. Absolute pool-closing losses are conditional on forced closure over a single route. Interim repayment retires debt, while persistent sale inventory can reduce terminal proceeds. The magnitude of either effect depends on these scenario choices.
+The stress experiment holds the captured book fixed, except for modelled liquidations and the borrower-rescue policy. The rescue sensitivity allows outside repayment up to 5% of an account's opening debt. Reserves, oracle timing and transaction size are varied independently across specified policies. Executable liquidity can depend on routing, centralised venues and other orders. The historical engine misses intra-block state updates, later borrower flows and the sizes liquidators choose. Forecasts of the onset of a crash and recoveries conditional on one answer different questions.
 
-The repository retains the exact market packets, the on-chain requests and responses, the daily and hourly bars, the held-out forecast by origin, and every market-policy-episode result. The command python research/reproduce_study.py regenerates the reported results offline from retained inputs. The prior edition preserves the historical event and execution evidence, together with the extended terminal comparison and insolvent-premium ledger. [1] [2] [6] [9]
+The repository retains the borrower packets, chain inputs, price observations, held-out forecasts and policy grid. Running python research/reproduce_study.py regenerates the results from those inputs. The archived v1.2 experiment used a full-book terminal sale. That convention is superseded for lender shortfall.
+
+# Chapter 8
+## Anchor depth audit
+
+The model reserve matches the 2% point by construction. At 5% the approximation overstates observed direct proceeds by about 1%. The deviation widens materially beyond 10%. At a move of 40%, the constant-product extrapolation implies over twice the pinned proceeds of the 0.30% pool. This is why the shortfall table keeps the price-taking haircut result visible alongside the pool sensitivity.
+
+TABLE anchor_depth_curve
+Move | Pool at 30 bp | Pool at 5 bp | Model | Model error
+2% | 683,889 | 8,878 | 683,889 | +0.0%
+5% | 1,701,915 | 21,673 | 1,722,944 | +1.2%
+10% | 3,183,078 | 35,288 | 3,491,857 | +9.7%
+20% | 4,813,092 | 52,906 | 7,183,726 | +49.3%
+40% | 7,110,877 | 72,997 | 15,337,622 | +115.7%
+ENDTABLE
+
+Table sources: [2] and [7]. Amounts are USDC. Error compares the 2%-matched curve with the 0.30% fee tier.
+
+A route search at the same block compares the direct fee tiers, WBTC-to-WETH-to-USDC paths, and 50/50 splits over disjoint pools. Proceeds exclude gas. This is an archival routing benchmark over the quoted routes. The figures bound what the route search found in those pools. They do not measure the historical output of a commercial aggregator or all liquidity available off-chain.
+
+TABLE route_depth_comparison
+WBTC sold | Pool at 30 bp | Pool at 5 bp | Via WETH | Route search
+1 | 82,477 | 71,004 | 82,680 | 82,680
+10 | 815,894 | 106,251 | 820,097 | 822,328
+50 | 3,876,350 | 106,966 | 3,972,276 | 4,025,424
+100 | 6,936,852 | 107,046 | 7,622,147 | 7,848,626
+200 | 10,183,079 | 107,086 | 13,498,846 | 14,558,999
+ENDTABLE
+
+Table sources: [2] and [7]. USDC proceeds, rounded to the nearest dollar for each fixed-size sale.
 
 # Sources
 
-[1] Fulcrum Research. Morpho borrower packets, capture manifest and share reconciliation. https://github.com/mrb-eel/fulcrum-research/blob/main/research/raw-manifest.json
+[1] Fulcrum Research. Morpho borrower packets and share reconciliation. https://github.com/mrb-eel/fulcrum-research/blob/main/research/raw-manifest.json
 
-[2] Fulcrum Research. Pinned direct-pool quotes, market-episode grid and conditional loss experiment, version 2.0. https://github.com/mrb-eel/fulcrum-research/tree/main/research/results/v2.0
+[2] Fulcrum Research. Historical policy grid and depth audit. https://github.com/mrb-eel/fulcrum-research/blob/main/research/results/v2.0/intraday-study.json
 
 [3] Perez, Daniel, Sam M. Werner, Jiahua Xu and Benjamin Livshits. Liquidations: DeFi on a Knife-edge. Financial Cryptography and Data Security, 2021. https://doi.org/10.1007/978-3-662-64331-0_24
 
@@ -186,11 +192,11 @@ The repository retains the exact market packets, the on-chain requests and respo
 
 [5] Gudgeon, Lewis, Daniel Perez, Dominik Harz, Benjamin Livshits and Arthur Gervais. The Decentralized Financial Crisis. 2020. https://arxiv.org/abs/2002.08099
 
-[6] Bouchaibi, Mohamed Rayan. Liquidation and creditor recovery in selected DeFi lending positions. Fulcrum Research, version 1.2, November 2026. https://github.com/mrb-eel/fulcrum-research/blob/main/paper/liquidation-and-creditor-recovery.pdf
+[6] Bouchaibi, Mohamed Rayan. Liquidation and creditor recovery in selected DeFi lending positions. Fulcrum Research, version 1.2, November 2026. https://github.com/mrb-eel/fulcrum-research/blob/main/paper/archive/liquidation-and-creditor-recovery.pdf
 
 [7] Uniswap. IQuoterV2 interface and Ethereum deployments. https://docs.uniswap.org/contracts/v3/reference/periphery/interfaces/IQuoterV2
 
-[8] Bitstamp. Public BTC/USD OHLC candles. The retained snapshot records the HTTP query for each episode. https://www.bitstamp.net/api/
+[8] Bitstamp. Public BTC/USD and ETH/USD OHLC candles. The retained snapshots record the HTTP queries. https://www.bitstamp.net/api/
 
 [9] Fulcrum Research. Rolling 30-day forecasts and realised barrier outcomes by origin. https://github.com/mrb-eel/fulcrum-research/blob/main/research/results/v2.0/rolling-backtest.json
 
@@ -198,4 +204,6 @@ The repository retains the exact market packets, the on-chain requests and respo
 
 [11] Brier, Glenn W. Verification of forecasts expressed in terms of probability. Monthly Weather Review, 1950. https://doi.org/10.1175/1520-0493(1950)078%3C0001:VOFEIT%3E2.0.CO;2
 
-[12] Morpho Blue. Morpho contract and liquidation incentive constants. https://github.com/morpho-org/morpho-blue/tree/main/src
+[12] Morpho Blue. Market balances, event definitions and liquidation mechanics. https://github.com/morpho-org/morpho-blue/tree/main/src
+
+[13] Fulcrum Research. Block-pinned reconstruction and observed WBTC/USDC liquidations, 10 October 2025. https://github.com/mrb-eel/fulcrum-research/blob/main/research/results/v2.0/historical-event.json

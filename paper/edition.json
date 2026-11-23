@@ -1,0 +1,16 @@
+{
+  "title": "Liquidation and lender shortfall in stressed Morpho markets",
+  "subtitle": "Intraday replays, recovery rules and an on-chain event benchmark",
+  "running_title": "Liquidation and lender shortfall",
+  "author": "Mohamed Rayan Bouchaibi",
+  "version": "2.0",
+  "date": "November 2026",
+  "file_stem": "morpho-stress-losses",
+  "preface": "",
+  "contents": false,
+  "keywords": "Morpho, lender shortfall, liquidation, pool depth, stress testing",
+  "figure_results": "../fulcrum/research/generated/v1.1",
+  "license_notice": "© 2026 Mohamed Rayan Bouchaibi. Original paper content is licensed under CC BY 4.0.",
+  "ai_disclosure": "Generative AI tools assisted in drafting and revising the manuscript and developing the replication code.",
+  "abstract": "Across four historical crash paths on a captured WBTC/USDC borrower book, hourly liquidation checks reduce mean lender shortfall by 78 basis points of opening debt under a flat recovery haircut and 145 basis points when the remaining collateral of distressed loans is sold through a shared pool. Both results assume full daily refill. Loans that cover their debt at spot stay out of the closing sale. Direct quotes show that the pool approximation overstates proceeds for large sales. In a historical event replay of the same Morpho market, the engine identified 9 of 11 observed liquidated borrowers and reproduced 80% of on-chain repayment. Both the replay and the ledger showed zero realised bad debt."
+}

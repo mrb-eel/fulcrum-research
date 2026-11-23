@@ -1,45 +1,82 @@
 {
-  "markets": 51,
-  "rows": 4144,
-  "markets_ge_1m_usd": 29,
+  "scanned_markets": 51,
+  "replayed_markets": 10,
+  "rows": 1008,
+  "replayed_direct_quotes": 8,
   "positive_direct_quotes": 23,
   "transport_errors": 0,
   "standardised_reserve_per_debt": 0.5860208113991732,
   "standardised_fee": 0.003,
-  "episodes": [
-    {
-      "origin_bucket": "2018-01-07",
-      "last_bucket": "2018-02-06",
-      "daily_close_drawdown": 0.5736627714428535,
-      "hourly_close_drawdown": 0.6302218677476212,
-      "hourly_low_drawdown": 0.6328012493162375,
-      "end_return": -0.5201339368222069
-    },
-    {
-      "origin_bucket": "2020-02-14",
-      "last_bucket": "2020-03-15",
-      "daily_close_drawdown": 0.5328395104611716,
-      "hourly_close_drawdown": 0.6032647500395599,
-      "hourly_low_drawdown": 0.6285232399720573,
-      "end_return": -0.4844056950764374
-    },
-    {
-      "origin_bucket": "2018-11-07",
-      "last_bucket": "2018-12-07",
-      "daily_close_drawdown": 0.47997538840178433,
-      "hourly_close_drawdown": 0.5015643747115828,
-      "hourly_low_drawdown": 0.5062298107983387,
-      "end_return": -0.47997538840178433
-    },
-    {
-      "origin_bucket": "2021-05-08",
-      "last_bucket": "2021-06-07",
-      "daily_close_drawdown": 0.43065588986983916,
-      "hourly_close_drawdown": 0.4537401616519524,
-      "hourly_low_drawdown": 0.49027502871504924,
-      "end_return": -0.43065588986983916
-    }
-  ],
+  "episodes_by_factor": {
+    "BTC": [
+      {
+        "origin_bucket": "2018-01-07",
+        "last_bucket": "2018-02-06",
+        "daily_close_drawdown": 0.5736627714428535,
+        "hourly_close_drawdown": 0.6302218677476212,
+        "hourly_low_drawdown": 0.6328012493162375,
+        "end_return": -0.5201339368222069
+      },
+      {
+        "origin_bucket": "2020-02-14",
+        "last_bucket": "2020-03-15",
+        "daily_close_drawdown": 0.5328395104611716,
+        "hourly_close_drawdown": 0.6032647500395599,
+        "hourly_low_drawdown": 0.6285232399720573,
+        "end_return": -0.4844056950764374
+      },
+      {
+        "origin_bucket": "2018-11-07",
+        "last_bucket": "2018-12-07",
+        "daily_close_drawdown": 0.47997538840178433,
+        "hourly_close_drawdown": 0.5015643747115828,
+        "hourly_low_drawdown": 0.5062298107983387,
+        "end_return": -0.47997538840178433
+      },
+      {
+        "origin_bucket": "2021-05-08",
+        "last_bucket": "2021-06-07",
+        "daily_close_drawdown": 0.43065588986983916,
+        "hourly_close_drawdown": 0.4537401616519524,
+        "hourly_low_drawdown": 0.49027502871504924,
+        "end_return": -0.43065588986983916
+      }
+    ],
+    "ETH": [
+      {
+        "origin_bucket": "2018-01-07",
+        "last_bucket": "2018-02-06",
+        "daily_close_drawdown": 0.380693405846363,
+        "hourly_close_drawdown": 0.48567032809760635,
+        "hourly_low_drawdown": 0.4946151919567784,
+        "end_return": -0.29871372857705114
+      },
+      {
+        "origin_bucket": "2020-02-14",
+        "last_bucket": "2020-03-15",
+        "daily_close_drawdown": 0.6173590711987691,
+        "hourly_close_drawdown": 0.6520142677297524,
+        "hourly_low_drawdown": 0.6915652538816617,
+        "end_return": -0.5679465659532801
+      },
+      {
+        "origin_bucket": "2018-11-07",
+        "last_bucket": "2018-12-07",
+        "daily_close_drawdown": 0.5883656509695291,
+        "hourly_close_drawdown": 0.6172668513388735,
+        "hourly_low_drawdown": 0.6251615881809788,
+        "end_return": -0.5729455216989843
+      },
+      {
+        "origin_bucket": "2021-05-08",
+        "last_bucket": "2021-06-07",
+        "daily_close_drawdown": 0.46402809706257986,
+        "hourly_close_drawdown": 0.5270038314176245,
+        "hourly_low_drawdown": 0.558109833971903,
+        "end_return": -0.3375555555555556
+      }
+    ]
+  },
   "selected_depth": {
     "block": 26166103,
     "block_hash": "0x0e4e20231875cc1551f03f57e466df91f8d959a25d2af2fdfb5682a9b5417959",
@@ -550,222 +587,415 @@
       }
     }
   },
+  "anchor_depth_audit": {
+    "block": 26166103,
+    "curve_at_price_limits": [
+      {
+        "decline_pct": 2,
+        "direct_30bp_usdc": 683889.025341,
+        "direct_5bp_usdc": 8877.925415,
+        "model_usdc": 683889.025341,
+        "model_error_fraction": 0.0
+      },
+      {
+        "decline_pct": 5,
+        "direct_30bp_usdc": 1701914.900828,
+        "direct_5bp_usdc": 21673.317414,
+        "model_usdc": 1722943.7294153965,
+        "model_error_fraction": 0.012355981240405045
+      },
+      {
+        "decline_pct": 10,
+        "direct_30bp_usdc": 3183078.432858,
+        "direct_5bp_usdc": 35288.03042,
+        "model_usdc": 3491856.837535437,
+        "model_error_fraction": 0.09700621935356879
+      },
+      {
+        "decline_pct": 20,
+        "direct_30bp_usdc": 4813092.460257,
+        "direct_5bp_usdc": 52905.677085,
+        "model_usdc": 7183726.174134176,
+        "model_error_fraction": 0.4925385775262239
+      },
+      {
+        "decline_pct": 40,
+        "direct_30bp_usdc": 7110877.05551,
+        "direct_5bp_usdc": 72997.329059,
+        "model_usdc": 15337621.706226345,
+        "model_error_fraction": 1.1569240455847418
+      }
+    ],
+    "historical_route_comparison": [
+      {
+        "size_wbtc": 1,
+        "direct_30bp_usdc": 82477.140872,
+        "direct_5bp_usdc": 71003.550241,
+        "best_via_weth_usdc": 82679.782722,
+        "router_usdc": 82679.782722,
+        "router_choice": "WETH/500/500"
+      },
+      {
+        "size_wbtc": 10,
+        "direct_30bp_usdc": 815893.761115,
+        "direct_5bp_usdc": 106251.258563,
+        "best_via_weth_usdc": 820096.923527,
+        "router_usdc": 822328.228806,
+        "router_choice": "3000 + WETH/500/500"
+      },
+      {
+        "size_wbtc": 50,
+        "direct_30bp_usdc": 3876350.030637,
+        "direct_5bp_usdc": 106965.938313,
+        "best_via_weth_usdc": 3972275.909785,
+        "router_usdc": 4025423.5414549997,
+        "router_choice": "3000 + WETH/500/3000"
+      },
+      {
+        "size_wbtc": 100,
+        "direct_30bp_usdc": 6936852.072118,
+        "direct_5bp_usdc": 107046.300371,
+        "best_via_weth_usdc": 7622146.663589,
+        "router_usdc": 7848625.940422,
+        "router_choice": "3000 + WETH/500/3000"
+      },
+      {
+        "size_wbtc": 200,
+        "direct_30bp_usdc": 10183079.261019,
+        "direct_5bp_usdc": 107085.812493,
+        "best_via_weth_usdc": 13498846.49989,
+        "router_usdc": 14558998.735707,
+        "router_choice": "3000 + WETH/500/3000"
+      }
+    ]
+  },
   "selected_policy_means_bp": {
     "No liquidation": {
-      "flat_loss_bp": 765.4436364359553,
-      "pool_loss_bp": 6170.126930952257,
+      "flat_loss_bp": 765.4207334761307,
+      "pool_loss_bp": 2523.672243647978,
       "flat_delta_bp": 0.0,
       "pool_delta_bp": 0.0,
       "liquidated_debt_bp": 0.0,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 0.0
+      "insolvent_premium_bp": 0.0,
+      "pool_net_recovery_bp": 7476.327756352022
     },
     "No liquidation, half reserve": {
-      "flat_loss_bp": 765.4436364359553,
-      "pool_loss_bp": 7682.030357367496,
+      "flat_loss_bp": 765.4207334761307,
+      "pool_loss_bp": 3229.4061927472258,
       "flat_delta_bp": 0.0,
       "pool_delta_bp": 0.0,
       "liquidated_debt_bp": 0.0,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 0.0
+      "insolvent_premium_bp": 0.0,
+      "pool_net_recovery_bp": 6770.593807252774
     },
     "No liquidation, double reserve": {
-      "flat_loss_bp": 765.4436364359553,
-      "pool_loss_bp": 4333.135313175648,
+      "flat_loss_bp": 765.4207334761307,
+      "pool_loss_bp": 1885.196756193345,
       "flat_delta_bp": 0.0,
       "pool_delta_bp": 0.0,
       "liquidated_debt_bp": 0.0,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 0.0
+      "insolvent_premium_bp": 0.0,
+      "pool_net_recovery_bp": 8114.803243806655
     },
     "Daily, prompt": {
-      "flat_loss_bp": 483.0428389053357,
-      "pool_loss_bp": 4412.32908695583,
-      "flat_delta_bp": -282.4007975306198,
-      "pool_delta_bp": -1757.7978439964272,
+      "flat_loss_bp": 483.0218339153577,
+      "pool_loss_bp": 1343.770879313935,
+      "flat_delta_bp": -282.39889956077303,
+      "pool_delta_bp": -1179.9013643340427,
       "liquidated_debt_bp": 2103.3040463318625,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 62.18773703134134
+      "insolvent_premium_bp": 62.18773703134134,
+      "pool_net_recovery_bp": 8656.229120686065
     },
     "Hourly, prompt": {
-      "flat_loss_bp": 404.6069584101174,
-      "pool_loss_bp": 4195.297626098533,
-      "flat_delta_bp": -360.8366780258381,
-      "pool_delta_bp": -1974.829304853723,
+      "flat_loss_bp": 404.58595342013933,
+      "pool_loss_bp": 1199.039961993357,
+      "flat_delta_bp": -360.8347800559914,
+      "pool_delta_bp": -1324.6322816546208,
       "liquidated_debt_bp": 2355.3783732470793,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 58.46378115909752
+      "insolvent_premium_bp": 58.46378115909752,
+      "pool_net_recovery_bp": 8800.960038006642
     },
     "Hourly lows and closes": {
-      "flat_loss_bp": 415.5404478680472,
-      "pool_loss_bp": 4162.841201909661,
-      "flat_delta_bp": -349.9031885679083,
-      "pool_delta_bp": -2007.285729042595,
+      "flat_loss_bp": 415.5194428780692,
+      "pool_loss_bp": 1187.586489121246,
+      "flat_delta_bp": -349.90129059806156,
+      "pool_delta_bp": -1336.0857545267322,
       "liquidated_debt_bp": 2397.6035371489024,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 57.589614948215434
+      "insolvent_premium_bp": 57.589614948215434,
+      "pool_net_recovery_bp": 8812.413510878754
     },
     "Hourly, 1% daily cap": {
-      "flat_loss_bp": 450.27389568544766,
-      "pool_loss_bp": 4521.496040305161,
+      "flat_loss_bp": 450.250992725623,
+      "pool_loss_bp": 1376.791295582279,
       "flat_delta_bp": -315.1697407505078,
-      "pool_delta_bp": -1648.6308906470967,
+      "pool_delta_bp": -1146.8809480656987,
       "liquidated_debt_bp": 1957.3345979494811,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 46.409563064212996
+      "insolvent_premium_bp": 46.409563064212996,
+      "pool_net_recovery_bp": 8623.20870441772
     },
     "Hourly, 25% refill": {
-      "flat_loss_bp": 625.2881463607705,
-      "pool_loss_bp": 5588.776197409016,
-      "flat_delta_bp": -140.155490075185,
-      "pool_delta_bp": -581.3507335432405,
+      "flat_loss_bp": 625.2652434009458,
+      "pool_loss_bp": 2074.5130664701364,
+      "flat_delta_bp": -140.15549007518496,
+      "pool_delta_bp": -449.15917717784146,
       "liquidated_debt_bp": 769.6186043013199,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 19.41005596100981
+      "insolvent_premium_bp": 19.41005596100981,
+      "pool_net_recovery_bp": 7925.486933529863
     },
     "Hourly, no refill": {
-      "flat_loss_bp": 724.3807203997255,
-      "pool_loss_bp": 6123.845171779073,
-      "flat_delta_bp": -41.062916036229836,
-      "pool_delta_bp": -46.281759173184355,
+      "flat_loss_bp": 724.3578174399009,
+      "pool_loss_bp": 2478.1046355016433,
+      "flat_delta_bp": -41.06291603622982,
+      "pool_delta_bp": -45.56760814633444,
       "liquidated_debt_bp": 181.29072046500448,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 2.222119836951631
+      "insolvent_premium_bp": 2.222119836951631,
+      "pool_net_recovery_bp": 7521.895364498357
     },
     "Hourly, one-day lag": {
-      "flat_loss_bp": 395.8904444599564,
-      "pool_loss_bp": 2732.4662585128644,
-      "flat_delta_bp": -369.553191975999,
-      "pool_delta_bp": -3437.6606724393923,
+      "flat_loss_bp": 395.8694394699785,
+      "pool_loss_bp": 616.3365128293668,
+      "flat_delta_bp": -369.55129400615226,
+      "pool_delta_bp": -1907.335730818611,
       "liquidated_debt_bp": 4238.643467110534,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 164.94386604730417
+      "insolvent_premium_bp": 164.94386604730417,
+      "pool_net_recovery_bp": 9383.663487170634
     },
     "Hourly, oracle 2% high": {
-      "flat_loss_bp": 565.1086892432003,
-      "pool_loss_bp": 5174.902786195151,
-      "flat_delta_bp": -200.3349471927552,
-      "pool_delta_bp": -995.2241447571064,
+      "flat_loss_bp": 565.0857862833756,
+      "pool_loss_bp": 1790.0236406621202,
+      "flat_delta_bp": -200.33494719275518,
+      "pool_delta_bp": -733.6486029858575,
       "liquidated_debt_bp": 1175.2087428331708,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 19.067788421907405
+      "insolvent_premium_bp": 19.067788421907405,
+      "pool_net_recovery_bp": 8209.97635933788
     },
     "Hourly, borrower rescue": {
-      "flat_loss_bp": 240.21982590828037,
-      "pool_loss_bp": 3963.5137251403776,
-      "flat_delta_bp": -525.223810527675,
-      "pool_delta_bp": -2206.613205811879,
+      "flat_loss_bp": 240.21652422994032,
+      "pool_loss_bp": 859.6542873461058,
+      "flat_delta_bp": -525.2042092461904,
+      "pool_delta_bp": -1664.017956301872,
       "liquidated_debt_bp": 2196.5739286589433,
       "outside_repayment_bp": 377.40895737633707,
-      "insolvent_premium_bp": 35.351824935041904
+      "insolvent_premium_bp": 35.351824935041904,
+      "pool_net_recovery_bp": 9140.345712653894
     },
     "Hourly, half reserve": {
-      "flat_loss_bp": 567.5283972163581,
-      "pool_loss_bp": 6581.4213551029325,
+      "flat_loss_bp": 567.5054942565334,
+      "pool_loss_bp": 2307.3457410982505,
       "flat_delta_bp": -197.91523921959728,
-      "pool_delta_bp": -1100.609002264563,
+      "pool_delta_bp": -922.0604516489744,
       "liquidated_debt_bp": 1208.2170948107432,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 33.37248389777896
+      "insolvent_premium_bp": 33.37248389777896,
+      "pool_net_recovery_bp": 7692.654258901748
     },
     "Hourly, double reserve": {
-      "flat_loss_bp": 218.78024229146163,
-      "pool_loss_bp": 1482.347387569305,
-      "flat_delta_bp": -546.6633941444937,
-      "pool_delta_bp": -2850.7879256063425,
+      "flat_loss_bp": 218.7421323256643,
+      "pool_loss_bp": 398.2599331973688,
+      "flat_delta_bp": -546.6786011504665,
+      "pool_delta_bp": -1486.936822995976,
       "liquidated_debt_bp": 4243.245730884293,
       "outside_repayment_bp": 0.0,
-      "insolvent_premium_bp": 46.838707565354966
+      "insolvent_premium_bp": 46.838707565354966,
+      "pool_net_recovery_bp": 9601.740066802631
     }
   },
-  "standardised_ge_1m_policy_medians_bp": {
-    "No liquidation": {
-      "flat_loss_bp": 2291.3131382073752,
-      "pool_loss_bp": 6618.740068561828,
-      "flat_delta_bp": 0.0,
-      "pool_delta_bp": 0.0
+  "standardised_by_factor": {
+    "BTC": {
+      "markets": 8,
+      "policy_medians_bp": {
+        "No liquidation": {
+          "flat_loss_bp": 711.5716447115283,
+          "pool_loss_bp": 2801.654522000007,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "No liquidation, half reserve": {
+          "flat_loss_bp": 711.5716447115283,
+          "pool_loss_bp": 3566.3211035158624,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "No liquidation, double reserve": {
+          "flat_loss_bp": 711.5716447115283,
+          "pool_loss_bp": 2102.9827085943443,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "Daily, prompt": {
+          "flat_loss_bp": 294.4957565784093,
+          "pool_loss_bp": 1200.4116930792352,
+          "flat_delta_bp": -253.69951183966145,
+          "pool_delta_bp": -886.7357069757511
+        },
+        "Hourly, prompt": {
+          "flat_loss_bp": 270.10435388170936,
+          "pool_loss_bp": 1067.3905850357105,
+          "flat_delta_bp": -313.36817265774846,
+          "pool_delta_bp": -1002.1011472462378
+        },
+        "Hourly lows and closes": {
+          "flat_loss_bp": 267.24091650511775,
+          "pool_loss_bp": 1047.7339072388113,
+          "flat_delta_bp": -292.19370273228014,
+          "pool_delta_bp": -1037.3197399392338
+        },
+        "Hourly, 1% daily cap": {
+          "flat_loss_bp": 273.3183110895134,
+          "pool_loss_bp": 1305.1700536428962,
+          "flat_delta_bp": -295.05743022627826,
+          "pool_delta_bp": -883.094823427361
+        },
+        "Hourly, 25% refill": {
+          "flat_loss_bp": 549.6752954924923,
+          "pool_loss_bp": 2262.1020738536886,
+          "flat_delta_bp": -130.97836170239407,
+          "pool_delta_bp": -403.80509036411956
+        },
+        "Hourly, no refill": {
+          "flat_loss_bp": 666.4294966070984,
+          "pool_loss_bp": 2756.2852670960947,
+          "flat_delta_bp": -40.775610023271014,
+          "pool_delta_bp": -45.19059163374467
+        },
+        "Hourly, one-day lag": {
+          "flat_loss_bp": 367.1347600620482,
+          "pool_loss_bp": 512.1761460557369,
+          "flat_delta_bp": -260.9815336547382,
+          "pool_delta_bp": -1467.4986988877047
+        },
+        "Hourly, oracle 2% high": {
+          "flat_loss_bp": 420.92611241467904,
+          "pool_loss_bp": 1829.8680696354904,
+          "flat_delta_bp": -192.47290492771393,
+          "pool_delta_bp": -598.2088373137275
+        },
+        "Hourly, borrower rescue": {
+          "flat_loss_bp": 186.61508564005038,
+          "pool_loss_bp": 359.2988630493786,
+          "flat_delta_bp": -437.6917344792671,
+          "pool_delta_bp": -1936.209658455141
+        },
+        "Hourly, half reserve": {
+          "flat_loss_bp": 432.93014892516385,
+          "pool_loss_bp": 2415.8299068024985,
+          "flat_delta_bp": -187.8897847534884,
+          "pool_delta_bp": -761.8006582720088
+        },
+        "Hourly, double reserve": {
+          "flat_loss_bp": 178.0366265656583,
+          "pool_loss_bp": 192.81430272897651,
+          "flat_delta_bp": -424.35493556991855,
+          "pool_delta_bp": -1169.1222451815242
+        }
+      }
     },
-    "No liquidation, half reserve": {
-      "flat_loss_bp": 2291.3131382073752,
-      "pool_loss_bp": 7855.647400672676,
-      "flat_delta_bp": 0.0,
-      "pool_delta_bp": 0.0
-    },
-    "No liquidation, double reserve": {
-      "flat_loss_bp": 2291.3131382073752,
-      "pool_loss_bp": 5255.108964417686,
-      "flat_delta_bp": 0.0,
-      "pool_delta_bp": 0.0
-    },
-    "Daily, prompt": {
-      "flat_loss_bp": 1774.6410611749461,
-      "pool_loss_bp": 5311.1208350572415,
-      "flat_delta_bp": -310.62169881511795,
-      "pool_delta_bp": -1489.1820347410642
-    },
-    "Hourly, prompt": {
-      "flat_loss_bp": 1646.9921523128032,
-      "pool_loss_bp": 5081.032322957215,
-      "flat_delta_bp": -376.1319998600843,
-      "pool_delta_bp": -1625.7860293732624
-    },
-    "Hourly lows and closes": {
-      "flat_loss_bp": 1668.9490281201315,
-      "pool_loss_bp": 4978.119297349442,
-      "flat_delta_bp": -366.42918268466883,
-      "pool_delta_bp": -1626.8151781160905
-    },
-    "Hourly, 1% daily cap": {
-      "flat_loss_bp": 1764.2667780972338,
-      "pool_loss_bp": 5217.9532295161935,
-      "flat_delta_bp": -331.1081437112446,
-      "pool_delta_bp": -1597.1169402184573
-    },
-    "Hourly, 25% refill": {
-      "flat_loss_bp": 2129.9930128973638,
-      "pool_loss_bp": 6047.037906955117,
-      "flat_delta_bp": -126.29400175006381,
-      "pool_delta_bp": -469.3830114611669
-    },
-    "Hourly, no refill": {
-      "flat_loss_bp": 2247.667289202269,
-      "pool_loss_bp": 6567.771918105336,
-      "flat_delta_bp": -37.79102311751788,
-      "pool_delta_bp": -40.7377487159368
-    },
-    "Hourly, one-day lag": {
-      "flat_loss_bp": 1598.4722466694966,
-      "pool_loss_bp": 3381.1035634981463,
-      "flat_delta_bp": -537.9206255209472,
-      "pool_delta_bp": -3167.0649587164717
-    },
-    "Hourly, oracle 2% high": {
-      "flat_loss_bp": 1926.6082511664022,
-      "pool_loss_bp": 5696.577494161595,
-      "flat_delta_bp": -109.77219209130119,
-      "pool_delta_bp": -632.6870847713332
-    },
-    "Hourly, borrower rescue": {
-      "flat_loss_bp": 1416.68008918149,
-      "pool_loss_bp": 4856.214133435678,
-      "flat_delta_bp": -735.7252148986795,
-      "pool_delta_bp": -1951.124927315438
-    },
-    "Hourly, half reserve": {
-      "flat_loss_bp": 1928.5494730542687,
-      "pool_loss_bp": 6942.654819140015,
-      "flat_delta_bp": -192.87359311400337,
-      "pool_delta_bp": -930.3197134070854
-    },
-    "Hourly, double reserve": {
-      "flat_loss_bp": 1161.4501677623687,
-      "pool_loss_bp": 2909.5169351588274,
-      "flat_delta_bp": -668.7314404298029,
-      "pool_delta_bp": -2425.6678430277584
+    "ETH": {
+      "markets": 2,
+      "policy_medians_bp": {
+        "No liquidation": {
+          "flat_loss_bp": 779.733924894647,
+          "pool_loss_bp": 2127.9924487136414,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "No liquidation, half reserve": {
+          "flat_loss_bp": 779.733924894647,
+          "pool_loss_bp": 2553.9982857260065,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "No liquidation, double reserve": {
+          "flat_loss_bp": 779.733924894647,
+          "pool_loss_bp": 1724.619722699181,
+          "flat_delta_bp": 0.0,
+          "pool_delta_bp": 0.0
+        },
+        "Daily, prompt": {
+          "flat_loss_bp": 688.1848869602242,
+          "pool_loss_bp": 1392.2452559113842,
+          "flat_delta_bp": -16.60280085006498,
+          "pool_delta_bp": -190.49624926730817
+        },
+        "Hourly, prompt": {
+          "flat_loss_bp": 664.3948472196059,
+          "pool_loss_bp": 1346.5777933764102,
+          "flat_delta_bp": -57.44889379975479,
+          "pool_delta_bp": -277.3769770137588
+        },
+        "Hourly lows and closes": {
+          "flat_loss_bp": 695.5949801875056,
+          "pool_loss_bp": 1371.34936713746,
+          "flat_delta_bp": -68.5735557895961,
+          "pool_delta_bp": -329.4097137244875
+        },
+        "Hourly, 1% daily cap": {
+          "flat_loss_bp": 678.5037077125701,
+          "pool_loss_bp": 1454.1351496224258,
+          "flat_delta_bp": -67.05437228282534,
+          "pool_delta_bp": -257.78827646126814
+        },
+        "Hourly, 25% refill": {
+          "flat_loss_bp": 749.7406304126085,
+          "pool_loss_bp": 1877.4593347734492,
+          "flat_delta_bp": -39.67168009958626,
+          "pool_delta_bp": -103.13548161030704
+        },
+        "Hourly, no refill": {
+          "flat_loss_bp": 746.4951184754943,
+          "pool_loss_bp": 2076.2324122217374,
+          "flat_delta_bp": -33.23880641915261,
+          "pool_delta_bp": -36.38051204896418
+        },
+        "Hourly, one-day lag": {
+          "flat_loss_bp": 775.3930038862928,
+          "pool_loss_bp": 1088.6264458945952,
+          "flat_delta_bp": -8.631358276710573,
+          "pool_delta_bp": -636.2615113953145
+        },
+        "Hourly, oracle 2% high": {
+          "flat_loss_bp": 718.5809464705932,
+          "pool_loss_bp": 1683.5109577108276,
+          "flat_delta_bp": -35.129658827308134,
+          "pool_delta_bp": -146.71640037439204
+        },
+        "Hourly, borrower rescue": {
+          "flat_loss_bp": 445.00498584222913,
+          "pool_loss_bp": 1145.6182820146273,
+          "flat_delta_bp": -244.67480996761157,
+          "pool_delta_bp": -435.3727429846287
+        },
+        "Hourly, half reserve": {
+          "flat_loss_bp": 737.7655503254796,
+          "pool_loss_bp": 2043.0381810977194,
+          "flat_delta_bp": -43.328711650432126,
+          "pool_delta_bp": -190.18187375774875
+        },
+        "Hourly, double reserve": {
+          "flat_loss_bp": 492.6946728341715,
+          "pool_loss_bp": 699.553820660547,
+          "flat_delta_bp": -100.14392322924394,
+          "pool_delta_bp": -426.5365372111032
+        }
+      }
     }
   },
   "inputs_sha256": {
     "morpho-direct-depth.json": "45b9de65882c115b4726fecf17bac7e116daba85d05e5412440bd37c0a5237cf",
-    "bitstamp-btcusd-hourly-stress.json": "fffeb0205c0df0b685cd37598f2282cadb663fc763e23b379b90c63009befe15"
+    "bitstamp-btcusd-hourly-stress.json": "fffeb0205c0df0b685cd37598f2282cadb663fc763e23b379b90c63009befe15",
+    "bitstamp-ethusd-hourly-stress.json": "cb77006637e215f3890534c92480f18d2d23e74a5ec0db1fd9a1d4ce742331b9",
+    "morpho-anchor-depth-curve.json": "d781051659ab2c2fbb19db69c777fa9da8e6bda5302acb78f3b2ce8264c17da7",
+    "morpho-anchor-route-comparison.json": "2c349ac94d388516bc940ca48c6e5d39b45b237372d0d8e9954c6070793fd0c9"
   }
 }
