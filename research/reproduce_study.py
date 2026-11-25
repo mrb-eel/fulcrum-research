@@ -7,7 +7,7 @@ from itertools import zip_longest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from barrier_backtest import run as validate_barriers
+from barrier_backtest import DRAWS, run as validate_barriers
 from intraday_study import run as replay_history
 from morpho_event import run as replay_event
 from reproduce import compare
@@ -24,16 +24,26 @@ LEDGERS = ('rolling-barriers.csv', 'intraday-policy-grid.csv')
 def compare_ledger(reference, fresh):
     with reference.open(newline='', encoding='utf-8') as a, fresh.open(newline='', encoding='utf-8') as b:
         left, right = csv.reader(a), csv.reader(b)
-        if next(left) != next(right):
+        columns = next(left)
+        if columns != next(right):
             raise ValueError(f'{fresh.name}: columns differ')
+        forecasts = fresh.name == 'rolling-barriers.csv'
+        model_column = columns.index('model') if forecasts else None
+        probability_column = columns.index('probability') if forecasts else None
         for line, (expected, actual) in enumerate(zip_longest(left, right), start=2):
             if expected is None or actual is None or len(expected) != len(actual):
                 raise ValueError(f'{fresh.name}:{line}: row missing or incomplete')
-            for stored, generated in zip(expected, actual):
+            for column, (stored, generated) in enumerate(zip(expected, actual)):
                 if stored == generated:
                     continue
                 try:
-                    close = math.isclose(float(stored), float(generated), rel_tol=2e-5, abs_tol=2e-6)
+                    if column == probability_column and expected[model_column] == 'GJR-GARCH Student t':
+                        # Optimiser differences can switch a draw on the barrier.
+                        # Allow two hit counts at each origin for this fitted challenger.
+                        close = math.isclose(float(stored), float(generated), rel_tol=0,
+                                             abs_tol=2 / (DRAWS + 1) + 1e-12)
+                    else:
+                        close = math.isclose(float(stored), float(generated), rel_tol=2e-5, abs_tol=2e-6)
                 except ValueError:
                     close = False
                 if not close:
